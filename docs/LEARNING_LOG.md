@@ -45,3 +45,10 @@
 - Smoothing lifts median |corr| with RUL from 0.69 (raw) to ~0.80; slopes and spreads are weak alone; FFT is weaker than smoothing (one reading per cycle).
 - Hit PostgreSQL's 65,535-parameter limit on wide inserts; fixed by sizing chunks from the column count.
 - Incremental features for a new shift (test cycles 21-25) matched a full rebuild exactly; reruns did not duplicate. 24 tests pass.
+
+## 2026-10-17: Phase 3 re-verification
+- Wrote `features/verify.py`: recomputes split, scaler, RUL and all 168 features from the raw NASA files with a different, simple method and compares with the database. 3,886,008 values match (max difference 1.9e-13, floating-point rounding).
+- Found one real gap: fact_features had no primary key, so only the code (not the database) prevented duplicates. Added the key; a test duplicate insert is now rejected with UniqueViolation.
+- Made table checks name the schema explicitly (SQLAlchemy's inspector otherwise looks at `public`, which would have made the test-schema checks look at the real table). Documented the FFT window behaviour for engines with fewer than 30 readings. Removed an unused constant.
+- Added 3 database tests for the feature store. 27 tests pass; verification 25/25.
+- Lesson: re-running your own code only proves it is consistent. Verification needs an independent method.

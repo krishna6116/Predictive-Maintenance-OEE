@@ -31,19 +31,30 @@ def read_readings(engine: Engine, dataset: str, split: str, units=None, schema: 
         return pd.read_sql(text(sql + " ORDER BY engine_id, cycle"), conn, params=params)
 
 
+def _ensure_table(conn, rows: pd.DataFrame, schema: str | None) -> None:
+    """Create fact_features if needed and make sure the database itself enforces one row per engine-cycle."""
+    insp = inspect(conn)
+    if not insp.has_table("fact_features", schema=schema):
+        rows.head(0).to_sql("fact_features", conn, schema=schema, index=False)  # columns and types from the frame
+        insp.clear_cache()
+    if not insp.get_pk_constraint("fact_features", schema=schema).get("constrained_columns"):
+        conn.execute(text(f"ALTER TABLE fact_features ADD PRIMARY KEY ({', '.join(KEYS)})"))
+
+
 def write_features(engine: Engine, feats: pd.DataFrame, dataset: str, split: str, schema: str | None = None) -> int:
-    """Replace-then-insert in one transaction, so reruns never duplicate rows."""
+    """Replace-then-insert in one transaction, so reruns never duplicate rows (the primary key guarantees it)."""
     rows = feats.rename(columns={"unit": "engine_id"}).assign(dataset=dataset, split=split)
     rows = rows[KEYS + ["run_id"] + feature_columns()]
     with engine.begin() as conn:
         _search_path(conn, schema)
-        if inspect(conn).has_table("fact_features"):
+        _ensure_table(conn, rows, schema)
+        if len(rows):
             conn.execute(text("DELETE FROM fact_features WHERE dataset = :d AND split = :s "
                               "AND (engine_id, cycle) IN (SELECT * FROM unnest(CAST(:e AS int[]), CAST(:c AS int[])))"),
                          {"d": dataset, "s": split, "e": rows.engine_id.astype(int).tolist(),
                           "c": rows.cycle.astype(int).tolist()})
         # PostgreSQL allows at most 65,535 values per statement, so size chunks from the column count
-        rows.to_sql("fact_features", conn, if_exists="append", index=False, method="multi",
+        rows.to_sql("fact_features", conn, schema=schema, if_exists="append", index=False, method="multi",
                     chunksize=60_000 // rows.shape[1])
     return len(rows)
 

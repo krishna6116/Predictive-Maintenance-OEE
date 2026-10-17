@@ -22,7 +22,7 @@ Predicts turbofan engine failures from sensor data, schedules maintenance under 
 - 14 of 21 sensors kept; 8 constant or two-valued inputs dropped, each with a stated reason.
 - Sensors stay flat for most of an engine's life and drift in the last ~100-150 cycles, which is why remaining life is capped at 125 cycles.
 - 20,631 training and 2,000 test readings loaded into PostgreSQL and verified against the NASA files cell by cell (0 mismatches). Injected faults are quarantined with a reason instead of being loaded.
-- 168 features built only from past readings; smoothing lifts the median sensor's correlation with remaining life from 0.69 to 0.80. Features built per batch match a full rebuild exactly.
+- 168 features built only from past readings; smoothing lifts the median sensor's correlation with remaining life from 0.69 to 0.80. Features built per batch match a full rebuild exactly, and an independent recomputation of all 3.9 million stored feature values matches to within 2e-13 (`python -m features.verify`, 25/25 checks).
 
 ![Sensors drift as engines approach failure](docs/figures/fd001_sensor_trends.png)
 

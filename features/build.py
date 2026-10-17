@@ -18,7 +18,6 @@ WINDOWS = (5, 10, 20)         # rolling windows, in cycles
 EMA_SPAN = 10                 # exponential moving average span
 FFT_WINDOW = 30               # cycles used for the low-frequency energy feature
 FFT_MIN = 8                   # fewer readings than this -> feature is 0
-HISTORY_NEEDED = max(max(WINDOWS), FFT_WINDOW)  # cycles of history a new batch needs (EMA uses all of it)
 
 SCALER_FILE = Path("features/scaler.json")
 SPLIT_FILE = Path("features/split.json")
@@ -90,7 +89,11 @@ def add_rolling(df: pd.DataFrame, cols=SENSORS, windows=WINDOWS) -> pd.DataFrame
 
 # --- 3.5 signal-processing features ------------------------------------------------------------------
 def _low_freq_energy(values: np.ndarray, window: int = FFT_WINDOW, min_len: int = FFT_MIN) -> np.ndarray:
-    """For each position, strength of the slowest FFT components (bins 1-3) over the last `window` values."""
+    """For each position, strength of the slowest FFT components (bins 1-3) over the last `window` values.
+
+    Bin k is a cycle with period len/k readings, so until an engine has `window` readings the bins cover
+    slightly faster cycles. Readings before `min_len` get 0. Dividing by the length keeps values comparable.
+    """
     out = np.zeros(len(values))
     for t in range(len(values)):
         seg = values[max(0, t - window + 1): t + 1]
