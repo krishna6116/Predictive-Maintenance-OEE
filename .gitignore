@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Data and model artifacts (download data locally; see README)
+data/raw/*
+data/processed/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+*.pt
+*.joblib
+
+# Secrets
+.env
+
+# Local reference copies
+docs/*.pdf
