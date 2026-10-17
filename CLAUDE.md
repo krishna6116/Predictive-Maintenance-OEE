@@ -7,11 +7,10 @@ Portfolio project: predict remaining useful life (RUL) of turbofan engines from 
 - Phase 0 (setup): done. Commit `b3c4bb2`. `.venv` on Python 3.14 (torch 2.14 CPU, prefect 3.8, xgboost 3.4, ortools 9.15). `pytest -q` passes.
 - Data: C-MAPSS FD001-FD004 downloaded to `data/raw/` (git-ignored); FD001 verified (train 20,631 x 26, test 13,096 x 26, 100 engines each, no nulls).
 - Waiting on the user:
-  1. Run `python -m pipeline.setup_env` (database `pdm` already created). Never type or handle the password.
-  2. GitHub: user creates an empty public repo `Predictive-Maintenance-OEE`, then connect `origin` and push.
+  1. GitHub: user creates an empty public repo `Predictive-Maintenance-OEE`, then connect `origin` and push.
 - Phase 1 (EDA): done. `notebooks/01_eda.ipynb`, `docs/EDA_FINDINGS.md`, figures in `docs/figures/`. Keep 14 sensors: s2 s3 s4 s7 s8 s9 s11 s12 s13 s14 s15 s17 s20 s21.
 - PostgreSQL 17.11 reinstalled (new password, user-owned). `.env` is written by `python -m pipeline.setup_env` (hidden prompt).
-- Phase 2 (pipeline): code + tests done (`pipeline/schema.sql, ingest.py, validate.py, load.py, run_batch.py`, `docs/PIPELINE.md`). Remaining: user runs setup_env, then `run_batch --init`, `--split train --all`, a few `--next` batches incl. `--inject-faults`, and the DB tests.
+- Phase 2 (pipeline): code + tests done (`pipeline/schema.sql, ingest.py, validate.py, load.py, run_batch.py`, `docs/PIPELINE.md`). Live: `.env` works; train loaded (20,631 rows); test loaded through cycle 20 (4 shifts, 3 injected faults quarantined). 16/16 tests pass.
 - Next: Phase 3 (features from fact_sensor_reading).
 
 ## Phases

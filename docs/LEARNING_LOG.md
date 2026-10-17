@@ -28,3 +28,9 @@
 - `validate.py` rules: missing value, duplicate cycle, out of range (training range +10%), cycle gap. Learned: gap checks must count quarantined readings as received, or one bad reading cascades into false gaps.
 - `load.py` loads each batch in one transaction with a run ID; reruns replace rather than duplicate (ON CONFLICT upsert).
 - 11 validation tests pass; 4 database tests run in a throwaway schema and skip when no database is set up.
+
+## 2026-10-17: Phase 2, pipeline live
+- Connected after resetting the postgres password in pgAdmin (Login/Group Roles > postgres > Definition). The hidden password prompt worked; the first password simply did not match.
+- Loaded 20,631 training rows and 4 test shifts (cycles 1-20). Fault injection quarantined exactly the 3 broken rows. Rerunning shift 1 left 500 rows, proving the load is idempotent.
+- Bug found by the database tests: my test helper built empty tables with no columns. The real pipeline always passes empty tables with columns, so the fix was in the test helper.
+- All 16 tests pass (11 validation, 1 setup, 4 database).

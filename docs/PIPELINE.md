@@ -59,3 +59,16 @@ A row keeps the first rule it fails:
 | 4 | Set limits from the training range plus 10% | Limits must come from known-good data, with room for normal variation | Objective, documented thresholds instead of guesses | The same limits feed drift monitoring in Phase 7 |
 | 5 | Loaded each batch in one transaction with a run ID | Pipelines fail and get rerun; without this, reruns duplicate data and every number downstream is wrong | Safe reruns, all-or-nothing loads, and every row traceable to its run | Predictions in Phase 5-6 can be traced back to the exact data they used |
 | 6 | Added fault injection and tests (including a throwaway test schema) | You cannot trust validation you have never seen catch a fault | Proof that each rule works, run automatically in CI | Gives you a live demo for interviews: inject faults and show them quarantined |
+
+## First live run (2026-10-17)
+
+| Run | Cycles | Loaded | Quarantined |
+| --- | --- | --- | --- |
+| Training set, all engines | 1-362 | 20,631 | 0 |
+| Test shift 1 | 1-5 | 500 | 0 |
+| Test shift 2 | 6-10 | 500 | 0 |
+| Test shift 3 | 11-15 | 500 | 0 |
+| Test shift 4, with injected faults | 16-20 | 498 | 3 (1 missing value, 1 s4 out of range, 1 duplicate cycle) |
+| Rerun of shift 1 | 1-5 | 500 | 0 |
+
+After the rerun, cycles 1-5 still hold exactly 500 test rows: the rerun replaced the earlier rows instead of duplicating them. The real NASA data produced no quarantined rows; only the injected faults were caught.

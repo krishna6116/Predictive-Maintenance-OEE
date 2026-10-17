@@ -27,7 +27,9 @@ def db():
 
 def rows(units, cycles, **override):
     base = {c: 1.0 for c in KEEP_COLS}
-    return pd.DataFrame([{"unit": u, "cycle": c, **base, **override} for u in units for c in cycles])
+    # Explicit columns, so an empty batch still has them, as validate() always returns
+    return pd.DataFrame([{"unit": u, "cycle": c, **base, **override} for u in units for c in cycles],
+                        columns=["unit", "cycle"] + KEEP_COLS + list(override))
 
 
 def count(engine, schema, sql):
