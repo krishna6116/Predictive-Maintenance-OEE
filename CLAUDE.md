@@ -9,7 +9,8 @@ Portfolio project: predict remaining useful life (RUL) of turbofan engines from 
 - Waiting on the user:
   1. PostgreSQL 17 (installed, running): user creates database `pdm` and their own `.env` from `.env.example`. Never type or handle the password.
   2. GitHub: user creates an empty public repo `Predictive-Maintenance-OEE`, then connect `origin` and push.
-- Next: Phase 1 (EDA notebook `notebooks/01_eda.ipynb`, `docs/EDA_FINDINGS.md`), then Phase 2 (star schema, batch ingest, validation/quarantine, idempotent ETL with run IDs).
+- Phase 1 (EDA): done. `notebooks/01_eda.ipynb`, `docs/EDA_FINDINGS.md`, figures in `docs/figures/`. Keep 14 sensors: s2 s3 s4 s7 s8 s9 s11 s12 s13 s14 s15 s17 s20 s21.
+- Next: Phase 2 (star schema, batch ingest, validation/quarantine, idempotent ETL with run IDs).
 
 ## Phases
 
