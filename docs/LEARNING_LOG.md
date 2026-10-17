@@ -18,3 +18,13 @@
 - Learned: 7 inputs are constant and s6 is two-valued, so 14 sensors remain. Most sensors drift only in the last ~100-150 cycles, which is why RUL is capped at 125.
 - Surprise: s9 and s14 rise for some engines and fall for others near failure, so they correlate weakly with RUL. To test in Phase 4.
 - Findings and decisions written to `docs/EDA_FINDINGS.md`.
+
+## 2026-10-17: PostgreSQL reinstall
+- Forgot the PostgreSQL password, so uninstalled PostgreSQL 17, deleted the leftover data folder (otherwise the old password stays), and reinstalled 17.11 with winget from the VS Code terminal.
+- Added `pipeline/setup_env.py`: asks for the password at a hidden prompt, tests the connection, then writes `.env`.
+
+## 2026-10-17: Phase 2, data pipeline (code)
+- Star schema in `pipeline/schema.sql`: fact_sensor_reading, dim_engine, quarantine, pipeline_runs. `split` is part of every key because train and test reuse engine IDs 1-100.
+- `validate.py` rules: missing value, duplicate cycle, out of range (training range +10%), cycle gap. Learned: gap checks must count quarantined readings as received, or one bad reading cascades into false gaps.
+- `load.py` loads each batch in one transaction with a run ID; reruns replace rather than duplicate (ON CONFLICT upsert).
+- 11 validation tests pass; 4 database tests run in a throwaway schema and skip when no database is set up.
