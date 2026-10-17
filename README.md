@@ -2,7 +2,27 @@
 
 Predicts turbofan engine failures from sensor data, schedules maintenance under crew limits, and shows the effect on OEE.
 
-> Work in progress. Phase 0 (setup) complete.
+[![CI](https://github.com/krishna6116/Predictive-Maintenance-OEE/actions/workflows/ci.yml/badge.svg)](https://github.com/krishna6116/Predictive-Maintenance-OEE/actions/workflows/ci.yml)
+
+> **Work in progress.** Phases 0-2 complete; Phase 3 (features) next.
+
+## Progress
+
+| Phase | Status | Read more |
+| --- | --- | --- |
+| 0. Setup: structure, tests, CI | Done | |
+| 1. Exploratory data analysis (FD001) | Done | [EDA findings](docs/EDA_FINDINGS.md) · [notebook](notebooks/01_eda.ipynb) |
+| 2. Data pipeline: PostgreSQL star schema, batch ingest, validation and quarantine, idempotent run-ID loads | Done | [Pipeline design](docs/PIPELINE.md) |
+| 3. Feature engineering | Next | |
+| 4-9. Baselines, deep learning, maintenance scheduling and OEE, orchestration, dashboards | Planned | |
+
+**Highlights so far**
+
+- 14 of 21 sensors kept; 8 constant or two-valued inputs dropped, each with a stated reason.
+- Sensors stay flat for most of an engine's life and drift in the last ~100-150 cycles, which is why remaining life is capped at 125 cycles.
+- 20,631 training and 2,000 test readings loaded into PostgreSQL and verified against the NASA files cell by cell (0 mismatches). Injected faults are quarantined with a reason instead of being loaded.
+
+![Sensors drift as engines approach failure](docs/figures/fd001_sensor_trends.png)
 
 ## Data
 
