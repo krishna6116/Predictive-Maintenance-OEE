@@ -5,10 +5,10 @@ Portfolio project: predict remaining useful life (RUL) of turbofan engines from 
 ## Status (2026-10-17)
 
 - Phase 0 (setup): done. Commit `b3c4bb2`. `.venv` on Python 3.14 (torch 2.14 CPU, prefect 3.8, xgboost 3.4, ortools 9.15). `pytest -q` passes.
+- Data: C-MAPSS FD001-FD004 downloaded to `data/raw/` (git-ignored); FD001 verified (train 20,631 x 26, test 13,096 x 26, 100 engines each, no nulls).
 - Waiting on the user:
-  1. Approval to download the C-MAPSS zip into `data/raw/` (`train_FD001.txt`, `test_FD001.txt`, `RUL_FD001.txt`).
-  2. PostgreSQL 17 (installed, running): user creates database `pdm` and their own `.env` from `.env.example`. Never type or handle the password.
-  3. GitHub: user creates an empty public repo `Predictive-Maintenance-OEE`, then connect `origin` and push.
+  1. PostgreSQL 17 (installed, running): user creates database `pdm` and their own `.env` from `.env.example`. Never type or handle the password.
+  2. GitHub: user creates an empty public repo `Predictive-Maintenance-OEE`, then connect `origin` and push.
 - Next: Phase 1 (EDA notebook `notebooks/01_eda.ipynb`, `docs/EDA_FINDINGS.md`), then Phase 2 (star schema, batch ingest, validation/quarantine, idempotent ETL with run IDs).
 
 ## Phases
