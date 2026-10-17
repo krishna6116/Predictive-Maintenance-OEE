@@ -23,4 +23,5 @@ Portfolio project: predict remaining useful life (RUL) of turbofan engines from 
 - Tests in `tests/` (pytest, `pythonpath = .`); CI in `.github/workflows/ci.yml`.
 - Keep a dated entry in `docs/LEARNING_LOG.md` for each working session.
 - The user is learning: explain the concept and the reason for each step, then do it.
+- End every phase's notebook (and the phase summary to the user) with a "Why we did these tasks" table: task | why we did it | what we learned | what it changes next.
 - Never commit personal files (resumes live in `Documents\Job-Applications`), `.env`, data files or model weights.

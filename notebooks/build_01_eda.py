@@ -107,6 +107,20 @@ print(f"Test engines with true RUL above 125: {(true_rul.RUL > 125).mean():.0%}"
     md("""## Findings
 
 See `docs/EDA_FINDINGS.md` for the written summary and the decisions they lead to."""),
+    md("""## Why we did these tasks
+
+EDA is the step where you earn the right to model. Each task above answered one question that a later phase depends on.
+
+| # | Task | Why we did it | What we learned | What it changes next |
+| --- | --- | --- | --- | --- |
+| 1 | Loaded train, test and RUL files with the pipeline's own loader | Using one loader everywhere means the notebook and the pipeline can never read the data differently | 100 train and 100 test engines, 26 columns, no missing values | Phase 2 reuses the same loader and column names |
+| 2 | Plotted engine lifetimes | To see whether a simple average could predict failure | Lifetimes run 128 to 362 cycles, nearly 3x apart | A fleet-average model will be poor; it becomes the baseline every model must beat (Phase 4) |
+| 3 | Measured each column's spread and distinct values | A column that never changes cannot help predict anything, and every drop needs a stated reason | 8 columns are constant or two-valued | We model on 14 sensors only, which is faster and less noisy |
+| 4 | Plotted sensors against cycles before failure | Lining engines up at failure makes the wear pattern visible | Most sensors stay flat, then drift in the last ~100-150 cycles; s9 and s14 behave differently per engine | Justifies capping RUL at 125 (Phase 3) and testing whether to keep s9/s14 (Phase 4) |
+| 5 | Correlated each sensor with remaining life, and sensors with each other | To rank the signals and spot duplicates | s11, s4 and s12 are strongest; s9 and s14 are weak and near-duplicates (0.96) | Guides feature checks and shows which sensors to watch for drift (Phase 7) |
+| 6 | Summarized the test set | The test set decides how results are scored and how much history each engine gives the model | 31-303 cycles observed; true RUL 7-145, 11% above 125 | Sets the 30-cycle window (Phase 5) and the rule to state the cap convention with results |
+
+**The habit to keep:** never start modeling until you can explain the data in two minutes, and write every decision down with the evidence behind it. Interviewers ask \"why did you drop that sensor?\" and \"why 125?\"; this notebook is your answer."""),
 ]
 
 nb = nbf.v4.new_notebook(cells=cells, metadata={"kernelspec": {"name": "python3", "display_name": "Python 3"}})
