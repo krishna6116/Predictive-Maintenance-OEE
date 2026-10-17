@@ -38,3 +38,10 @@
 ## 2026-10-17: Data check and GitHub
 - Verified the database against the NASA files cell by cell: 330,096 train and 32,000 test cells, 0 mismatches. Reloaded test cycles 16-20 to restore the 2 readings left out by the fault-injection demo (now 2,000 test rows).
 - Pushed to GitHub (krishna6116/Predictive-Maintenance-OEE); first CI run passed.
+
+## 2026-10-17: Phase 3, feature engineering
+- RUL capped at 125 (39% of training readings at the cap). Split 80/20 by engine (`features/split.json`); scaler fit on training engines only (`features/scaler.json`).
+- 168 causal features: rolling mean/std/slope (5, 10, 20 cycles), EMA, FFT low-frequency energy. Slopes use rolling sums instead of a loop, which is exact and fast.
+- Smoothing lifts median |corr| with RUL from 0.69 (raw) to ~0.80; slopes and spreads are weak alone; FFT is weaker than smoothing (one reading per cycle).
+- Hit PostgreSQL's 65,535-parameter limit on wide inserts; fixed by sizing chunks from the column count.
+- Incremental features for a new shift (test cycles 21-25) matched a full rebuild exactly; reruns did not duplicate. 24 tests pass.

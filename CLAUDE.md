@@ -10,7 +10,8 @@ Portfolio project: predict remaining useful life (RUL) of turbofan engines from 
 - Phase 1 (EDA): done. `notebooks/01_eda.ipynb`, `docs/EDA_FINDINGS.md`, figures in `docs/figures/`. Keep 14 sensors: s2 s3 s4 s7 s8 s9 s11 s12 s13 s14 s15 s17 s20 s21.
 - PostgreSQL 17.11 reinstalled (new password, user-owned). `.env` is written by `python -m pipeline.setup_env` (hidden prompt).
 - Phase 2 (pipeline): code + tests done (`pipeline/schema.sql, ingest.py, validate.py, load.py, run_batch.py`, `docs/PIPELINE.md`). Live: `.env` works; train loaded (20,631 rows); test loaded through cycle 20 (2,000 rows; 3 injected faults quarantined). DB verified cell-for-cell against the NASA files: 0 mismatches. 16/16 tests pass.
-- Next: Phase 3 (features from fact_sensor_reading).
+- Phase 3 (features): done. `features/build.py, store.py, run_features.py`, `features/split.json` (80/20 by engine), `features/scaler.json`, table `fact_features` (168 causal features), `docs/FEATURES.md`, `notebooks/03_features.ipynb`. Test data loaded through cycle 25. 24 tests pass.
+- Next: Phase 4 (baselines on the official test set: fleet mean, Ridge, XGBoost; RMSE + PHM08; ablations for FFT features and s9/s14).
 
 ## Phases
 
