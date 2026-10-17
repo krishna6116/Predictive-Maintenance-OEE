@@ -34,3 +34,7 @@
 - Loaded 20,631 training rows and 4 test shifts (cycles 1-20). Fault injection quarantined exactly the 3 broken rows. Rerunning shift 1 left 500 rows, proving the load is idempotent.
 - Bug found by the database tests: my test helper built empty tables with no columns. The real pipeline always passes empty tables with columns, so the fix was in the test helper.
 - All 16 tests pass (11 validation, 1 setup, 4 database).
+
+## 2026-10-17: Data check and GitHub
+- Verified the database against the NASA files cell by cell: 330,096 train and 32,000 test cells, 0 mismatches. Reloaded test cycles 16-20 to restore the 2 readings left out by the fault-injection demo (now 2,000 test rows).
+- Pushed to GitHub (krishna6116/Predictive-Maintenance-OEE); first CI run passed.
