@@ -23,7 +23,9 @@ def _fingerprint(*paths: Path) -> str:
     h = hashlib.sha256()
     for p in paths:
         h.update(p.read_bytes())
-    h.update(Path("features/build.py").read_bytes())  # feature code changes invalidate the cache
+    # Any change to the feature code, the sensor list or the file loader invalidates the cache
+    for code in ("features/build.py", "pipeline/config.py", "pipeline/check_raw_data.py", "models/data.py"):
+        h.update(Path(code).read_bytes())
     return h.hexdigest()[:16]
 
 
@@ -38,12 +40,14 @@ def _cached(name: str, inputs: list[Path], make) -> pd.DataFrame:
 
 
 def train_frame(dataset: str = "FD001") -> pd.DataFrame:
-    """Every training reading: unit, cycle, 168 features, RUL (capped), split ('train' or 'val')."""
+    """Every training reading: unit, cycle, 168 features, RUL (capped), RUL_true (uncapped), split."""
     src = RAW / f"train_{dataset}.txt"
 
     def make():
         raw = add_rul(load(src))
-        feats = build_features(raw, load_json(SCALER_FILE)).merge(raw[["unit", "cycle", "RUL"]], on=["unit", "cycle"])
+        raw["RUL_true"] = raw.groupby("unit")["cycle"].transform("max") - raw["cycle"]
+        feats = build_features(raw, load_json(SCALER_FILE)).merge(raw[["unit", "cycle", "RUL", "RUL_true"]],
+                                                                   on=["unit", "cycle"], validate="one_to_one")
         split = load_json(SPLIT_FILE)
         feats["split"] = feats.unit.map({**{u: "train" for u in split["train"]}, **{u: "val" for u in split["val"]}})
         return feats

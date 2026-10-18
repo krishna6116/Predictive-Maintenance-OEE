@@ -1,6 +1,8 @@
 name: CI
 on: [push, pull_request]
+
 jobs:
+  # Unit tests: no data or database needed (database tests skip themselves)
   test:
     runs-on: ubuntu-latest
     steps:
@@ -12,3 +14,47 @@ jobs:
       - run: pip install torch --index-url https://download.pytorch.org/whl/cpu
       - run: pip install -r requirements.txt
       - run: pytest -q
+
+  # End to end on a clean machine: pinned NASA data -> PostgreSQL pipeline -> features -> every verifier
+  verify:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: ci
+          POSTGRES_PASSWORD: ci-only-password
+          POSTGRES_DB: pdm
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U ci" --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      DATABASE_URL: postgresql+psycopg://ci:ci-only-password@localhost:5432/pdm
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+      - run: pip install torch --index-url https://download.pytorch.org/whl/cpu
+      - run: pip install -r requirements.txt
+      - name: Download NASA C-MAPSS and check it against the pinned checksums
+        run: python -m pipeline.download_data
+      - name: Raw data integrity
+        run: python -m pipeline.check_raw_data
+      - name: Pipeline into PostgreSQL (train, then five test shifts)
+        run: |
+          python -m pipeline.run_batch --init
+          python -m pipeline.run_batch --split train --all
+          for i in 1 2 3 4 5; do python -m pipeline.run_batch --next; done
+      - name: Features
+        run: |
+          python -m features.run_features --build train
+          python -m features.run_features --build test
+      - name: Tests, now including the database tests
+        run: pytest -q
+      - name: Phase 3 verification (features vs independent recomputation)
+        run: python -m features.verify
+      - name: Phase 4 verification (published metrics, model choice, generated docs)
+        run: python -m models.verify_baselines
+      - name: Committed files are unchanged by the run
+        run: git diff --exit-code -- features/split.json features/scaler.json pipeline/sensor_limits.json models/ docs/MODEL_METRICS.md

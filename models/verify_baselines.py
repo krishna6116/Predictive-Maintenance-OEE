@@ -124,6 +124,51 @@ def main() -> int:
     diff = float(np.abs(p - PREDS["XGBoost, all 168 features"]).max())
     check(diff < 1e-3, f"XGBoost (all features, seed 0) reproduces its predictions; max diff {diff:.1e}")
 
+    print("\n== Age-only baseline from the raw training file (plain Python)")
+    by_cycle = {}
+    for row, c in zip(train_rows, caps):
+        by_cycle.setdefault(int(row["cycle"]), []).append(c)
+    table = {k: sum(v) / len(v) for k, v in by_cycle.items()}
+    top = max(table)
+
+    def age_pred(cycle):
+        k = min(int(cycle), top)
+        while k not in table:  # carry the last known value forward over any gap
+            k -= 1
+        return min(max(table[k], 0), RUL_CAP)
+    p = np.array([age_pred(last_test[u]["cycle"]) for u in sorted(last_test)])
+    diff = float(np.abs(p - PREDS["Age only (cycle count)"]).max())
+    check(diff < 1e-9, f"age-only predictions recomputed from per-cycle means; max diff {diff:.1e}")
+
+    print("\n== Settings were chosen on validation, never on test")
+    vp = pd.read_csv("models/val_predictions_phase4.csv")
+    split = json.loads(Path("features/split.json").read_text())
+    check(sorted(vp.unit.unique()) == sorted(split["val"]), "validation predictions cover exactly the 20 validation engines")
+    curve = RESULTS["models"]["Ridge, raw sensors (14)"]["settings"]["val_rmse_by_alpha"]
+    check(float(min(curve, key=curve.get)) == alpha, "Ridge alpha = the minimum of its validation curve")
+    dv = RESULTS["xgb_depth_search_val_rmse"]
+    check(int(min(dv, key=dv.get)) == r["settings"]["max_depth"], "XGBoost depth = the minimum of the validation depth search")
+    tr80 = [row for row, c in zip(train_rows, caps) if int(row["unit"]) in split["train"]]
+    y80 = np.array([c for row, c in zip(train_rows, caps) if int(row["unit"]) in split["train"]])
+    X80 = scaled(tr80)
+    xm, ym = X80.mean(0), y80.mean()
+    w = np.linalg.solve((X80 - xm).T @ (X80 - xm) + alpha * np.eye(X80.shape[1]), (X80 - xm).T @ (y80 - ym))
+    val_rows = sorted((row for row in train_rows if int(row["unit"]) in split["val"]), key=lambda q: (q["unit"], q["cycle"]))
+    pv = np.clip(scaled(val_rows) @ w + (ym - xm @ w), 0, RUL_CAP)
+    vps = vp.sort_values(["unit", "cycle"])
+    diff = float(np.abs(pv - vps["Ridge, raw sensors (14)"].to_numpy()).max())
+    check(diff < 1e-6, f"validation predictions come from a fit on the 80 training engines only (closed-form Ridge, diff {diff:.1e})")
+    tl = (vps.cycle >= 31) & (vps.RUL_true <= 145)
+    got = RESULTS["models"]["XGBoost, all 168 features"]["val_rmse_testlike"]
+    check(abs(py_rmse(list(vps.RUL[tl]), list(vps["XGBoost, all 168 features"][tl])) - got) < 1e-9,
+          f"test-like validation RMSE recomputes ({got:.2f} on {int(tl.sum()):,} rows)")
+    sel = RESULTS["model_selection_on_validation"]["XGBoost, all 168 features vs Ridge, all 168 features"]
+    near = vps.RUL_true <= 50
+    gap = py_mae(list(vps.RUL[near]), list(vps["XGBoost, all 168 features"][near])) - \
+        py_mae(list(vps.RUL[near]), list(vps["Ridge, all 168 features"][near]))
+    check(abs(gap - sel["val_near_failure_mae"]["diff"]) < 1e-9 and sel["val_near_failure_mae"]["ci"][1] < 0,
+          f"on validation, XGBoost beats Ridge near failure (MAE gap {gap:+.2f}, interval excludes 0): choice made without the test set")
+
     print("\n== Claims about which model is better")
     comp = RESULTS["paired_comparisons"]
     ok = True
@@ -134,6 +179,18 @@ def main() -> int:
             lo, hi = c[metric]["ci"]
             ok &= abs(expected - c[metric]["diff"]) < 1e-6 * max(1, abs(expected)) and lo <= expected <= hi
     check(ok, f"{len(comp)} paired comparisons: each observed gap recomputes exactly and lies inside its interval")
+    ok = True
+    for metric in ("rmse", "phm"):
+        ps = sorted((c[metric]["p"], name) for name, c in comp.items())
+        m_, running = len(ps), 0.0
+        for rank, (p_, name) in enumerate(ps):  # Holm by hand: running max of p x tests left
+            running = max(running, min(1.0, p_ * (m_ - rank)))
+            ok &= abs(comp[name][metric]["p_holm"] - running) < 1e-12 and comp[name][metric]["significant"] == (running < 0.05)
+    check(ok, "Holm-corrected p-values and verdicts recompute for both metrics")
+
+    print("\n== The published document matches the results")
+    from models.report_phase4 import DOC, render
+    check(DOC.read_text(encoding="utf-8") == render(), "docs/MODEL_METRICS.md equals a fresh rendering of the results")
 
     failed = [w for ok, w in checks if not ok]
     print(f"\n{len(checks) - len(failed)}/{len(checks)} checks passed.")

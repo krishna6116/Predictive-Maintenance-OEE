@@ -7,7 +7,8 @@ Protocol (the test set is used once, at the end):
   2. Refit each model on all 100 training engines with those settings.
   3. Score each model once on the 100 test engines, at each engine's last observed cycle.
 XGBoost is trained with 5 random seeds to show how much results move by chance.
-Outputs: models/results_phase4.json, models/predictions_phase4.csv, models/importance_phase4.csv.
+The published model is chosen on validation only (test-like rows and near failure); the test set confirms it.
+Outputs: models/results_phase4.json, predictions_phase4.csv (test), val_predictions_phase4.csv, importance_phase4.csv.
 """
 import json
 import sys
@@ -20,7 +21,7 @@ from xgboost import XGBRegressor
 
 from features.build import RUL_CAP, feature_columns
 from models.data import test_frame, train_frame
-from models.metrics import bootstrap_ci, mae, paired_bootstrap, phm_score, rmse
+from models.metrics import bootstrap_ci, holm, mae, paired_bootstrap, phm_score, rmse
 from pipeline.config import SENSORS
 
 OUT = Path("models")
@@ -61,7 +62,24 @@ def xgb_val(tr, va, cols, depth, seed):
     m = XGBRegressor(n_estimators=3000, max_depth=depth, random_state=seed, early_stopping_rounds=100,
                      eval_metric="rmse", **XGB_FIXED)
     m.fit(tr[cols], tr.RUL, eval_set=[(va[cols], va.RUL)], verbose=False)
-    return m.best_iteration + 1, rmse(va.RUL, clip(m.predict(va[cols], iteration_range=(0, m.best_iteration + 1))))
+    pv = clip(m.predict(va[cols], iteration_range=(0, m.best_iteration + 1)))
+    return m.best_iteration + 1, rmse(va.RUL, pv), pv
+
+
+def test_like(va: pd.DataFrame) -> pd.Series:
+    """Validation rows that look like the test set: at least 31 cycles observed, true RUL at most 145.
+
+    The test engines are observed for 31-303 cycles and have true RUL 7-145, so this score is closer to
+    what the test set measures than the all-rows validation score (which includes many easy cap rows).
+    """
+    return (va.cycle >= 31) & (va.RUL_true <= 145)
+
+
+def age_model(rows: pd.DataFrame):
+    """RUL predicted from age alone: the mean capped RUL of training readings at the same cycle."""
+    table = rows.groupby("cycle").RUL.mean()
+    table = table.reindex(range(1, int(table.index.max()) + 1)).ffill()
+    return lambda cycles: clip(table.reindex(np.minimum(cycles, table.index.max())).to_numpy())
 
 
 def main() -> int:
@@ -70,71 +88,113 @@ def main() -> int:
     y, y_raw = te.RUL.to_numpy(), te.RUL_true.to_numpy()
     print(f"train {len(tr):,} rows / 80 engines | val {len(va):,} rows / 20 engines | test {len(te)} engines")
     results, preds = {}, pd.DataFrame({"unit": te.unit, "RUL_true": y_raw, "RUL": y})
+    vpreds = va[["unit", "cycle", "RUL", "RUL_true"]].reset_index(drop=True)  # 80-engine fits scored on validation
+    tl = test_like(vpreds).to_numpy()
+
+    def val_scores(p):
+        p = np.asarray(p, float)
+        return {"val_rmse": rmse(vpreds.RUL, p), "val_rmse_testlike": rmse(vpreds.RUL[tl], p[tl])}
 
     # 1. Fleet average: one number for every engine
     avg = float(full.RUL.mean())
     p = np.full(len(te), avg)
+    vpreds["Fleet average"] = np.full(len(va), float(tr.RUL.mean()))
     results["Fleet average"] = {"features": "none", "settings": {"constant": avg},
-                                "val_rmse": rmse(va.RUL, np.full(len(va), float(tr.RUL.mean()))), **score(y, p, y_raw)}
+                                **val_scores(vpreds["Fleet average"]), **score(y, p, y_raw)}
     preds["Fleet average"] = p
+
+    # 1b. Age only: how much does knowing just the cycle count tell you?
+    age = "Age only (cycle count)"
+    vpreds[age] = age_model(tr)(va.cycle.to_numpy())
+    p = age_model(full)(te.cycle.to_numpy())
+    results[age] = {"features": "cycle", "settings": {"rule": "mean capped RUL of training readings at the same cycle"},
+                    **val_scores(vpreds[age]), **score(y, p, y_raw)}
+    preds[age] = p
+    print(f"{age}: val {results[age]['val_rmse']:.2f} test {results[age]['rmse']:.2f}")
 
     # 2. Ridge regression (linear) on raw sensors and on all features
     for name, cols in (("Ridge, raw sensors (14)", SENSORS), ("Ridge, all 168 features", ALL)):
         t = tune_ridge(tr, va, cols)
+        vpreds[name] = clip(Ridge(alpha=t["alpha"]).fit(tr[cols], tr.RUL).predict(va[cols]))
         p = clip(Ridge(alpha=t["alpha"]).fit(full[cols], full.RUL).predict(te[cols]))
         results[name] = {"features": f"{len(cols)} columns",
                          "settings": {"alpha": t["alpha"], "val_rmse_by_alpha": t["val_rmse_by_alpha"]},
-                         "val_rmse": t["val_rmse"], **score(y, p, y_raw)}
+                         **val_scores(vpreds[name]), **score(y, p, y_raw)}
         preds[name] = p
         print(f"{name}: alpha={t['alpha']} val {t['val_rmse']:.2f} test {results[name]['rmse']:.2f}")
 
     # 3. XGBoost: pick tree depth on validation (seed 0, all features), then use it for every feature set
     depth_val = {d: xgb_val(tr, va, ALL, d, 0) for d in (3, 5, 7)}
     depth = min(depth_val, key=lambda d: depth_val[d][1])
-    print("XGBoost depth search (val RMSE):", {d: round(v[1], 3) for d, v in depth_val.items()}, "-> depth", depth)
+    depth_testlike = {d: rmse(vpreds.RUL[tl], v[2][tl]) for d, v in depth_val.items()}
+    print("XGBoost depth search (val RMSE):", {d: round(v[1], 3) for d, v in depth_val.items()}, "-> depth", depth,
+          "| test-like val:", {d: round(v, 3) for d, v in depth_testlike.items()})
 
     importance = None
     for set_name, cols in FEATURE_SETS.items():
         runs = []
         for seed in SEEDS:
-            n_trees, v = xgb_val(tr, va, cols, depth, seed)
+            n_trees, v, pv = xgb_val(tr, va, cols, depth, seed)
             m = XGBRegressor(n_estimators=n_trees, max_depth=depth, random_state=seed, **XGB_FIXED)
             m.fit(full[cols], full.RUL)
             p = clip(m.predict(te[cols]))
-            runs.append({"seed": seed, "trees": n_trees, "val_rmse": v, "test_rmse": rmse(y, p), "pred": p})
+            runs.append({"seed": seed, "trees": n_trees, "val_rmse": v, "test_rmse": rmse(y, p), "pred": p, "vpred": pv})
             if set_name == "all 168 features" and seed == 0:
                 gain = m.get_booster().get_score(importance_type="gain")
                 importance = pd.Series(gain).reindex(cols).fillna(0).sort_values(ascending=False)
         name = f"XGBoost, {set_name}"
         p0 = runs[0]["pred"]  # seed 0 is the published prediction; the other seeds measure stability
         tests = [r["test_rmse"] for r in runs]
+        vpreds[name] = runs[0]["vpred"]
         results[name] = {"features": f"{len(cols)} columns", "settings": {"max_depth": depth, **XGB_FIXED,
                          "trees_per_seed": [r["trees"] for r in runs]},
-                         "val_rmse": float(np.mean([r["val_rmse"] for r in runs])), **score(y, p0, y_raw),
+                         **val_scores(runs[0]["vpred"]),
+                         "val_rmse_mean_over_seeds": float(np.mean([r["val_rmse"] for r in runs])),
+                         **score(y, p0, y_raw),
                          "seed_test_rmse": tests, "seed_test_rmse_mean": float(np.mean(tests)),
                          "seed_test_rmse_std": float(np.std(tests, ddof=1))}
         preds[name] = p0
         print(f"{name}: val {results[name]['val_rmse']:.2f} test {results[name]['rmse']:.2f} "
               f"(seeds {np.mean(tests):.2f} +/- {np.std(tests, ddof=1):.2f})")
 
-    # 4. Is a gap real or luck? Paired bootstrap on the same test engines
+    # 4. Model choice from VALIDATION only: test-like rows and near failure, resampling whole engines
     main_model = "XGBoost, all 168 features"
+    near = (vpreds.RUL_true <= 50).to_numpy()
+    selection = {}
+    for other in ["Ridge, all 168 features", age]:
+        selection[f"{main_model} vs {other}"] = {
+            "val_near_failure_mae": paired_bootstrap(vpreds.RUL[near], vpreds[main_model][near], vpreds[other][near],
+                                                     metric=mae, groups=vpreds.unit[near]),
+            "val_testlike_rmse": paired_bootstrap(vpreds.RUL[tl], vpreds[main_model][tl], vpreds[other][tl],
+                                                  groups=vpreds.unit[tl])}
+    for k, v in selection.items():
+        print("validation:", k, {m: (round(c["diff"], 2), [round(x, 2) for x in c["ci"]]) for m, c in v.items()})
+
+    # 5. Is a gap real or luck? Paired bootstrap on the same test engines, Holm-corrected across comparisons
     comparisons = {}
-    pairs = [(main_model, o) for o in ["Fleet average", "Ridge, raw sensors (14)", "Ridge, all 168 features"] +
+    pairs = [(main_model, o) for o in ["Fleet average", age, "Ridge, raw sensors (14)", "Ridge, all 168 features"] +
              [f"XGBoost, {s}" for s in FEATURE_SETS if s != "all 168 features"]]
     pairs.append(("Ridge, all 168 features", "Ridge, raw sensors (14)"))  # value of feature engineering alone
     for a, b in pairs:
         comparisons[f"{a} vs {b}"] = {"rmse": paired_bootstrap(y, preds[a], preds[b]),
                                       "phm": paired_bootstrap(y, preds[a], preds[b], metric=phm_score)}
+    for metric in ("rmse", "phm"):
+        adjusted = holm({k: c[metric]["p"] for k, c in comparisons.items()})
+        for k in comparisons:
+            comparisons[k][metric].update(adjusted[k])
 
     out = {"protocol": "settings chosen on 20 validation engines; refit on all 100 training engines; "
                        "test set scored once at each engine's last observed cycle; true RUL capped at 125",
            "xgb_depth_search_val_rmse": {str(d): v[1] for d, v in depth_val.items()},
+           "xgb_depth_search_val_rmse_testlike": {str(d): v for d, v in depth_testlike.items()},
+           "test_like_validation": f"validation rows with cycle >= 31 and true RUL <= 145 ({int(tl.sum()):,} of {len(tl):,})",
+           "model_selection_on_validation": selection,
            "models": results, "paired_comparisons": comparisons}
     (OUT / "results_phase4.json").write_text(json.dumps(out, indent=2), encoding="utf-8")
     preds.to_csv(OUT / "predictions_phase4.csv", index=False)
+    vpreds.to_csv(OUT / "val_predictions_phase4.csv", index=False)
     importance.rename("gain").to_csv(OUT / "importance_phase4.csv", index_label="feature")
-    print("\nWrote models/results_phase4.json, predictions_phase4.csv, importance_phase4.csv")
+    print("\nWrote models/results_phase4.json, predictions_phase4.csv, val_predictions_phase4.csv, importance_phase4.csv")
     return 0
 
 

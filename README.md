@@ -24,19 +24,21 @@ Predicts turbofan engine failures from sensor data, schedules maintenance under 
 - Sensors stay flat for most of an engine's life and drift in the last ~100-150 cycles, which is why remaining life is capped at 125 cycles.
 - 20,631 training and 2,000 test readings loaded into PostgreSQL and verified against the NASA files cell by cell (0 mismatches). Injected faults are quarantined with a reason instead of being loaded.
 - 168 features built only from past readings; smoothing lifts the median sensor's correlation with remaining life from 0.69 to 0.80. Features built per batch match a full rebuild exactly, and an independent recomputation of all 3.9 million stored feature values matches to within 2e-13 (`python -m features.verify`, 25/25 checks).
-- Baseline on NASA's 100 test engines: XGBoost reaches **15.38 RMSE** (95% interval 12.4-18.2) vs 41.9 for a fleet average. Near failure (50 or fewer cycles left) its mean error is **4.8 cycles**, against 13.3 for a linear model on the same features. Feature engineering is the largest real gain; FFT features show no measurable effect, and that is reported.
+- Baseline on NASA's 100 test engines: XGBoost reaches **15.38 RMSE** (95% interval 12.4-18.2) vs 41.9 for a fleet average. It beats a fleet average (41.9) and an age-only rule (31.2). Near failure (50 or fewer cycles left) its mean error is **4.8 cycles**, against 13.3 for a linear model on the same features; it was chosen on validation data, and the test set confirms it. Feature engineering is the largest real gain; FFT features show no measurable effect, and that is reported.
 
 ![Sensors drift as engines approach failure](docs/figures/fd001_sensor_trends.png)
 
 ## Data
 
-NASA C-MAPSS Turbofan Engine Degradation Simulation (A. Saxena and K. Goebel, NASA Prognostics Center of Excellence, 2008). Download the zip from NASA's PCoE data repository mirror:
+NASA C-MAPSS Turbofan Engine Degradation Simulation (A. Saxena and K. Goebel, NASA Prognostics Center of Excellence, 2008). Download it with one command; every file is checked against the SHA-256 checksums in `data/checksums.sha256`, so results are always reproduced on byte-identical data:
 
 ```powershell
-curl.exe -L -o cmapss.zip "https://phm-datasets.s3.amazonaws.com/NASA/6.+Turbofan+Engine+Degradation+Simulation+Data+Set.zip"
+python -m pipeline.download_data
 ```
 
-It contains `CMAPSSData.zip`; extract the `train_FD00x.txt`, `test_FD00x.txt` and `RUL_FD00x.txt` files into `data/raw/` (not committed). FD001: 100 training engines (20,631 rows), 100 test engines (13,096 rows), 26 columns.
+FD001: 100 training engines (20,631 rows), 100 test engines (13,096 rows), 26 columns. Data files are not committed.
+
+**Continuous verification:** on every push, GitHub Actions downloads the pinned data, runs the pipeline into a fresh PostgreSQL database, builds the features, and runs the test suite plus the Phase 3 and Phase 4 verifiers, which recompute the published numbers with independent code.
 
 ## Run locally
 

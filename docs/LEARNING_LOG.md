@@ -60,3 +60,11 @@
 - FFT, EMA and s9/s14 ablations: no measurable effect.
 - Caught by verification: XGBoost returns float32, so saved predictions and scored values differed by ~1e-7. Fixed by converting to float64 before scoring. Ridge's best alpha sat at the edge of the grid, but the validation curve is flat (19.90 for alpha 0-100), so it does not matter.
 - Verification 12/12: plain-Python metrics, closed-form Ridge (diff 1.2e-12), exact XGBoost re-run (diff 1.4e-14). 32 tests pass.
+
+## 2026-10-18: Phase 4 hardening
+- Audit found that the published model had been chosen from test results. Re-did the choice on validation only: XGBoost beats Ridge near failure by 6.4 MAE (interval -8.1 to -4.9, whole engines resampled) and on test-like rows by 2.2. The test set now only confirms it.
+- Added an age-only baseline (31.20 RMSE) and a test-like validation score (cycle >= 31, true RUL <= 145), which explains the validation/test gap (13.27 -> 14.58 -> 15.38). Depth 5 wins on both validation views.
+- Added Holm correction over 9 comparisons: "XGBoost beats raw-sensor XGBoost on PHM08" no longer holds (Holm p 0.12).
+- Bugs caught by verification: a shadowed variable in the verifier, and a Holm implementation that gave tied p-values different adjusted values (fixed with the standard running maximum).
+- `docs/MODEL_METRICS.md` is now generated from the results, and the verifier checks it. Data pinned by SHA-256; `pipeline/download_data.py` fetches and checks it; CI job `verify` runs the full pipeline on Postgres plus every verifier. Cache fingerprint now includes the sensor list and loader.
+- Verification 21/21; tests pass.

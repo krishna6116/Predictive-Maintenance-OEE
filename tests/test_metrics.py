@@ -40,3 +40,31 @@ def test_paired_bootstrap_detects_a_clearly_better_model():
     good, bad = y + rng.normal(0, 5, 100), y + rng.normal(0, 30, 100)
     out = paired_bootstrap(y, good, bad)
     assert out["diff"] < 0 and out["ci"][1] < 0 and out["a_wins"] > 0.99
+
+
+def test_engine_level_bootstrap_resamples_whole_engines():
+    from models.metrics import holm  # noqa: F401
+    rng = np.random.default_rng(3)
+    groups = np.repeat(np.arange(20), 50)          # 20 engines x 50 rows each
+    y = rng.uniform(0, 125, groups.size)
+    good, bad = y + rng.normal(0, 5, y.size), y + rng.normal(0, 20, y.size)
+    by_row = paired_bootstrap(y, good, bad, metric=mae)
+    by_engine = paired_bootstrap(y, good, bad, metric=mae, groups=groups)
+    assert by_engine["diff"] == by_row["diff"]     # same point estimate
+    assert by_engine["ci"][1] < 0                  # still clearly better
+
+
+def test_holm_keeps_strong_results_and_drops_borderline_ones():
+    from models.metrics import holm
+    out = holm({"a": 0.001, "b": 0.03, "c": 0.04})
+    assert out["a"]["significant"] and out["a"]["p_holm"] == pytest.approx(0.003)   # 0.001 x 3
+    assert not out["b"]["significant"] and out["b"]["p_holm"] == pytest.approx(0.06)  # 0.03 x 2
+    # Holm stops at the first failure: c is not significant even though 0.04 x 1 < 0.05,
+    # because adjusted p-values never decrease down the list (0.06, not 0.04)
+    assert not out["c"]["significant"] and out["c"]["p_holm"] == pytest.approx(0.06)
+
+
+def test_holm_gives_tied_p_values_the_same_adjustment():
+    from models.metrics import holm
+    out = holm({"x": 0.001, "y": 0.001, "z": 0.001})
+    assert {round(v["p_holm"], 12) for v in out.values()} == {0.003}
