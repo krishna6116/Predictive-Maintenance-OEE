@@ -4,7 +4,7 @@ Predicts turbofan engine failures from sensor data, schedules maintenance under 
 
 [![CI](https://github.com/krishna6116/Predictive-Maintenance-OEE/actions/workflows/ci.yml/badge.svg)](https://github.com/krishna6116/Predictive-Maintenance-OEE/actions/workflows/ci.yml)
 
-> **Work in progress.** Phases 0-3 complete; Phase 4 (baseline models) next.
+> **Work in progress.** Phases 0-4 complete; Phase 5 (deep learning) next.
 
 ## Progress
 
@@ -14,8 +14,9 @@ Predicts turbofan engine failures from sensor data, schedules maintenance under 
 | 1. Exploratory data analysis (FD001) | Done | [EDA findings](docs/EDA_FINDINGS.md) · [notebook](notebooks/01_eda.ipynb) |
 | 2. Data pipeline: PostgreSQL star schema, batch ingest, validation and quarantine, idempotent run-ID loads | Done | [Pipeline design](docs/PIPELINE.md) |
 | 3. Feature engineering: RUL cap, engine-level split, 168 causal features, incremental builds | Done | [Features](docs/FEATURES.md) · [notebook](notebooks/03_features.ipynb) |
-| 4. Baseline models | Next | |
-| 5-9. Deep learning, maintenance scheduling and OEE, orchestration, dashboards | Planned | |
+| 4. Baseline models: fleet average, Ridge, XGBoost; bootstrap intervals, paired comparisons, ablations | Done | [Model metrics](docs/MODEL_METRICS.md) · [notebook](notebooks/04_baselines.ipynb) |
+| 5. Deep learning (LSTM, 1D-CNN) | Next | |
+| 6-9. Maintenance scheduling and OEE, orchestration, dashboards | Planned | |
 
 **Highlights so far**
 
@@ -23,6 +24,7 @@ Predicts turbofan engine failures from sensor data, schedules maintenance under 
 - Sensors stay flat for most of an engine's life and drift in the last ~100-150 cycles, which is why remaining life is capped at 125 cycles.
 - 20,631 training and 2,000 test readings loaded into PostgreSQL and verified against the NASA files cell by cell (0 mismatches). Injected faults are quarantined with a reason instead of being loaded.
 - 168 features built only from past readings; smoothing lifts the median sensor's correlation with remaining life from 0.69 to 0.80. Features built per batch match a full rebuild exactly, and an independent recomputation of all 3.9 million stored feature values matches to within 2e-13 (`python -m features.verify`, 25/25 checks).
+- Baseline on NASA's 100 test engines: XGBoost reaches **15.38 RMSE** (95% interval 12.4-18.2) vs 41.9 for a fleet average. Near failure (50 or fewer cycles left) its mean error is **4.8 cycles**, against 13.3 for a linear model on the same features. Feature engineering is the largest real gain; FFT features show no measurable effect, and that is reported.
 
 ![Sensors drift as engines approach failure](docs/figures/fd001_sensor_trends.png)
 

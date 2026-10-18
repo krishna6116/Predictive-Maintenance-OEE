@@ -1,0 +1,418 @@
+{
+  "protocol": "settings chosen on 20 validation engines; refit on all 100 training engines; test set scored once at each engine's last observed cycle; true RUL capped at 125",
+  "xgb_depth_search_val_rmse": {
+    "3": 13.609901115042389,
+    "5": 13.268987140274122,
+    "7": 13.448272595921376
+  },
+  "models": {
+    "Fleet average": {
+      "features": "none",
+      "settings": {
+        "constant": 86.82928602588338
+      },
+      "val_rmse": 41.72082538935907,
+      "rmse": 41.94179565195834,
+      "rmse_ci95": [
+        37.38784312046996,
+        46.34879953929436
+      ],
+      "mae": 34.83,
+      "phm": 33354.47175535112,
+      "rmse_vs_uncapped_truth": 43.06703554245684,
+      "phm_vs_uncapped_truth": 33629.230598368384,
+      "late_share": 0.5
+    },
+    "Ridge, raw sensors (14)": {
+      "features": "14 columns",
+      "settings": {
+        "alpha": 0.01,
+        "val_rmse_by_alpha": {
+          "0.01": 19.899928783124956,
+          "0.1": 19.899936383991406,
+          "1": 19.900012393597425,
+          "10": 19.900772576901666,
+          "100": 19.908377983166538,
+          "1000": 19.982723495260835
+        }
+      },
+      "val_rmse": 19.899928783124956,
+      "rmse": 20.59124005071619,
+      "rmse_ci95": [
+        17.763907124326845,
+        23.304665035675963
+      ],
+      "mae": 16.369940770376836,
+      "phm": 1223.9278138843906,
+      "rmse_vs_uncapped_truth": 21.688879130965805,
+      "phm_vs_uncapped_truth": 1287.493516786585,
+      "late_share": 0.58
+    },
+    "Ridge, all 168 features": {
+      "features": "168 columns",
+      "settings": {
+        "alpha": 10,
+        "val_rmse_by_alpha": {
+          "0.01": 16.291690851080883,
+          "0.1": 16.291852930401177,
+          "1": 16.2869802553706,
+          "10": 16.268689417246524,
+          "100": 16.455595417754914,
+          "1000": 17.764541495937273
+        }
+      },
+      "val_rmse": 16.268689417246524,
+      "rmse": 16.28025906846262,
+      "rmse_ci95": [
+        14.049359609060353,
+        18.374856796656253
+      ],
+      "mae": 12.963582232207704,
+      "phm": 464.67756679949446,
+      "rmse_vs_uncapped_truth": 17.496254674610107,
+      "phm_vs_uncapped_truth": 507.76918197315274,
+      "late_share": 0.51
+    },
+    "XGBoost, all 168 features": {
+      "features": "168 columns",
+      "settings": {
+        "max_depth": 5,
+        "learning_rate": 0.05,
+        "subsample": 0.8,
+        "colsample_bytree": 0.8,
+        "min_child_weight": 5,
+        "tree_method": "hist",
+        "n_jobs": 4,
+        "trees_per_seed": [
+          234,
+          190,
+          162,
+          154,
+          152
+        ]
+      },
+      "val_rmse": 13.199170291820783,
+      "rmse": 15.377723710532138,
+      "rmse_ci95": [
+        12.440924744340798,
+        18.15696265050242
+      ],
+      "mae": 11.019052782058715,
+      "phm": 587.7287883045943,
+      "rmse_vs_uncapped_truth": 16.512435298360753,
+      "phm_vs_uncapped_truth": 624.3400825717964,
+      "late_share": 0.54,
+      "seed_test_rmse": [
+        15.377723710532138,
+        15.10446329123892,
+        15.279637629003755,
+        14.86626768249397,
+        15.224050611427849
+      ],
+      "seed_test_rmse_mean": 15.170428584939327,
+      "seed_test_rmse_std": 0.19662049783408664
+    },
+    "XGBoost, no FFT (154)": {
+      "features": "154 columns",
+      "settings": {
+        "max_depth": 5,
+        "learning_rate": 0.05,
+        "subsample": 0.8,
+        "colsample_bytree": 0.8,
+        "min_child_weight": 5,
+        "tree_method": "hist",
+        "n_jobs": 4,
+        "trees_per_seed": [
+          132,
+          166,
+          158,
+          152,
+          152
+        ]
+      },
+      "val_rmse": 13.592047425964594,
+      "rmse": 15.873405534184553,
+      "rmse_ci95": [
+        12.770869782216256,
+        19.023778396167952
+      ],
+      "mae": 11.297594256401062,
+      "phm": 557.7764234425434,
+      "rmse_vs_uncapped_truth": 16.96636045180899,
+      "phm_vs_uncapped_truth": 592.79418577708,
+      "late_share": 0.59,
+      "seed_test_rmse": [
+        15.873405534184553,
+        15.639234717588533,
+        15.30932656299816,
+        15.620836290091633,
+        16.132106124951456
+      ],
+      "seed_test_rmse_mean": 15.714981845962864,
+      "seed_test_rmse_std": 0.3075093294747126
+    },
+    "XGBoost, rolling only, no EMA/FFT (140)": {
+      "features": "140 columns",
+      "settings": {
+        "max_depth": 5,
+        "learning_rate": 0.05,
+        "subsample": 0.8,
+        "colsample_bytree": 0.8,
+        "min_child_weight": 5,
+        "tree_method": "hist",
+        "n_jobs": 4,
+        "trees_per_seed": [
+          190,
+          152,
+          171,
+          178,
+          183
+        ]
+      },
+      "val_rmse": 13.632337885395255,
+      "rmse": 15.683918880927072,
+      "rmse_ci95": [
+        12.793480447756778,
+        18.638873361438986
+      ],
+      "mae": 11.364837069511413,
+      "phm": 522.7402803027081,
+      "rmse_vs_uncapped_truth": 16.825877274550272,
+      "phm_vs_uncapped_truth": 558.9975525231051,
+      "late_share": 0.59,
+      "seed_test_rmse": [
+        15.683918880927072,
+        15.599121898802432,
+        15.935253876548725,
+        15.64794194315435,
+        15.798819788134777
+      ],
+      "seed_test_rmse_mean": 15.733011277513473,
+      "seed_test_rmse_std": 0.13491298095185011
+    },
+    "XGBoost, without s9 and s14 (144)": {
+      "features": "144 columns",
+      "settings": {
+        "max_depth": 5,
+        "learning_rate": 0.05,
+        "subsample": 0.8,
+        "colsample_bytree": 0.8,
+        "min_child_weight": 5,
+        "tree_method": "hist",
+        "n_jobs": 4,
+        "trees_per_seed": [
+          215,
+          165,
+          152,
+          211,
+          145
+        ]
+      },
+      "val_rmse": 13.904013016663015,
+      "rmse": 15.505405884905121,
+      "rmse_ci95": [
+        12.504456868171806,
+        18.379741219919215
+      ],
+      "mae": 11.029363832473756,
+      "phm": 561.2579334877951,
+      "rmse_vs_uncapped_truth": 16.60964558620684,
+      "phm_vs_uncapped_truth": 597.0352113675085,
+      "late_share": 0.58,
+      "seed_test_rmse": [
+        15.505405884905121,
+        15.993085445955705,
+        16.008159566589494,
+        15.808327392684504,
+        15.943198438402085
+      ],
+      "seed_test_rmse_mean": 15.851635345707383,
+      "seed_test_rmse_std": 0.20895105937114064
+    },
+    "XGBoost, raw sensors only (14)": {
+      "features": "14 columns",
+      "settings": {
+        "max_depth": 5,
+        "learning_rate": 0.05,
+        "subsample": 0.8,
+        "colsample_bytree": 0.8,
+        "min_child_weight": 5,
+        "tree_method": "hist",
+        "n_jobs": 4,
+        "trees_per_seed": [
+          142,
+          149,
+          157,
+          131,
+          173
+        ]
+      },
+      "val_rmse": 16.82412973408179,
+      "rmse": 17.35532369485518,
+      "rmse_ci95": [
+        13.989770207656656,
+        20.541621445639063
+      ],
+      "mae": 12.214817080497742,
+      "phm": 1037.6367387964274,
+      "rmse_vs_uncapped_truth": 18.284280367667073,
+      "phm_vs_uncapped_truth": 1067.9085470337839,
+      "late_share": 0.55,
+      "seed_test_rmse": [
+        17.35532369485518,
+        16.774538834146046,
+        17.064319193877882,
+        17.021677655622284,
+        17.36646051968733
+      ],
+      "seed_test_rmse_mean": 17.116463979637746,
+      "seed_test_rmse_std": 0.2490825990571918
+    }
+  },
+  "paired_comparisons": {
+    "XGBoost, all 168 features vs Fleet average": {
+      "rmse": {
+        "diff": -26.5640719414262,
+        "ci": [
+          -32.77114319498549,
+          -20.629788166125167
+        ],
+        "a_wins": 1.0
+      },
+      "phm": {
+        "diff": -32766.742967046528,
+        "ci": [
+          -46963.87285696777,
+          -20066.528265632754
+        ],
+        "a_wins": 1.0
+      }
+    },
+    "XGBoost, all 168 features vs Ridge, raw sensors (14)": {
+      "rmse": {
+        "diff": -5.213516340184054,
+        "ci": [
+          -8.63553708801776,
+          -1.9329587107978239
+        ],
+        "a_wins": 1.0
+      },
+      "phm": {
+        "diff": -636.1990255797963,
+        "ci": [
+          -1714.860412415598,
+          139.29988771866655
+        ],
+        "a_wins": 0.933
+      }
+    },
+    "XGBoost, all 168 features vs Ridge, all 168 features": {
+      "rmse": {
+        "diff": -0.902535357930482,
+        "ci": [
+          -2.8097095840308723,
+          0.9483794245289671
+        ],
+        "a_wins": 0.8485
+      },
+      "phm": {
+        "diff": 123.05122150509987,
+        "ci": [
+          -111.37690722144525,
+          473.3093493677953
+        ],
+        "a_wins": 0.2525
+      }
+    },
+    "XGBoost, all 168 features vs XGBoost, no FFT (154)": {
+      "rmse": {
+        "diff": -0.495681823652415,
+        "ci": [
+          -1.788076056101636,
+          0.572404827310832
+        ],
+        "a_wins": 0.7805
+      },
+      "phm": {
+        "diff": 29.9523648620509,
+        "ci": [
+          -195.68692580037668,
+          279.714760146647
+        ],
+        "a_wins": 0.44
+      }
+    },
+    "XGBoost, all 168 features vs XGBoost, rolling only, no EMA/FFT (140)": {
+      "rmse": {
+        "diff": -0.3061951703949344,
+        "ci": [
+          -1.6085508834975975,
+          0.8537846714670598
+        ],
+        "a_wins": 0.676
+      },
+      "phm": {
+        "diff": 64.9885080018862,
+        "ci": [
+          -159.1581887873734,
+          326.99974915028065
+        ],
+        "a_wins": 0.329
+      }
+    },
+    "XGBoost, all 168 features vs XGBoost, without s9 and s14 (144)": {
+      "rmse": {
+        "diff": -0.12768217437298368,
+        "ci": [
+          -1.4376952565394137,
+          1.0695497844647879
+        ],
+        "a_wins": 0.5595
+      },
+      "phm": {
+        "diff": 26.47085481679926,
+        "ci": [
+          -143.17336623872845,
+          218.31084125692388
+        ],
+        "a_wins": 0.426
+      }
+    },
+    "XGBoost, all 168 features vs XGBoost, raw sensors only (14)": {
+      "rmse": {
+        "diff": -1.9775999843230423,
+        "ci": [
+          -4.522427510986161,
+          0.38539175907065565
+        ],
+        "a_wins": 0.9505
+      },
+      "phm": {
+        "diff": -449.90795049183305,
+        "ci": [
+          -1019.126625444426,
+          -50.13661314738246
+        ],
+        "a_wins": 0.99
+      }
+    },
+    "Ridge, all 168 features vs Ridge, raw sensors (14)": {
+      "rmse": {
+        "diff": -4.310980982253572,
+        "ci": [
+          -6.653307986100992,
+          -2.0398430241454806
+        ],
+        "a_wins": 1.0
+      },
+      "phm": {
+        "diff": -759.2502470848962,
+        "ci": [
+          -1742.3342242139336,
+          -160.25844664004424
+        ],
+        "a_wins": 0.9995
+      }
+    }
+  }
+}

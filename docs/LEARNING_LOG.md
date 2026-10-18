@@ -52,3 +52,11 @@
 - Made table checks name the schema explicitly (SQLAlchemy's inspector otherwise looks at `public`, which would have made the test-schema checks look at the real table). Documented the FFT window behaviour for engines with fewer than 30 readings. Removed an unused constant.
 - Added 3 database tests for the feature store. 27 tests pass; verification 25/25.
 - Lesson: re-running your own code only proves it is consistent. Verification needs an independent method.
+
+## 2026-10-18: Phase 4, baselines
+- Protocol: tune on 20 validation engines, refit on all 100, score the 100 test engines once. Metrics: RMSE, MAE, PHM08, 95% bootstrap intervals, paired bootstrap comparisons.
+- Results (test RMSE): fleet average 41.94, Ridge raw 20.59, Ridge 168 features 16.28, XGBoost 168 features 15.38 (12.4-18.2; 5-seed spread 0.20).
+- Features are the real win (Ridge -4.3). XGBoost vs Ridge is a tie overall, but near failure XGBoost's MAE is 4.8 vs 13.3 and Ridge runs late (+9.3); checked at cut-offs 25-75 so it is not cherry-picked.
+- FFT, EMA and s9/s14 ablations: no measurable effect.
+- Caught by verification: XGBoost returns float32, so saved predictions and scored values differed by ~1e-7. Fixed by converting to float64 before scoring. Ridge's best alpha sat at the edge of the grid, but the validation curve is flat (19.90 for alpha 0-100), so it does not matter.
+- Verification 12/12: plain-Python metrics, closed-form Ridge (diff 1.2e-12), exact XGBoost re-run (diff 1.4e-14). 32 tests pass.
