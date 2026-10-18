@@ -1,0 +1,53 @@
+{
+  "chosen": "E",
+  "nominal": 0.9,
+  "near_zone_cycles": 50,
+  "test_like": {
+    "min_cycle": 31,
+    "max_true_rul": 145
+  },
+  "procedure": "k_near, k_far = 90th percentile of |RUL - MC mean| / MC sd over test-like validation readings with predicted MC mean <= 50 and > 50; interval = MC mean +/- k x MC sd (lower edge clipped at 0), k picked by the reading's predicted RUL. Re-learned on each dataset's own validation engines.",
+  "criterion": "coverage closest to 90% on BOTH test-like and near-failure validation readings (leave-engines-out), using only information available at prediction time",
+  "evidence": "FD001 validation (20 engines), seed-0 LSTM MC passes from Phase 5; no test set used",
+  "candidates": {
+    "A": {
+      "rule": "one k from all validation readings (Phase 5)",
+      "k_in_sample": 2.7076488958586635,
+      "loeo_coverage_all": 0.8963144963144963,
+      "loeo_coverage_testlike": 0.8584229390681004,
+      "loeo_coverage_near_failure": 0.8333333333333334,
+      "mean_width_testlike": 31.917131704905998,
+      "mean_width_near_failure": 13.881746820579473
+    },
+    "B": {
+      "rule": "one k from test-like readings",
+      "k_in_sample": 3.0596354114005617,
+      "loeo_coverage_all": 0.9233415233415233,
+      "loeo_coverage_testlike": 0.8971326164874552,
+      "loeo_coverage_near_failure": 0.861764705882353,
+      "mean_width_testlike": 36.06000666883227,
+      "mean_width_near_failure": 15.653494814867043
+    },
+    "C": {
+      "rule": "one k from readings with TRUE RUL <= 50 (not usable in deployment as a zone)",
+      "k_in_sample": 3.5364878464099885,
+      "loeo_coverage_all": 0.9481572481572481,
+      "loeo_coverage_testlike": 0.9326164874551971,
+      "loeo_coverage_near_failure": 0.8921568627450981,
+      "mean_width_testlike": 41.724180516633574,
+      "mean_width_near_failure": 18.057904517317045
+    },
+    "E": {
+      "rule": "two k from test-like readings, switched on PREDICTED RUL <= 50",
+      "k_in_sample": {
+        "near": 3.5125821804191504,
+        "far": 2.8693516825281047
+      },
+      "loeo_coverage_all": 0.9199017199017199,
+      "loeo_coverage_testlike": 0.892831541218638,
+      "loeo_coverage_near_failure": 0.8862745098039215,
+      "mean_width_testlike": 35.00387225098864,
+      "mean_width_near_failure": 17.45420720496912
+    }
+  }
+}
