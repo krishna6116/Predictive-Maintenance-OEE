@@ -1,0 +1,53 @@
+{
+  "model": "LSTM",
+  "settings": {
+    "arch": "LSTM",
+    "window": 40,
+    "hidden": 64,
+    "dropout": 0.1,
+    "lr": 0.003
+  },
+  "epochs": 10,
+  "metric": "validation RMSE (20 engines)",
+  "band": 1.493344293972134,
+  "correct_validation_rmse": 10.102013871467992,
+  "bugs": {
+    "half the validated epochs": {
+      "validation_rmse": 11.348031329965039,
+      "shift_vs_correct": 1.2460174584970467,
+      "caught_by": [
+        "epoch consistency"
+      ]
+    },
+    "sensors not scaled": {
+      "validation_rmse": 41.86598721330609,
+      "shift_vs_correct": 31.7639733418381,
+      "caught_by": [
+        "window rebuild",
+        "statistical band"
+      ]
+    },
+    "windows in reverse time order": {
+      "validation_rmse": 12.35746800411585,
+      "shift_vs_correct": 2.2554541326478574,
+      "caught_by": [
+        "window rebuild",
+        "statistical band"
+      ]
+    },
+    "one sensor (s4) missing": {
+      "validation_rmse": 11.035916415560594,
+      "shift_vs_correct": 0.9339025440926019,
+      "caught_by": [
+        "window rebuild"
+      ]
+    },
+    "short histories padded with zeros": {
+      "validation_rmse": 9.635812489968902,
+      "shift_vs_correct": -0.46620138149908996,
+      "caught_by": [
+        "window rebuild"
+      ]
+    }
+  }
+}

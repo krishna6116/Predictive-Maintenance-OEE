@@ -56,5 +56,7 @@ jobs:
         run: python -m features.verify
       - name: Phase 4 verification (published metrics, model choice, generated docs)
         run: python -m models.verify_baselines
+      - name: Phase 5 verification (deep models, MC-dropout coverage, re-training check, generated docs)
+        run: python -m models.verify_deep
       - name: Committed files are unchanged by the run
-        run: git diff --exit-code -- features/split.json features/scaler.json pipeline/sensor_limits.json models/ docs/MODEL_METRICS.md
+        run: git diff --exit-code -- features/split.json features/scaler.json pipeline/sensor_limits.json models/ docs/MODEL_METRICS.md docs/MODEL_METRICS_PHASE5.md
