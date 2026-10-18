@@ -4,7 +4,7 @@ on: [push, pull_request]
 jobs:
   # Unit tests: no data or database needed (database tests skip themselves)
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04  # pinned: ubuntu-latest moves to Ubuntu 26 on 2026-10-19
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v6
@@ -17,7 +17,7 @@ jobs:
 
   # End to end on a clean machine: pinned NASA data -> PostgreSQL pipeline -> features -> every verifier
   verify:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04  # pinned: ubuntu-latest moves to Ubuntu 26 on 2026-10-19
     services:
       postgres:
         image: postgres:17

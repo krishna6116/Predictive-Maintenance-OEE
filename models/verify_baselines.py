@@ -113,19 +113,40 @@ def main() -> int:
         pd.read_csv(RAW / "test_FD001.txt", sep=r"\s+", header=None).groupby(0)[1].max().tolist()),
         "each test engine is scored at its last observed cycle")
 
-    print("\n== XGBoost re-run from scratch (deterministic: same data + seed must give the same predictions)")
+    print("\n== XGBoost re-run from scratch (same data, seeds and settings)")
+    import xgboost
     from xgboost import XGBRegressor
-    from models.baselines import FEATURE_SETS, XGB_FIXED
+    from models.baselines import FEATURE_SETS, SEEDS, XGB_FIXED
     from models.data import test_frame, train_frame
     full, te = train_frame(), test_frame()
     check(len(full) == len(train_rows) and set(full.unit) == set(range(1, 101)),
           f"model trained on exactly the {len(train_rows):,} training readings (no test data)")
     r = RESULTS["models"]["XGBoost, all 168 features"]
-    m = XGBRegressor(n_estimators=r["settings"]["trees_per_seed"][0], max_depth=r["settings"]["max_depth"],
-                     random_state=0, **XGB_FIXED).fit(full[FEATURE_SETS["all 168 features"]], full.RUL)
-    p = np.clip(m.predict(te[FEATURE_SETS["all 168 features"]]), 0, RUL_CAP)
-    diff = float(np.abs(p - PREDS["XGBoost, all 168 features"]).max())
-    check(diff < 1e-3, f"XGBoost (all features, seed 0) reproduces its predictions; max diff {diff:.1e}")
+    env = RESULTS["environment"]
+    check(all(r["settings"][k] == v for k, v in XGB_FIXED.items()) and env["n_jobs"] == XGB_FIXED["n_jobs"] == 1,
+          "published XGBoost settings equal the code's, with a fixed single thread (thread count changes results)")
+    cols = FEATURE_SETS["all 168 features"]
+    reruns = []
+    for seed, trees in zip(SEEDS, r["settings"]["trees_per_seed"]):
+        m = XGBRegressor(n_estimators=trees, max_depth=r["settings"]["max_depth"], random_state=seed,
+                         **XGB_FIXED).fit(full[cols], full.RUL)
+        reruns.append(np.clip(m.predict(te[cols]).astype(np.float64), 0, RUL_CAP))
+    if env["os"] == sys.platform and env["xgboost"] == xgboost.__version__:
+        # Same OS and library as the published run: predictions must be identical
+        diff = float(np.abs(reruns[0] - PREDS["XGBoost, all 168 features"]).max())
+        check(diff < 1e-3, f"XGBoost (all features, seed 0) reproduces its predictions; max diff {diff:.1e}")
+    else:
+        # XGBoost's row/column sampling draws through the C++ standard library, which differs between OSes
+        # (e.g. Windows vs Linux), so exact predictions cannot be expected here. Instead the 5 re-run seeds
+        # must agree with the 5 published ones: the published seed spread (std 0.20) puts the 5-seed mean
+        # within about +/-0.12, so 0.6 (~5 standard errors) never fails by chance yet catches real errors
+        # such as wrong features, leakage or wrong tree counts, which move RMSE by a point or more.
+        rerun_mean = float(np.mean([py_rmse(list(PREDS.RUL), list(p)) for p in reruns]))
+        gap = rerun_mean - r["seed_test_rmse_mean"]
+        print(f"note: published on {env['os']} with xgboost {env['xgboost']}; this is {sys.platform} with "
+              f"xgboost {xgboost.__version__}, so the exact check is replaced by a 5-seed comparison")
+        check(abs(gap) <= 0.6, f"XGBoost 5-seed mean test RMSE {rerun_mean:.3f} vs published "
+                               f"{r['seed_test_rmse_mean']:.3f} (gap {gap:+.3f}, allowed 0.6)")
 
     print("\n== Age-only baseline from the raw training file (plain Python)")
     by_cycle = {}
@@ -194,6 +215,19 @@ def main() -> int:
     print("\n== The published document matches the results")
     from models.report_phase4 import DOC, render
     check(DOC.read_text(encoding="utf-8") == render(), "docs/MODEL_METRICS.md equals a fresh rendering of the results")
+    # The README's headline numbers are hand-written prose, so each one is recomputed here and must appear in it
+    readme = Path("README.md").read_text(encoding="utf-8")
+    ms = RESULTS["models"]
+    x = ms["XGBoost, all 168 features"]
+    near = [i for i, t in enumerate(PREDS.RUL) if t <= 50]
+    near_mae = {m: sum(abs(PREDS[m][i] - PREDS.RUL[i]) for i in near) / len(near)
+                for m in ("XGBoost, all 168 features", "Ridge, all 168 features")}
+    quoted = [f"{x['rmse']:.2f} RMSE", f"{x['rmse_ci95'][0]:.1f}-{x['rmse_ci95'][1]:.1f}",
+              f"{ms['Fleet average']['rmse']:.1f}", f"{ms['Age only (cycle count)']['rmse']:.1f}",
+              f"{near_mae['XGBoost, all 168 features']:.1f} cycles", f"{near_mae['Ridge, all 168 features']:.1f}"]
+    missing = [q for q in quoted if q not in readme]
+    check(not missing, f"README quotes the published numbers ({', '.join(quoted)})"
+                       + (f"; missing: {', '.join(missing)}" if missing else ""))
 
     failed = [w for ok, w in checks if not ok]
     print(f"\n{len(checks) - len(failed)}/{len(checks)} checks passed.")

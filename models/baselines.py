@@ -16,6 +16,7 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
+import xgboost
 from sklearn.linear_model import Ridge
 from xgboost import XGBRegressor
 
@@ -34,8 +35,10 @@ FEATURE_SETS = {
     "without s9 and s14 (144)": [c for c in ALL if not (c in ("s9", "s14") or c.startswith(("s9_", "s14_")))],
     "raw sensors only (14)": list(SENSORS),
 }
+# n_jobs=1: XGBoost's results depend on the thread count (1 vs 4 threads moved test predictions by up to
+# 10 cycles on the same machine), so a fixed single thread keeps results independent of the CPU.
 XGB_FIXED = dict(learning_rate=0.05, subsample=0.8, colsample_bytree=0.8, min_child_weight=5,
-                 tree_method="hist", n_jobs=4)
+                 tree_method="hist", n_jobs=1)
 
 
 def clip(p):
@@ -189,7 +192,10 @@ def main() -> int:
            "xgb_depth_search_val_rmse_testlike": {str(d): v for d, v in depth_testlike.items()},
            "test_like_validation": f"validation rows with cycle >= 31 and true RUL <= 145 ({int(tl.sum()):,} of {len(tl):,})",
            "model_selection_on_validation": selection,
-           "models": results, "paired_comparisons": comparisons}
+           "models": results, "paired_comparisons": comparisons,
+           # XGBoost's row/column sampling draws through the C++ standard library, whose output differs between
+           # Windows and Linux; the verifier demands identical predictions only on the OS recorded here
+           "environment": {"os": sys.platform, "xgboost": xgboost.__version__, "n_jobs": XGB_FIXED["n_jobs"]}}
     (OUT / "results_phase4.json").write_text(json.dumps(out, indent=2), encoding="utf-8")
     preds.to_csv(OUT / "predictions_phase4.csv", index=False)
     vpreds.to_csv(OUT / "val_predictions_phase4.csv", index=False)

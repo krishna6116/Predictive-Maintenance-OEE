@@ -68,3 +68,12 @@
 - Bugs caught by verification: a shadowed variable in the verifier, and a Holm implementation that gave tied p-values different adjusted values (fixed with the standard running maximum).
 - `docs/MODEL_METRICS.md` is now generated from the results, and the verifier checks it. Data pinned by SHA-256; `pipeline/download_data.py` fetches and checks it; CI job `verify` runs the full pipeline on Postgres plus every verifier. Cache fingerprint now includes the sensor list and loader.
 - Verification 21/21; tests pass.
+
+## 2026-10-18: Phase 4 reproducibility (CI on Linux)
+- CI failed on one check: re-training XGBoost on Linux gave predictions up to 6.8 cycles away from the ones published from Windows. Pinning library versions (requirements-lock.txt) did not change it, which ruled out versions.
+- Two causes. (1) Thread count: on the same laptop, 1 vs 4 threads moved predictions by up to 10 cycles. (2) Operating system: row/column subsampling draws random numbers through the C++ standard library, which differs between Windows and Linux, so the same seed gives different trees.
+- Fixes: XGBoost now runs on one fixed thread (`n_jobs=1`), and results record the OS, XGBoost version and thread count. The verifier demands identical predictions on the producing OS; on any other OS it re-trains all 5 seeds and requires the 5-seed mean test RMSE within 0.6 of the published one. 0.6 is over 5 standard deviations of chance (seed sd 0.17), yet every wrong feature set in the ablations (gaps +0.7 to +2.1) would fail it.
+- Re-ran Phase 4 with one thread: the 4 non-XGBoost models are identical to the digit; XGBoost test RMSE 15.38 -> 15.08 (inside the old 5-seed range 14.87-15.38), PHM08 588 -> 565, near-failure MAE 4.8 -> 4.4. Every conclusion and the validation-based model choice are unchanged.
+- Notebook findings and the why-table are now generated from the results, with each claim asserted (a false claim stops the build). The verifier also checks the README's headline numbers. CI runner pinned to ubuntu-24.04 (ubuntu-latest moves to Ubuntu 26 on 2026-10-19). Added tests/test_baselines.py.
+- Verification 23/23 in both modes (exact, and simulated other-OS); Phase 3 25/25; 38 tests pass.
+- Lesson: "same seed" only means "same result" with the same threads, library and OS. Record the environment with every result.
