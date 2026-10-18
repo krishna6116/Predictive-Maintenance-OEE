@@ -5,7 +5,9 @@ Recomputes everything from the raw NASA text files with a deliberately different
 what the pipeline stored in PostgreSQL and in features/*.json. Exits with code 1 if any check fails.
 """
 import json
+import os
 import sys
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
@@ -24,6 +26,8 @@ results: list[tuple[bool, str]] = []
 def check(ok: bool, what: str) -> None:
     results.append((bool(ok), what))
     print(("PASS " if ok else "FAIL ") + what)
+    if not ok and os.environ.get("GITHUB_ACTIONS"):
+        print(f"::error title={Path(__file__).stem} check failed::{what}")  # visible on the run page
 
 
 def raw(split: str) -> pd.DataFrame:
@@ -150,4 +154,9 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    try:
+        sys.exit(main())
+    except Exception as exc:  # a crash must be as visible on CI as a failed check
+        if os.environ.get("GITHUB_ACTIONS"):
+            print(f"::error title={Path(__file__).stem} crashed::{type(exc).__name__}: {exc}")
+        raise

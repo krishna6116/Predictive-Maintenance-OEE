@@ -4,6 +4,7 @@ Rechecks the published results with different code paths: plain-Python file read
 loops, a closed-form Ridge solution in NumPy, and an exact XGBoost re-run. Exits 1 if any check fails.
 """
 import json
+import os
 import math
 import sys
 from pathlib import Path
@@ -24,6 +25,8 @@ checks: list[tuple[bool, str]] = []
 def check(ok, what):
     checks.append((bool(ok), what))
     print(("PASS " if ok else "FAIL ") + what)
+    if not ok and os.environ.get("GITHUB_ACTIONS"):
+        print(f"::error title={Path(__file__).stem} check failed::{what}")  # visible on the run page
 
 
 def read_plain(path: Path) -> list[dict]:
@@ -198,4 +201,9 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    try:
+        sys.exit(main())
+    except Exception as exc:  # a crash must be as visible on CI as a failed check
+        if os.environ.get("GITHUB_ACTIONS"):
+            print(f"::error title={Path(__file__).stem} crashed::{type(exc).__name__}: {exc}")
+        raise
