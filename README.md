@@ -45,6 +45,6 @@ FD001: 100 training engines (20,631 rows), 100 test engines (13,096 rows), 26 co
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
-pip install -r requirements.txt
+pip install -r requirements-lock.txt   # exact versions; requirements.txt lists the top-level packages
 pytest -q
 ```
