@@ -23,6 +23,15 @@ SCALER_FILE = Path("features/scaler.json")
 SPLIT_FILE = Path("features/split.json")
 
 
+def scaler_file(dataset: str = "FD001") -> Path:
+    """FD001 keeps its Phase 3 file; other datasets (Phase 5b) get their own, fit on their own training engines."""
+    return SCALER_FILE if dataset == "FD001" else Path(f"features/scaler_{dataset}.json")
+
+
+def split_file(dataset: str = "FD001") -> Path:
+    return SPLIT_FILE if dataset == "FD001" else Path(f"features/split_{dataset}.json")
+
+
 # --- 3.1 target --------------------------------------------------------------------------------------
 def add_rul(df: pd.DataFrame, cap: int = RUL_CAP) -> pd.DataFrame:
     """Remaining useful life for run-to-failure engines: last cycle minus current cycle, capped."""

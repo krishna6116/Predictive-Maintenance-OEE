@@ -11,7 +11,7 @@ inside the sensors' real range, unlike zero-padding, which after scaling would m
 import numpy as np
 import pandas as pd
 
-from features.build import RUL_CAP, SCALER_FILE, SPLIT_FILE, add_rul, apply_scaler, load_json
+from features.build import RUL_CAP, add_rul, apply_scaler, load_json, scaler_file, split_file
 from pipeline.check_raw_data import load
 from pipeline.config import RAW, SENSORS
 
@@ -22,7 +22,7 @@ def scaled_readings(split: str, dataset: str = "FD001") -> pd.DataFrame:
     if split == "train":
         df = add_rul(df)
         df["RUL_true"] = df.groupby("unit")["cycle"].transform("max") - df["cycle"]
-    df = apply_scaler(df, load_json(SCALER_FILE))
+    df = apply_scaler(df, load_json(scaler_file(dataset)))
     return df.sort_values(["unit", "cycle"]).reset_index(drop=True)
 
 
@@ -48,16 +48,16 @@ def make_windows(df: pd.DataFrame, length: int, cols=SENSORS, last_only: bool = 
     return np.stack(xs).astype(np.float32), index[keep].reset_index(drop=True)
 
 
-def datasets(length: int):
+def datasets(length: int, dataset: str = "FD001"):
     """Train / validation / all-100 windows plus the test windows (last cycle per engine, NASA truth attached)."""
-    split = load_json(SPLIT_FILE)
-    tr = scaled_readings("train")
+    split = load_json(split_file(dataset))
+    tr = scaled_readings("train", dataset)
     X_all, i_all = make_windows(tr, length)
     in_train = i_all.unit.isin(split["train"]).to_numpy()
     in_val = i_all.unit.isin(split["val"]).to_numpy()
-    te = scaled_readings("test")
+    te = scaled_readings("test", dataset)
     X_te, i_te = make_windows(te, length, last_only=True)
-    truth = pd.read_csv(RAW / "RUL_FD001.txt", header=None, names=["RUL_true"])
+    truth = pd.read_csv(RAW / f"RUL_{dataset}.txt", header=None, names=["RUL_true"])
     truth["unit"] = range(1, len(truth) + 1)  # line i of the RUL file belongs to engine i
     i_te = i_te.merge(truth, on="unit", validate="one_to_one")
     i_te["RUL"] = i_te.RUL_true.clip(upper=RUL_CAP)
