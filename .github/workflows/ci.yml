@@ -60,5 +60,9 @@ jobs:
         run: python -m models.verify_deep
       - name: Phase 5b verification (FD003 confirmation, pre-registered tests, rule-E intervals, re-training check)
         run: python -m models.verify_fd003
+      - name: Phase 6 results into PostgreSQL (fact_prediction, fact_alert, fact_oee; idempotent)
+        run: python -m maintenance.store && python -m maintenance.store
+      - name: Phase 6 verification (forecasts, alerts, optimal schedules, work orders, simulated OEE, database rows)
+        run: python -m maintenance.verify_phase6
       - name: Committed files are unchanged by the run
-        run: git diff --exit-code -- features/ pipeline/sensor_limits.json models/ docs/MODEL_METRICS.md docs/MODEL_METRICS_PHASE5.md docs/MODEL_METRICS_PHASE5B.md
+        run: git diff --exit-code -- features/ pipeline/sensor_limits.json models/ maintenance/ docs/MODEL_METRICS.md docs/MODEL_METRICS_PHASE5.md docs/MODEL_METRICS_PHASE5B.md docs/MAINTENANCE_OEE.md

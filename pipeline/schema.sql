@@ -55,3 +55,65 @@ CREATE TABLE IF NOT EXISTS quarantine (
 );
 
 CREATE INDEX IF NOT EXISTS ix_quarantine_run ON quarantine(run_id);
+
+-- ---- Phase 6: decisions. One run_id per Phase 6 run (a hash of its inputs, so re-runs replace, never duplicate).
+
+-- Fact: every LSTM forecast the decisions could use (each observed test cycle), with its rule-E 90-percent interval.
+CREATE TABLE IF NOT EXISTS fact_prediction (
+    run_id         TEXT NOT NULL,
+    dataset        TEXT NOT NULL,
+    engine_id      INT  NOT NULL,
+    cycle          INT  NOT NULL,
+    model_id       TEXT NOT NULL,
+    rul_point      DOUBLE PRECISION,
+    rul_mc_mean    DOUBLE PRECISION,
+    rul_mc_std     DOUBLE PRECISION,
+    k              DOUBLE PRECISION,
+    rul_low        DOUBLE PRECISION,
+    rul_high       DOUBLE PRECISION,
+    valid          BOOLEAN NOT NULL,
+    invalid_reason TEXT,
+    source         TEXT NOT NULL,
+    PRIMARY KEY (run_id, dataset, engine_id, cycle)
+);
+
+-- Fact: engines flagged for maintenance. context = 'snapshot' (official evaluation point) or 'replay' (policy
+-- simulation). One row per engine per context: the key itself rules out duplicate work orders.
+CREATE TABLE IF NOT EXISTS fact_alert (
+    run_id         TEXT NOT NULL,
+    dataset        TEXT NOT NULL,
+    context        TEXT NOT NULL,
+    engine_id      INT  NOT NULL,
+    decision_cycle INT  NOT NULL,
+    forecast_cycle INT  NOT NULL,
+    forecast_age   INT  NOT NULL,
+    rul_low_used   DOUBLE PRECISION NOT NULL,
+    risk           TEXT NOT NULL,
+    reason         TEXT NOT NULL,
+    scheduled_day  INT,
+    service_cycle  INT,
+    status         TEXT NOT NULL,
+    PRIMARY KEY (run_id, dataset, context, engine_id),
+    FOREIGN KEY (run_id, dataset, engine_id, forecast_cycle)
+        REFERENCES fact_prediction(run_id, dataset, engine_id, cycle)
+);
+
+-- Fact: SIMULATED production per machine per maintenance policy (guide 6.4-6.5; not measured plant data).
+CREATE TABLE IF NOT EXISTS fact_oee (
+    run_id          TEXT NOT NULL,
+    dataset         TEXT NOT NULL,
+    policy          TEXT NOT NULL,
+    machine_id      INT  NOT NULL,
+    life_cycles     INT  NOT NULL,
+    run_cycles      INT  NOT NULL,
+    event           TEXT NOT NULL,
+    wasted_cycles   INT  NOT NULL,
+    degraded_cycles INT  NOT NULL,
+    planned_hours   DOUBLE PRECISION NOT NULL,
+    run_hours       DOUBLE PRECISION NOT NULL,
+    downtime_hours  DOUBLE PRECISION NOT NULL,
+    ideal_units     DOUBLE PRECISION NOT NULL,
+    actual_units    DOUBLE PRECISION NOT NULL,
+    good_units      DOUBLE PRECISION NOT NULL,
+    PRIMARY KEY (run_id, dataset, policy, machine_id)
+);

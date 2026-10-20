@@ -4,7 +4,7 @@ Predicts turbofan engine failures from sensor data, schedules maintenance under 
 
 [![CI](https://github.com/krishna6116/Predictive-Maintenance-OEE/actions/workflows/ci.yml/badge.svg)](https://github.com/krishna6116/Predictive-Maintenance-OEE/actions/workflows/ci.yml)
 
-> **Work in progress.** Phases 0-5 complete, plus a confirmation on a second NASA dataset (5b); Phase 6 (maintenance scheduling and OEE) next.
+> **Work in progress.** Phases 0-6 complete, plus a confirmation on a second NASA dataset (5b); Phase 7 (orchestration and monitoring) next.
 
 ## Progress
 
@@ -17,8 +17,8 @@ Predicts turbofan engine failures from sensor data, schedules maintenance under 
 | 4. Baseline models: fleet average, Ridge, XGBoost; bootstrap intervals, paired comparisons, ablations | Done | [Model metrics](docs/MODEL_METRICS.md) · [notebook](notebooks/04_baselines.ipynb) |
 | 5. Deep learning: LSTM and 1D-CNN on sensor windows, MC-dropout intervals calibrated on validation | Done | [Deep model metrics](docs/MODEL_METRICS_PHASE5.md) · [notebook](notebooks/05_deep.ipynb) |
 | 5b. Confirmation on FD003 (fresh test set, second fault mode): frozen recipe, pre-registered tests, better interval rule | Done | [Confirmation metrics](docs/MODEL_METRICS_PHASE5B.md) · [notebook](notebooks/05b_fd003.ipynb) |
-| 6. Maintenance alerts, OR-Tools crew schedule, simulated OEE | Next | |
-| 7-9. Orchestration and monitoring, dashboards, write-up | Planned | |
+| 6. Maintenance alerts on the interval's lower bound, OR-Tools CP-SAT crew schedule, simulated plant and OEE, 3-policy comparison | Done | [Maintenance and OEE](docs/MAINTENANCE_OEE.md) · [notebook](notebooks/06_maintenance.ipynb) |
+| 7-9. Orchestration and monitoring, dashboards, write-up | Next / planned | |
 
 **Highlights so far**
 
@@ -29,6 +29,7 @@ Predicts turbofan engine failures from sensor data, schedules maintenance under 
 - Baseline on NASA's 100 test engines: XGBoost reaches **15.08 RMSE** (95% interval 12.2-17.9). It beats a fleet average (41.9) and an age-only rule (31.2). Near failure (50 or fewer cycles left) its mean error is **4.4 cycles**, against 13.3 for a linear model on the same features; it was chosen on validation data, and the test set confirms it. Feature engineering is the largest real gain; FFT features show no measurable effect, and that is reported. Results reproduce on any machine: XGBoost runs on one fixed thread, and CI re-trains it on Linux and checks it against the published numbers.
 - Deep learning (PyTorch) on the same 100 test engines: an LSTM on 40-cycle sensor windows reaches **13.30 RMSE** (95% interval 10.5-16.1) and 3.1 cycles mean error near failure. That is better than XGBoost on paper, but the paired, Holm-corrected comparison does not exclude zero, so on FD001 alone the rule set before testing kept XGBoost. MC-dropout intervals covered only 76% of validation truths at a nominal 90%; one scale factor learned on validation brought test coverage to 82% (88% near failure).
 - Confirmation on NASA FD003, a fresh dataset with a second fault mode, with every setting frozen from FD001 and the tests committed before the run: the LSTM reaches **12.66 RMSE** against XGBoost's 15.50. Pooled over 200 test engines its advantage is **2.31 cycles RMSE (95% interval 0.76-4.05, Holm p 0.007)** and 2.76 vs 4.60 cycles near failure, so **the LSTM is now the published model**. A two-factor interval rule, chosen on FD001 validation before FD003 was touched, covers 86% of FD003 test engines (100% of the 29 near failure) at a nominal 90%.
+- Maintenance decisions (simulated plant, not measured data): engines are flagged when the lower edge of their 90% interval reaches 20 cycles and scheduled with OR-Tools CP-SAT under 3 crews a day. In a day-by-day replay over the 200 test engines, the predictive policy reaches **98.2% simulated OEE** with 8 unplanned failures, against 95.2% for run to failure (200 failures) and 97.8% for a fixed service interval (21 failures, and 2.7 times as much useful life thrown away). All 8 remaining failures happen after an engine's NASA data ends, where the planner cannot get new readings. Every schedule is re-checked independently, and each snapshot plan is proved optimal with a second algorithm.
 
 ![Sensors drift as engines approach failure](docs/figures/fd001_sensor_trends.png)
 
@@ -42,7 +43,7 @@ python -m pipeline.download_data
 
 FD001: 100 training engines (20,631 rows), 100 test engines (13,096 rows), 26 columns. Data files are not committed.
 
-**Continuous verification:** on every push, GitHub Actions downloads the pinned data, runs the pipeline into a fresh PostgreSQL database, builds the features, and runs the test suite plus the Phase 3, 4, 5 and 5b verifiers, which recompute the published numbers with independent code.
+**Continuous verification:** on every push, GitHub Actions downloads the pinned data, runs the pipeline into a fresh PostgreSQL database, builds the features, and runs the test suite plus the Phase 3, 4, 5, 5b and 6 verifiers, which recompute the published numbers with independent code.
 
 ## Run locally
 

@@ -1,0 +1,1740 @@
+{
+  "run_id": "phase6-618b9fbc3b7b",
+  "simulation_notice": "SIMULATED plant: production, downtime and OEE are not measured data",
+  "plant": {
+    "hours_per_cycle": 8.0,
+    "units_per_hour": 10.0,
+    "service_hours": 8.0,
+    "failure_hours": 48.0,
+    "degraded_cycles": 20,
+    "degraded_speed_loss": 0.1,
+    "degraded_scrap": 0.05,
+    "normal_scrap": 0.01
+  },
+  "assumptions": {
+    "renewal": "A service or a repair ends the machine's current engine life (the engine is replaced or overhauled to new). OEE is totalled over each machine's single life; by the renewal-reward theorem the fleet ratio equals the long-run ratio if lives repeat.",
+    "calendar": "All machines start at cycle 1 on day 0 and run CYCLES_PER_DAY cycles a day (the Phase 2 replay convention). A machine fails when it completes cycle L (its true failure point, RUL 0). It runs degraded (speed loss, more scrap) in its last 20 cycles, i.e. while its TRUE remaining life is < 20.",
+    "service_timing": "A service booked for day d happens at the start of day d, before that day's cycles run.",
+    "after_data_ends": "NASA test files stop before failure. After a machine's last reading the predictive policy has no new data, so it keeps using its last forecast, aged by one cycle per cycle run.",
+    "crew_limit": "Only the predictive policy is crew-limited (as in the guide). Run-to-failure and fixed-interval services are not, which favours the two baselines.",
+    "work_orders": "A booked service is kept (no re-planning of booked orders). An engine with an open order is not re-booked. If it fails before its service day, that is an unplanned failure and the order is cancelled. Flagged engines left unserved are retried the next day.",
+    "rounding": "rul_low is floored to whole cycles before scheduling (the guide's int()); flooring is conservative."
+  },
+  "settings": {
+    "alert_threshold": 20,
+    "risk_bins": [
+      -1,
+      5,
+      10,
+      20
+    ],
+    "horizon_days": 7,
+    "crews_per_day": 3,
+    "cycles_per_day": 2,
+    "weights": {
+      "late": 100,
+      "early": 1,
+      "unserved": 1000
+    },
+    "fixed_interval_percentile": 10
+  },
+  "datasets": {
+    "FD001": {
+      "model_id": "LSTM-FD001-seed0-W40-h64-do0.1-lr0.003",
+      "forecast_source": "models/predictions_phase5.csv@4523315305cf",
+      "snapshot": {
+        "engines": 100,
+        "invalid_forecasts": 0,
+        "flagged": 23,
+        "risk_counts": {
+          "medium": 13,
+          "critical": 6,
+          "high": 4
+        },
+        "schedule_status": "OPTIMAL",
+        "objective": 2052,
+        "scheduled": 21,
+        "per_day": {
+          "0": 3,
+          "1": 3,
+          "2": 3,
+          "3": 3,
+          "4": 3,
+          "5": 3,
+          "6": 3
+        },
+        "outcomes": {
+          "not flagged, healthy": 77,
+          "serviced in time": 21,
+          "flagged, no crew in horizon": 2
+        },
+        "wasted_cycles_mean": 10.285714285714286,
+        "weight_sensitivity": {
+          "guide (100 late / 1 early)": {
+            "status": "OPTIMAL",
+            "plan": [
+              [
+                34,
+                0
+              ],
+              [
+                42,
+                0
+              ],
+              [
+                81,
+                0
+              ],
+              [
+                31,
+                1
+              ],
+              [
+                35,
+                1
+              ],
+              [
+                82,
+                1
+              ],
+              [
+                56,
+                2
+              ],
+              [
+                66,
+                2
+              ],
+              [
+                68,
+                2
+              ],
+              [
+                24,
+                3
+              ],
+              [
+                49,
+                3
+              ],
+              [
+                76,
+                3
+              ],
+              [
+                20,
+                4
+              ],
+              [
+                91,
+                4
+              ],
+              [
+                100,
+                4
+              ],
+              [
+                36,
+                5
+              ],
+              [
+                41,
+                5
+              ],
+              [
+                92,
+                5
+              ],
+              [
+                37,
+                6
+              ],
+              [
+                61,
+                6
+              ],
+              [
+                90,
+                6
+              ]
+            ],
+            "objective": 2052,
+            "served": [
+              20,
+              24,
+              31,
+              34,
+              35,
+              36,
+              37,
+              41,
+              42,
+              49,
+              56,
+              61,
+              66,
+              68,
+              76,
+              81,
+              82,
+              90,
+              91,
+              92,
+              100
+            ],
+            "late_cycles": 0,
+            "early_cycles": 52,
+            "unserved": 2,
+            "same_engines_served": true,
+            "same_days": true
+          },
+          "late 10": {
+            "status": "OPTIMAL",
+            "plan": [
+              [
+                34,
+                0
+              ],
+              [
+                42,
+                0
+              ],
+              [
+                81,
+                0
+              ],
+              [
+                35,
+                1
+              ],
+              [
+                76,
+                1
+              ],
+              [
+                82,
+                1
+              ],
+              [
+                31,
+                2
+              ],
+              [
+                56,
+                2
+              ],
+              [
+                68,
+                2
+              ],
+              [
+                36,
+                3
+              ],
+              [
+                37,
+                3
+              ],
+              [
+                91,
+                3
+              ],
+              [
+                20,
+                4
+              ],
+              [
+                66,
+                4
+              ],
+              [
+                92,
+                4
+              ],
+              [
+                41,
+                5
+              ],
+              [
+                49,
+                5
+              ],
+              [
+                100,
+                5
+              ],
+              [
+                24,
+                6
+              ],
+              [
+                61,
+                6
+              ],
+              [
+                90,
+                6
+              ]
+            ],
+            "objective": 2052,
+            "served": [
+              20,
+              24,
+              31,
+              34,
+              35,
+              36,
+              37,
+              41,
+              42,
+              49,
+              56,
+              61,
+              66,
+              68,
+              76,
+              81,
+              82,
+              90,
+              91,
+              92,
+              100
+            ],
+            "late_cycles": 0,
+            "early_cycles": 52,
+            "unserved": 2,
+            "same_engines_served": true,
+            "same_days": false
+          },
+          "late 1000": {
+            "status": "OPTIMAL",
+            "plan": [
+              [
+                34,
+                0
+              ],
+              [
+                42,
+                0
+              ],
+              [
+                81,
+                0
+              ],
+              [
+                35,
+                1
+              ],
+              [
+                61,
+                1
+              ],
+              [
+                82,
+                1
+              ],
+              [
+                31,
+                2
+              ],
+              [
+                56,
+                2
+              ],
+              [
+                68,
+                2
+              ],
+              [
+                20,
+                3
+              ],
+              [
+                66,
+                3
+              ],
+              [
+                76,
+                3
+              ],
+              [
+                49,
+                4
+              ],
+              [
+                92,
+                4
+              ],
+              [
+                100,
+                4
+              ],
+              [
+                24,
+                5
+              ],
+              [
+                36,
+                5
+              ],
+              [
+                41,
+                5
+              ],
+              [
+                37,
+                6
+              ],
+              [
+                90,
+                6
+              ],
+              [
+                91,
+                6
+              ]
+            ],
+            "objective": 2052,
+            "served": [
+              20,
+              24,
+              31,
+              34,
+              35,
+              36,
+              37,
+              41,
+              42,
+              49,
+              56,
+              61,
+              66,
+              68,
+              76,
+              81,
+              82,
+              90,
+              91,
+              92,
+              100
+            ],
+            "late_cycles": 0,
+            "early_cycles": 52,
+            "unserved": 2,
+            "same_engines_served": true,
+            "same_days": false
+          },
+          "early 10": {
+            "status": "OPTIMAL",
+            "plan": [
+              [
+                34,
+                0
+              ],
+              [
+                42,
+                0
+              ],
+              [
+                81,
+                0
+              ],
+              [
+                35,
+                1
+              ],
+              [
+                68,
+                1
+              ],
+              [
+                82,
+                1
+              ],
+              [
+                20,
+                2
+              ],
+              [
+                31,
+                2
+              ],
+              [
+                56,
+                2
+              ],
+              [
+                24,
+                3
+              ],
+              [
+                41,
+                3
+              ],
+              [
+                76,
+                3
+              ],
+              [
+                36,
+                4
+              ],
+              [
+                92,
+                4
+              ],
+              [
+                100,
+                4
+              ],
+              [
+                49,
+                5
+              ],
+              [
+                90,
+                5
+              ],
+              [
+                91,
+                5
+              ],
+              [
+                37,
+                6
+              ],
+              [
+                61,
+                6
+              ],
+              [
+                66,
+                6
+              ]
+            ],
+            "objective": 2520,
+            "served": [
+              20,
+              24,
+              31,
+              34,
+              35,
+              36,
+              37,
+              41,
+              42,
+              49,
+              56,
+              61,
+              66,
+              68,
+              76,
+              81,
+              82,
+              90,
+              91,
+              92,
+              100
+            ],
+            "late_cycles": 0,
+            "early_cycles": 52,
+            "unserved": 2,
+            "same_engines_served": true,
+            "same_days": false
+          }
+        }
+      },
+      "fixed_interval_n": 154,
+      "policies": {
+        "Run to failure": {
+          "availability": 0.9717620481927711,
+          "performance": 0.9903138318481208,
+          "quality": 0.9864788732394367,
+          "oee": 0.9493373493975904,
+          "unplanned_failures": 100,
+          "planned_services": 0,
+          "downtime_hours": 4800.0,
+          "wasted_cycles": 0,
+          "degraded_cycles": 2000,
+          "machines": 100
+        },
+        "Fixed interval": {
+          "availability": 0.9899909595763916,
+          "performance": 0.9977692257517449,
+          "quality": 0.9891951257779408,
+          "oee": 0.9771096474234796,
+          "unplanned_failures": 11,
+          "planned_services": 89,
+          "downtime_hours": 1240.0,
+          "wasted_cycles": 5317,
+          "degraded_cycles": 342,
+          "machines": 100
+        },
+        "Predictive": {
+          "availability": 0.9937275008181521,
+          "performance": 0.9980624622646688,
+          "quality": 0.9893011323328035,
+          "oee": 0.9811909566924838,
+          "unplanned_failures": 3,
+          "planned_services": 97,
+          "downtime_hours": 920.0,
+          "wasted_cycles": 2429,
+          "degraded_cycles": 353,
+          "machines": 100
+        }
+      },
+      "oee_gaps": {
+        "Predictive - Run to failure": {
+          "diff": 0.031853607294893393,
+          "ci": [
+            0.030327346790780307,
+            0.033348606145836054
+          ],
+          "excludes_zero": true
+        },
+        "Predictive - Fixed interval": {
+          "diff": 0.004081309269004296,
+          "ci": [
+            0.0013002343454753817,
+            0.007134642564340893
+          ],
+          "excludes_zero": true
+        }
+      },
+      "predictive_replay": {
+        "days": 145,
+        "solves": 56,
+        "all_optimal": true,
+        "max_unserved_in_a_day": 0,
+        "max_flagged_in_a_day": 5,
+        "work_orders": 98,
+        "order_status": {
+          "done": 97,
+          "cancelled: failed first": 1
+        },
+        "invalid_forecast_events": 0
+      },
+      "sensitivity": {
+        "threshold 10": {
+          "Run to failure": {
+            "availability": 0.9717620481927711,
+            "performance": 0.9903138318481208,
+            "quality": 0.9864788732394367,
+            "oee": 0.9493373493975904,
+            "unplanned_failures": 100,
+            "planned_services": 0,
+            "downtime_hours": 4800.0,
+            "wasted_cycles": 0,
+            "degraded_cycles": 2000,
+            "machines": 100
+          },
+          "Fixed interval": {
+            "availability": 0.9899909595763916,
+            "performance": 0.9977692257517449,
+            "quality": 0.9891951257779408,
+            "oee": 0.9771096474234796,
+            "unplanned_failures": 11,
+            "planned_services": 89,
+            "downtime_hours": 1240.0,
+            "wasted_cycles": 5317,
+            "degraded_cycles": 342,
+            "machines": 100
+          },
+          "Predictive": {
+            "availability": 0.9934043900379907,
+            "performance": 0.9963350507250226,
+            "quality": 0.9886757650069304,
+            "oee": 0.9785552975939217,
+            "unplanned_failures": 5,
+            "planned_services": 95,
+            "downtime_hours": 1000.0,
+            "wasted_cycles": 1821,
+            "degraded_cycles": 690,
+            "machines": 100
+          }
+        },
+        "threshold 30": {
+          "Run to failure": {
+            "availability": 0.9717620481927711,
+            "performance": 0.9903138318481208,
+            "quality": 0.9864788732394367,
+            "oee": 0.9493373493975904,
+            "unplanned_failures": 100,
+            "planned_services": 0,
+            "downtime_hours": 4800.0,
+            "wasted_cycles": 0,
+            "degraded_cycles": 2000,
+            "machines": 100
+          },
+          "Fixed interval": {
+            "availability": 0.9899909595763916,
+            "performance": 0.9977692257517449,
+            "quality": 0.9891951257779408,
+            "oee": 0.9771096474234796,
+            "unplanned_failures": 11,
+            "planned_services": 89,
+            "downtime_hours": 1240.0,
+            "wasted_cycles": 5317,
+            "degraded_cycles": 342,
+            "machines": 100
+          },
+          "Predictive": {
+            "availability": 0.9939176272953716,
+            "performance": 0.9995803706725725,
+            "quality": 0.9898488700235557,
+            "oee": 0.9834153970920465,
+            "unplanned_failures": 1,
+            "planned_services": 99,
+            "downtime_hours": 840.0,
+            "wasted_cycles": 3490,
+            "degraded_cycles": 72,
+            "machines": 100
+          }
+        },
+        "2 crews": {
+          "Run to failure": {
+            "availability": 0.9717620481927711,
+            "performance": 0.9903138318481208,
+            "quality": 0.9864788732394367,
+            "oee": 0.9493373493975904,
+            "unplanned_failures": 100,
+            "planned_services": 0,
+            "downtime_hours": 4800.0,
+            "wasted_cycles": 0,
+            "degraded_cycles": 2000,
+            "machines": 100
+          },
+          "Fixed interval": {
+            "availability": 0.9899909595763916,
+            "performance": 0.9977692257517449,
+            "quality": 0.9891951257779408,
+            "oee": 0.9771096474234796,
+            "unplanned_failures": 11,
+            "planned_services": 89,
+            "downtime_hours": 1240.0,
+            "wasted_cycles": 5317,
+            "degraded_cycles": 342,
+            "machines": 100
+          },
+          "Predictive": {
+            "availability": 0.9937151601267898,
+            "performance": 0.9980916240444371,
+            "quality": 0.9893116710656096,
+            "oee": 0.9812178926658652,
+            "unplanned_failures": 3,
+            "planned_services": 97,
+            "downtime_hours": 920.0,
+            "wasted_cycles": 2465,
+            "degraded_cycles": 347,
+            "machines": 100
+          }
+        },
+        "4 crews": {
+          "Run to failure": {
+            "availability": 0.9717620481927711,
+            "performance": 0.9903138318481208,
+            "quality": 0.9864788732394367,
+            "oee": 0.9493373493975904,
+            "unplanned_failures": 100,
+            "planned_services": 0,
+            "downtime_hours": 4800.0,
+            "wasted_cycles": 0,
+            "degraded_cycles": 2000,
+            "machines": 100
+          },
+          "Fixed interval": {
+            "availability": 0.9899909595763916,
+            "performance": 0.9977692257517449,
+            "quality": 0.9891951257779408,
+            "oee": 0.9771096474234796,
+            "unplanned_failures": 11,
+            "planned_services": 89,
+            "downtime_hours": 1240.0,
+            "wasted_cycles": 5317,
+            "degraded_cycles": 342,
+            "machines": 100
+          },
+          "Predictive": {
+            "availability": 0.9937309201918884,
+            "performance": 0.99806352515223,
+            "quality": 0.989301516458994,
+            "oee": 0.9811957588312255,
+            "unplanned_failures": 3,
+            "planned_services": 97,
+            "downtime_hours": 920.0,
+            "wasted_cycles": 2419,
+            "degraded_cycles": 353,
+            "machines": 100
+          }
+        },
+        "late weight 10": {
+          "Run to failure": {
+            "availability": 0.9717620481927711,
+            "performance": 0.9903138318481208,
+            "quality": 0.9864788732394367,
+            "oee": 0.9493373493975904,
+            "unplanned_failures": 100,
+            "planned_services": 0,
+            "downtime_hours": 4800.0,
+            "wasted_cycles": 0,
+            "degraded_cycles": 2000,
+            "machines": 100
+          },
+          "Fixed interval": {
+            "availability": 0.9899909595763916,
+            "performance": 0.9977692257517449,
+            "quality": 0.9891951257779408,
+            "oee": 0.9771096474234796,
+            "unplanned_failures": 11,
+            "planned_services": 89,
+            "downtime_hours": 1240.0,
+            "wasted_cycles": 5317,
+            "degraded_cycles": 342,
+            "machines": 100
+          },
+          "Predictive": {
+            "availability": 0.9937275008181521,
+            "performance": 0.9980624622646688,
+            "quality": 0.9893011323328035,
+            "oee": 0.9811909566924838,
+            "unplanned_failures": 3,
+            "planned_services": 97,
+            "downtime_hours": 920.0,
+            "wasted_cycles": 2429,
+            "degraded_cycles": 353,
+            "machines": 100
+          }
+        },
+        "failure downtime 24 h": {
+          "Run to failure": {
+            "availability": 0.9856788237540577,
+            "performance": 0.9903138318481208,
+            "quality": 0.9864788732394367,
+            "oee": 0.9629329768951691,
+            "unplanned_failures": 100,
+            "planned_services": 0,
+            "downtime_hours": 2400.0,
+            "wasted_cycles": 0,
+            "degraded_cycles": 2000,
+            "machines": 100
+          },
+          "Fixed interval": {
+            "availability": 0.9921050928622274,
+            "performance": 0.9977692257517449,
+            "quality": 0.9891951257779408,
+            "oee": 0.9791962725684336,
+            "unplanned_failures": 11,
+            "planned_services": 89,
+            "downtime_hours": 976.0,
+            "wasted_cycles": 5317,
+            "degraded_cycles": 342,
+            "machines": 100
+          },
+          "Predictive": {
+            "availability": 0.9942155525238745,
+            "performance": 0.9980624622646688,
+            "quality": 0.9893011323328035,
+            "oee": 0.9816728512960436,
+            "unplanned_failures": 3,
+            "planned_services": 97,
+            "downtime_hours": 848.0,
+            "wasted_cycles": 2429,
+            "degraded_cycles": 353,
+            "machines": 100
+          }
+        },
+        "failure downtime 96 h": {
+          "Run to failure": {
+            "availability": 0.9450750640790919,
+            "performance": 0.9903138318481208,
+            "quality": 0.9864788732394367,
+            "oee": 0.9232662028560967,
+            "unplanned_failures": 100,
+            "planned_services": 0,
+            "downtime_hours": 9600.0,
+            "wasted_cycles": 0,
+            "degraded_cycles": 2000,
+            "machines": 100
+          },
+          "Fixed interval": {
+            "availability": 0.985789609053498,
+            "performance": 0.9977692257517449,
+            "quality": 0.9891951257779408,
+            "oee": 0.9729629629629634,
+            "unplanned_failures": 11,
+            "planned_services": 89,
+            "downtime_hours": 1768.0,
+            "wasted_cycles": 5317,
+            "degraded_cycles": 342,
+            "machines": 100
+          },
+          "Predictive": {
+            "availability": 0.99275283347864,
+            "performance": 0.9980624622646688,
+            "quality": 0.9893011323328035,
+            "oee": 0.980228585440279,
+            "unplanned_failures": 3,
+            "planned_services": 97,
+            "downtime_hours": 1064.0,
+            "wasted_cycles": 2429,
+            "degraded_cycles": 353,
+            "machines": 100
+          }
+        }
+      }
+    },
+    "FD003": {
+      "model_id": "LSTM-FD003-seed0-W40-h64-do0.1-lr0.003",
+      "forecast_source": "models/predictions_phase5b.csv@ec34d41b4c13",
+      "snapshot": {
+        "engines": 100,
+        "invalid_forecasts": 0,
+        "flagged": 20,
+        "risk_counts": {
+          "critical": 12,
+          "medium": 7,
+          "high": 1
+        },
+        "schedule_status": "OPTIMAL",
+        "objective": 3037,
+        "scheduled": 20,
+        "per_day": {
+          "0": 3,
+          "1": 3,
+          "2": 3,
+          "3": 3,
+          "4": 2,
+          "5": 3,
+          "6": 3
+        },
+        "outcomes": {
+          "not flagged, healthy": 80,
+          "serviced in time": 20
+        },
+        "wasted_cycles_mean": 10.95,
+        "weight_sensitivity": {
+          "guide (100 late / 1 early)": {
+            "status": "OPTIMAL",
+            "plan": [
+              [
+                46,
+                0
+              ],
+              [
+                82,
+                0
+              ],
+              [
+                94,
+                0
+              ],
+              [
+                26,
+                1
+              ],
+              [
+                39,
+                1
+              ],
+              [
+                99,
+                1
+              ],
+              [
+                24,
+                2
+              ],
+              [
+                50,
+                2
+              ],
+              [
+                92,
+                2
+              ],
+              [
+                21,
+                3
+              ],
+              [
+                78,
+                3
+              ],
+              [
+                81,
+                3
+              ],
+              [
+                86,
+                4
+              ],
+              [
+                98,
+                4
+              ],
+              [
+                64,
+                5
+              ],
+              [
+                76,
+                5
+              ],
+              [
+                79,
+                5
+              ],
+              [
+                38,
+                6
+              ],
+              [
+                71,
+                6
+              ],
+              [
+                100,
+                6
+              ]
+            ],
+            "objective": 3037,
+            "served": [
+              21,
+              24,
+              26,
+              38,
+              39,
+              46,
+              50,
+              64,
+              71,
+              76,
+              78,
+              79,
+              81,
+              82,
+              86,
+              92,
+              94,
+              98,
+              99,
+              100
+            ],
+            "late_cycles": 30,
+            "early_cycles": 37,
+            "unserved": 0,
+            "same_engines_served": true,
+            "same_days": true
+          },
+          "late 10": {
+            "status": "OPTIMAL",
+            "plan": [
+              [
+                24,
+                0
+              ],
+              [
+                39,
+                0
+              ],
+              [
+                82,
+                0
+              ],
+              [
+                46,
+                1
+              ],
+              [
+                50,
+                1
+              ],
+              [
+                92,
+                1
+              ],
+              [
+                26,
+                2
+              ],
+              [
+                94,
+                2
+              ],
+              [
+                99,
+                2
+              ],
+              [
+                21,
+                3
+              ],
+              [
+                81,
+                3
+              ],
+              [
+                98,
+                3
+              ],
+              [
+                78,
+                4
+              ],
+              [
+                86,
+                4
+              ],
+              [
+                71,
+                5
+              ],
+              [
+                76,
+                5
+              ],
+              [
+                79,
+                5
+              ],
+              [
+                38,
+                6
+              ],
+              [
+                64,
+                6
+              ],
+              [
+                100,
+                6
+              ]
+            ],
+            "objective": 337,
+            "served": [
+              21,
+              24,
+              26,
+              38,
+              39,
+              46,
+              50,
+              64,
+              71,
+              76,
+              78,
+              79,
+              81,
+              82,
+              86,
+              92,
+              94,
+              98,
+              99,
+              100
+            ],
+            "late_cycles": 30,
+            "early_cycles": 37,
+            "unserved": 0,
+            "same_engines_served": true,
+            "same_days": false
+          },
+          "late 1000": {
+            "status": "OPTIMAL",
+            "plan": [
+              [
+                92,
+                0
+              ],
+              [
+                94,
+                0
+              ],
+              [
+                99,
+                0
+              ],
+              [
+                98,
+                1
+              ],
+              [
+                81,
+                2
+              ],
+              [
+                78,
+                3
+              ],
+              [
+                86,
+                4
+              ],
+              [
+                38,
+                5
+              ],
+              [
+                71,
+                5
+              ],
+              [
+                79,
+                5
+              ],
+              [
+                64,
+                6
+              ],
+              [
+                76,
+                6
+              ],
+              [
+                100,
+                6
+              ]
+            ],
+            "objective": 7038,
+            "served": [
+              38,
+              64,
+              71,
+              76,
+              78,
+              79,
+              81,
+              86,
+              92,
+              94,
+              98,
+              99,
+              100
+            ],
+            "late_cycles": 0,
+            "early_cycles": 38,
+            "unserved": 7,
+            "same_engines_served": false,
+            "same_days": false
+          },
+          "early 10": {
+            "status": "OPTIMAL",
+            "plan": [
+              [
+                24,
+                0
+              ],
+              [
+                50,
+                0
+              ],
+              [
+                92,
+                0
+              ],
+              [
+                39,
+                1
+              ],
+              [
+                82,
+                1
+              ],
+              [
+                99,
+                1
+              ],
+              [
+                46,
+                2
+              ],
+              [
+                81,
+                2
+              ],
+              [
+                98,
+                2
+              ],
+              [
+                21,
+                3
+              ],
+              [
+                26,
+                3
+              ],
+              [
+                94,
+                3
+              ],
+              [
+                78,
+                4
+              ],
+              [
+                100,
+                4
+              ],
+              [
+                38,
+                5
+              ],
+              [
+                79,
+                5
+              ],
+              [
+                86,
+                5
+              ],
+              [
+                64,
+                6
+              ],
+              [
+                71,
+                6
+              ],
+              [
+                76,
+                6
+              ]
+            ],
+            "objective": 3370,
+            "served": [
+              21,
+              24,
+              26,
+              38,
+              39,
+              46,
+              50,
+              64,
+              71,
+              76,
+              78,
+              79,
+              81,
+              82,
+              86,
+              92,
+              94,
+              98,
+              99,
+              100
+            ],
+            "late_cycles": 30,
+            "early_cycles": 37,
+            "unserved": 0,
+            "same_engines_served": true,
+            "same_days": false
+          }
+        }
+      },
+      "fixed_interval_n": 166,
+      "policies": {
+        "Run to failure": {
+          "availability": 0.9757360077644776,
+          "performance": 0.991710875331565,
+          "quality": 0.9869909729187564,
+          "oee": 0.9550598511808477,
+          "unplanned_failures": 100,
+          "planned_services": 0,
+          "downtime_hours": 4800.0,
+          "wasted_cycles": 0,
+          "degraded_cycles": 2000,
+          "machines": 100
+        },
+        "Fixed interval": {
+          "availability": 0.9909671203179574,
+          "performance": 0.9982377248420029,
+          "quality": 0.9893644609484383,
+          "oee": 0.9786998675177645,
+          "unplanned_failures": 10,
+          "planned_services": 90,
+          "downtime_hours": 1200.0,
+          "wasted_cycles": 7672,
+          "degraded_cycles": 290,
+          "machines": 100
+        },
+        "Predictive": {
+          "availability": 0.9942762947021384,
+          "performance": 0.9983144515059409,
+          "quality": 0.9893921780287304,
+          "oee": 0.9820710655249784,
+          "unplanned_failures": 5,
+          "planned_services": 95,
+          "downtime_hours": 1000.0,
+          "wasted_cycles": 2414,
+          "degraded_cycles": 366,
+          "machines": 100
+        }
+      },
+      "oee_gaps": {
+        "Predictive - Run to failure": {
+          "diff": 0.027011214344130563,
+          "ci": [
+            0.025178683444443347,
+            0.028796986515861395
+          ],
+          "excludes_zero": true
+        },
+        "Predictive - Fixed interval": {
+          "diff": 0.0033711980072137493,
+          "ci": [
+            0.001023928650634473,
+            0.0059784443268477774
+          ],
+          "excludes_zero": true
+        }
+      },
+      "predictive_replay": {
+        "days": 229,
+        "solves": 68,
+        "all_optimal": true,
+        "max_unserved_in_a_day": 0,
+        "max_flagged_in_a_day": 4,
+        "work_orders": 100,
+        "order_status": {
+          "done": 95,
+          "cancelled: failed first": 5
+        },
+        "invalid_forecast_events": 0
+      },
+      "sensitivity": {
+        "threshold 10": {
+          "Run to failure": {
+            "availability": 0.9757360077644776,
+            "performance": 0.991710875331565,
+            "quality": 0.9869909729187564,
+            "oee": 0.9550598511808477,
+            "unplanned_failures": 100,
+            "planned_services": 0,
+            "downtime_hours": 4800.0,
+            "wasted_cycles": 0,
+            "degraded_cycles": 2000,
+            "machines": 100
+          },
+          "Fixed interval": {
+            "availability": 0.9909671203179574,
+            "performance": 0.9982377248420029,
+            "quality": 0.9893644609484383,
+            "oee": 0.9786998675177645,
+            "unplanned_failures": 10,
+            "planned_services": 90,
+            "downtime_hours": 1200.0,
+            "wasted_cycles": 7672,
+            "degraded_cycles": 290,
+            "machines": 100
+          },
+          "Predictive": {
+            "availability": 0.9941902037897747,
+            "performance": 0.9971095927357727,
+            "quality": 0.9889564370629842,
+            "oee": 0.9803689220593491,
+            "unplanned_failures": 6,
+            "planned_services": 94,
+            "downtime_hours": 1040.0,
+            "wasted_cycles": 1882,
+            "degraded_cycles": 643,
+            "machines": 100
+          }
+        },
+        "threshold 30": {
+          "Run to failure": {
+            "availability": 0.9757360077644776,
+            "performance": 0.991710875331565,
+            "quality": 0.9869909729187564,
+            "oee": 0.9550598511808477,
+            "unplanned_failures": 100,
+            "planned_services": 0,
+            "downtime_hours": 4800.0,
+            "wasted_cycles": 0,
+            "degraded_cycles": 2000,
+            "machines": 100
+          },
+          "Fixed interval": {
+            "availability": 0.9909671203179574,
+            "performance": 0.9982377248420029,
+            "quality": 0.9893644609484383,
+            "oee": 0.9786998675177645,
+            "unplanned_failures": 10,
+            "planned_services": 90,
+            "downtime_hours": 1200.0,
+            "wasted_cycles": 7672,
+            "degraded_cycles": 290,
+            "machines": 100
+          },
+          "Predictive": {
+            "availability": 0.995190457868411,
+            "performance": 0.9995795476512662,
+            "quality": 0.9898485734868228,
+            "oee": 0.9846736725663718,
+            "unplanned_failures": 0,
+            "planned_services": 100,
+            "downtime_hours": 800.0,
+            "wasted_cycles": 3436,
+            "degraded_cycles": 87,
+            "machines": 100
+          }
+        },
+        "2 crews": {
+          "Run to failure": {
+            "availability": 0.9757360077644776,
+            "performance": 0.991710875331565,
+            "quality": 0.9869909729187564,
+            "oee": 0.9550598511808477,
+            "unplanned_failures": 100,
+            "planned_services": 0,
+            "downtime_hours": 4800.0,
+            "wasted_cycles": 0,
+            "degraded_cycles": 2000,
+            "machines": 100
+          },
+          "Fixed interval": {
+            "availability": 0.9909671203179574,
+            "performance": 0.9982377248420029,
+            "quality": 0.9893644609484383,
+            "oee": 0.9786998675177645,
+            "unplanned_failures": 10,
+            "planned_services": 90,
+            "downtime_hours": 1200.0,
+            "wasted_cycles": 7672,
+            "degraded_cycles": 290,
+            "machines": 100
+          },
+          "Predictive": {
+            "availability": 0.9942684212939612,
+            "performance": 0.9983905183545472,
+            "quality": 0.9894196525490667,
+            "oee": 0.9821653904351415,
+            "unplanned_failures": 5,
+            "planned_services": 95,
+            "downtime_hours": 1000.0,
+            "wasted_cycles": 2444,
+            "degraded_cycles": 349,
+            "machines": 100
+          }
+        },
+        "4 crews": {
+          "Run to failure": {
+            "availability": 0.9757360077644776,
+            "performance": 0.991710875331565,
+            "quality": 0.9869909729187564,
+            "oee": 0.9550598511808477,
+            "unplanned_failures": 100,
+            "planned_services": 0,
+            "downtime_hours": 4800.0,
+            "wasted_cycles": 0,
+            "degraded_cycles": 2000,
+            "machines": 100
+          },
+          "Fixed interval": {
+            "availability": 0.9909671203179574,
+            "performance": 0.9982377248420029,
+            "quality": 0.9893644609484383,
+            "oee": 0.9786998675177645,
+            "unplanned_failures": 10,
+            "planned_services": 90,
+            "downtime_hours": 1200.0,
+            "wasted_cycles": 7672,
+            "degraded_cycles": 290,
+            "machines": 100
+          },
+          "Predictive": {
+            "availability": 0.9942762947021384,
+            "performance": 0.9983144515059409,
+            "quality": 0.9893921780287304,
+            "oee": 0.9820710655249784,
+            "unplanned_failures": 5,
+            "planned_services": 95,
+            "downtime_hours": 1000.0,
+            "wasted_cycles": 2414,
+            "degraded_cycles": 366,
+            "machines": 100
+          }
+        },
+        "late weight 10": {
+          "Run to failure": {
+            "availability": 0.9757360077644776,
+            "performance": 0.991710875331565,
+            "quality": 0.9869909729187564,
+            "oee": 0.9550598511808477,
+            "unplanned_failures": 100,
+            "planned_services": 0,
+            "downtime_hours": 4800.0,
+            "wasted_cycles": 0,
+            "degraded_cycles": 2000,
+            "machines": 100
+          },
+          "Fixed interval": {
+            "availability": 0.9909671203179574,
+            "performance": 0.9982377248420029,
+            "quality": 0.9893644609484383,
+            "oee": 0.9786998675177645,
+            "unplanned_failures": 10,
+            "planned_services": 90,
+            "downtime_hours": 1200.0,
+            "wasted_cycles": 7672,
+            "degraded_cycles": 290,
+            "machines": 100
+          },
+          "Predictive": {
+            "availability": 0.9942762947021384,
+            "performance": 0.9983144515059409,
+            "quality": 0.9893921780287304,
+            "oee": 0.9820710655249784,
+            "unplanned_failures": 5,
+            "planned_services": 95,
+            "downtime_hours": 1000.0,
+            "wasted_cycles": 2414,
+            "degraded_cycles": 366,
+            "machines": 100
+          }
+        },
+        "failure downtime 24 h": {
+          "Run to failure": {
+            "availability": 0.9877190109710169,
+            "performance": 0.991710875331565,
+            "quality": 0.9869909729187564,
+            "oee": 0.9667889307352221,
+            "unplanned_failures": 100,
+            "planned_services": 0,
+            "downtime_hours": 2400.0,
+            "wasted_cycles": 0,
+            "degraded_cycles": 2000,
+            "machines": 100
+          },
+          "Fixed interval": {
+            "availability": 0.9927606177606177,
+            "performance": 0.9982377248420029,
+            "quality": 0.9893644609484383,
+            "oee": 0.9804711631274129,
+            "unplanned_failures": 10,
+            "planned_services": 90,
+            "downtime_hours": 960.0,
+            "wasted_cycles": 7672,
+            "degraded_cycles": 290,
+            "machines": 100
+          },
+          "Predictive": {
+            "availability": 0.9949596774193549,
+            "performance": 0.9983144515059409,
+            "quality": 0.9893921780287304,
+            "oee": 0.9827460593841643,
+            "unplanned_failures": 5,
+            "planned_services": 95,
+            "downtime_hours": 880.0,
+            "wasted_cycles": 2414,
+            "degraded_cycles": 366,
+            "machines": 100
+          }
+        },
+        "failure downtime 96 h": {
+          "Run to failure": {
+            "availability": 0.952621604548326,
+            "performance": 0.991710875331565,
+            "quality": 0.9869909729187564,
+            "oee": 0.9324352495262163,
+            "unplanned_failures": 100,
+            "planned_services": 0,
+            "downtime_hours": 9600.0,
+            "wasted_cycles": 0,
+            "degraded_cycles": 2000,
+            "machines": 100
+          },
+          "Fixed interval": {
+            "availability": 0.9873994959798392,
+            "performance": 0.9982377248420029,
+            "quality": 0.9893644609484383,
+            "oee": 0.9751764070562821,
+            "unplanned_failures": 10,
+            "planned_services": 90,
+            "downtime_hours": 1680.0,
+            "wasted_cycles": 7672,
+            "degraded_cycles": 290,
+            "machines": 100
+          },
+          "Predictive": {
+            "availability": 0.9929123416708583,
+            "performance": 0.9983144515059409,
+            "quality": 0.9893921780287304,
+            "oee": 0.9807238556861311,
+            "unplanned_failures": 5,
+            "planned_services": 95,
+            "downtime_hours": 1240.0,
+            "wasted_cycles": 2414,
+            "degraded_cycles": 366,
+            "machines": 100
+          }
+        }
+      }
+    }
+  },
+  "pooled": {
+    "Run to failure": {
+      "availability": 0.9738994257873673,
+      "performance": 0.991066642844381,
+      "quality": 0.9867550027041645,
+      "oee": 0.9524151731338091,
+      "unplanned_failures": 200,
+      "planned_services": 0,
+      "downtime_hours": 9600.0,
+      "wasted_cycles": 0,
+      "degraded_cycles": 4000,
+      "machines": 200
+    },
+    "Fixed interval": {
+      "availability": 0.9904960737878599,
+      "performance": 0.9980117658162142,
+      "quality": 0.989282809751669,
+      "oee": 0.9779325065436868,
+      "unplanned_failures": 21,
+      "planned_services": 179,
+      "downtime_hours": 2440.0,
+      "wasted_cycles": 12989,
+      "degraded_cycles": 632,
+      "machines": 200
+    },
+    "Predictive": {
+      "availability": 0.9940258382495706,
+      "performance": 0.9981994841359276,
+      "quality": 0.9893506451151624,
+      "oee": 0.9816694048241356,
+      "unplanned_failures": 8,
+      "planned_services": 192,
+      "downtime_hours": 1920.0,
+      "wasted_cycles": 4843,
+      "degraded_cycles": 719,
+      "machines": 200
+    }
+  },
+  "pooled_gaps": {
+    "Predictive - Run to failure": {
+      "diff": 0.029254231690326593,
+      "ci": [
+        0.02801330777834501,
+        0.03046716235358356
+      ],
+      "excludes_zero": true
+    },
+    "Predictive - Fixed interval": {
+      "diff": 0.003736898280448764,
+      "ci": [
+        0.001891761872341438,
+        0.005573955299416194
+      ],
+      "excludes_zero": true
+    }
+  },
+  "environment": {
+    "os": "win32",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "python": "3.14.7",
+    "ortools": "9.15.6755",
+    "solver_workers": 1,
+    "solver_seed": 0
+  },
+  "seconds_total": 48.783341300004395
+}
