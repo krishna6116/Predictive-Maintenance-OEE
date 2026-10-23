@@ -441,6 +441,8 @@ def main(argv=None) -> int:
     p.add_argument("--predictor", default="model", choices=["model", "recorded"])
     p.add_argument("--until", type=int, help="with --replay-all: stop after this shift")
     p.add_argument("--schema", default=C.FLOW_SCHEMA)
+    p.add_argument("--interval", type=int, default=C.SERVE_INTERVAL_SECONDS,
+                   help=f"with --serve: seconds between runs (default {C.SERVE_INTERVAL_SECONDS}, from pipeline/config.py)")
     a = p.parse_args(argv)
     if a.reset:
         reset(get_engine(), a.schema)
@@ -448,7 +450,7 @@ def main(argv=None) -> int:
     elif a.once:
         print(shift_pipeline(predictor=a.predictor, db_schema=a.schema))
     elif a.serve:
-        shift_pipeline.serve(name="every-shift", interval=C.SERVE_INTERVAL_SECONDS,
+        shift_pipeline.serve(name="every-shift", interval=a.interval,
                              parameters={"predictor": a.predictor, "db_schema": a.schema})
     else:
         stop = a.until or last_shift()
