@@ -93,8 +93,9 @@ CREATE TABLE IF NOT EXISTS fact_alert (
     scheduled_day  INT,
     service_cycle  INT,
     status         TEXT NOT NULL,
+    forecast_run_id TEXT NOT NULL,   -- the run that stored the forecast this alert acted on
     PRIMARY KEY (run_id, dataset, context, engine_id),
-    FOREIGN KEY (run_id, dataset, engine_id, forecast_cycle)
+    CONSTRAINT fact_alert_forecast_fkey FOREIGN KEY (forecast_run_id, dataset, engine_id, forecast_cycle)
         REFERENCES fact_prediction(run_id, dataset, engine_id, cycle)
 );
 
@@ -116,4 +117,68 @@ CREATE TABLE IF NOT EXISTS fact_oee (
     actual_units    DOUBLE PRECISION NOT NULL,
     good_units      DOUBLE PRECISION NOT NULL,
     PRIMARY KEY (run_id, dataset, policy, machine_id)
+);
+
+-- ---- Phase 7: the shift flow (pipeline/flow.py). The replay runs in its own Postgres schema (ops).
+
+-- One pipeline_runs row per shift per dataset; run_id = '<dataset>-test-s<shift>' so a re-run replaces it.
+ALTER TABLE pipeline_runs ADD COLUMN IF NOT EXISTS shift              INT;
+ALTER TABLE pipeline_runs ADD COLUMN IF NOT EXISTS last_cycle         INT;
+ALTER TABLE pipeline_runs ADD COLUMN IF NOT EXISTS flow_status        TEXT;   -- running | complete | failed
+ALTER TABLE pipeline_runs ADD COLUMN IF NOT EXISTS flow_run_id        TEXT;
+ALTER TABLE pipeline_runs ADD COLUMN IF NOT EXISTS needs_retraining   BOOLEAN;
+ALTER TABLE pipeline_runs ADD COLUMN IF NOT EXISTS retraining_reasons TEXT;
+
+-- Phase 7 migration for databases created before forecast_run_id existed (Phase 6 rows: forecast_run_id = run_id).
+-- In the flow an alert can act on a forecast stored by an earlier shift, so the link uses forecast_run_id.
+ALTER TABLE fact_alert ADD COLUMN IF NOT EXISTS forecast_run_id TEXT;
+UPDATE fact_alert SET forecast_run_id = run_id WHERE forecast_run_id IS NULL;
+ALTER TABLE fact_alert ALTER COLUMN forecast_run_id SET NOT NULL;
+ALTER TABLE fact_alert DROP CONSTRAINT IF EXISTS fact_alert_run_id_dataset_engine_id_forecast_cycle_fkey;
+DO $$ BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'fact_alert_forecast_fkey'
+                   AND conrelid = 'fact_alert'::regclass) THEN
+        ALTER TABLE fact_alert ADD CONSTRAINT fact_alert_forecast_fkey FOREIGN KEY (forecast_run_id, dataset, engine_id, forecast_cycle)
+            REFERENCES fact_prediction(run_id, dataset, engine_id, cycle);
+    END IF;
+END $$;
+
+-- A flow work order is created once per engine: the database itself rules out duplicates across shifts.
+CREATE UNIQUE INDEX IF NOT EXISTS ux_fact_alert_flow_engine ON fact_alert (dataset, engine_id) WHERE context = 'flow';
+
+-- Fact: model health per run, scored only on engines whose failure has already happened (label available).
+CREATE TABLE IF NOT EXISTS fact_model_health (
+    run_id                    TEXT PRIMARY KEY,
+    dataset                   TEXT NOT NULL,
+    shift                     INT  NOT NULL,
+    model_id                  TEXT NOT NULL,
+    n_labelled                INT  NOT NULL,
+    n_scored                  INT  NOT NULL,     -- engines in the rolling window (the 20 most recently labelled)
+    rmse                      DOUBLE PRECISION,
+    mae                       DOUBLE PRECISION,
+    near_failure_mae          DOUBLE PRECISION,
+    coverage_90               DOUBLE PRECISION,
+    lower_bound_miss_rate     DOUBLE PRECISION,
+    cum_rmse                  DOUBLE PRECISION,  -- over every labelled engine so far
+    cum_coverage_90           DOUBLE PRECISION,
+    cum_lower_bound_miss_rate DOUBLE PRECISION,
+    drifted_sensors           TEXT NOT NULL,
+    needs_retraining          BOOLEAN NOT NULL,
+    retraining_reasons        TEXT NOT NULL
+);
+
+-- Fact: KS drift test per run per sensor (per-engine means vs age-matched training engines, Holm-adjusted).
+CREATE TABLE IF NOT EXISTS fact_drift (
+    run_id      TEXT NOT NULL,
+    dataset     TEXT NOT NULL,
+    shift       INT  NOT NULL,
+    sensor      TEXT NOT NULL,
+    n_recent    INT  NOT NULL,
+    n_reference INT  NOT NULL,
+    ks_stat     DOUBLE PRECISION,
+    p_value     DOUBLE PRECISION,
+    p_holm      DOUBLE PRECISION,
+    tested      BOOLEAN NOT NULL,
+    drifted     BOOLEAN NOT NULL,
+    PRIMARY KEY (run_id, sensor)
 );

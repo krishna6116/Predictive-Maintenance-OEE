@@ -13,7 +13,7 @@ import json
 import numpy as np
 import pandas as pd
 
-from pipeline.config import KEEP_COLS, LIMIT_MARGIN, LIMITS_FILE
+from pipeline.config import KEEP_COLS, LIMIT_MARGIN, limits_file
 
 
 def compute_limits(train: pd.DataFrame, cols=KEEP_COLS, margin: float = LIMIT_MARGIN) -> dict:
@@ -26,12 +26,12 @@ def compute_limits(train: pd.DataFrame, cols=KEEP_COLS, margin: float = LIMIT_MA
     return limits
 
 
-def save_limits(limits: dict) -> None:
-    LIMITS_FILE.write_text(json.dumps(limits, indent=2), encoding="utf-8")
+def save_limits(limits: dict, dataset: str = "FD001") -> None:
+    limits_file(dataset).write_text(json.dumps(limits, indent=2), encoding="utf-8")
 
 
-def load_limits() -> dict:
-    return json.loads(LIMITS_FILE.read_text(encoding="utf-8"))
+def load_limits(dataset: str = "FD001") -> dict:
+    return json.loads(limits_file(dataset).read_text(encoding="utf-8"))
 
 
 def validate(batch: pd.DataFrame, limits: dict, last_cycle: dict | None = None) -> tuple[pd.DataFrame, pd.DataFrame]:

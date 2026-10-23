@@ -37,7 +37,7 @@ def frames(run_id: str) -> dict:
     oee = m.rename(columns={"machine": "machine_id", "life": "life_cycles"})[
         ["run_id", "dataset", "policy", "machine_id", "life_cycles", "run_cycles", "event", "wasted_cycles",
          "degraded_cycles", "planned_hours", "run_hours", "downtime_hours", "ideal_units", "actual_units", "good_units"]]
-    alerts = pd.concat([a1, a2], ignore_index=True)
+    alerts = pd.concat([a1, a2], ignore_index=True).assign(forecast_run_id=run_id)
     for c in ("scheduled_day", "service_cycle"):
         alerts[c] = alerts[c].astype("Int64")
     return {"fact_prediction": preds.drop(columns=["valid"]).assign(valid=preds.valid.astype(bool)),

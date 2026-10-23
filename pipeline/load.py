@@ -48,16 +48,22 @@ def next_start_cycle(engine: Engine, dataset: str, split: str, schema: str | Non
 
 
 def load_batch(engine: Engine, good: pd.DataFrame, bad: pd.DataFrame, *, dataset: str, split: str,
-               start_cycle: int, n_cycles: int, note: str | None = None, schema: str | None = None) -> str:
-    """Write one batch and return its run ID. Everything happens in one transaction: all or nothing."""
-    run_id = uuid.uuid4().hex[:12]
+               start_cycle: int, n_cycles: int, note: str | None = None, schema: str | None = None,
+               run_id: str | None = None) -> str:
+    """Write one batch and return its run ID. Everything happens in one transaction: all or nothing.
+
+    Without `run_id` each call gets a new random ID (Phases 2-3). The Phase 7 flow passes a fixed ID per shift,
+    so re-running a shift updates its own pipeline_runs row instead of adding one."""
+    run_id = run_id or uuid.uuid4().hex[:12]
     tag = {"d": dataset, "s": split}
     try:
         with engine.begin() as conn:
             _use_schema(conn, schema)
             conn.execute(text("""
                 INSERT INTO pipeline_runs (run_id, started_at, status, dataset, split, start_cycle, n_cycles, rows_in, note)
-                VALUES (:r, :t, 'running', :d, :s, :sc, :n, :rows, :note)"""),
+                VALUES (:r, :t, 'running', :d, :s, :sc, :n, :rows, :note)
+                ON CONFLICT (run_id) DO UPDATE SET started_at = EXCLUDED.started_at, status = 'running',
+                    finished_at = NULL, rows_in = EXCLUDED.rows_in, note = EXCLUDED.note"""),
                 {"r": run_id, "t": _now(), **tag, "sc": start_cycle, "n": n_cycles,
                  "rows": len(good) + len(bad), "note": note})
 
@@ -107,7 +113,9 @@ def load_batch(engine: Engine, good: pd.DataFrame, bad: pd.DataFrame, *, dataset
             _use_schema(conn, schema)
             conn.execute(text("""
                 INSERT INTO pipeline_runs (run_id, started_at, finished_at, status, dataset, split, start_cycle, n_cycles, note)
-                VALUES (:r, :t, :t, 'failed', :d, :s, :sc, :n, :note)"""),
+                VALUES (:r, :t, :t, 'failed', :d, :s, :sc, :n, :note)
+                ON CONFLICT (run_id) DO UPDATE SET status = 'failed', finished_at = EXCLUDED.finished_at,
+                    note = EXCLUDED.note"""),
                 {"r": run_id, "t": _now(), **tag, "sc": start_cycle, "n": n_cycles, "note": f"{type(exc).__name__}: {exc}"[:500]})
         raise
     return run_id

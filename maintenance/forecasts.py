@@ -96,23 +96,46 @@ def rolling(ds: str) -> pd.DataFrame:
     return validate(df[COLUMNS])
 
 
-def build_rolling(ds: str) -> pd.DataFrame:
-    """Rebuild the published seed-0 LSTM and forecast every observed test cycle (see module docstring)."""
+WEIGHTS = "models/weights/{model_id}.pt"     # git-ignored (*.pt): never committed
+
+
+class NotPublishedModel(RuntimeError):
+    """The model at hand cannot be shown to be the published one, so it must not make decisions."""
+
+
+def published_model(ds: str):
+    """The published seed-0 LSTM of `ds`, proven identical to the published one before it is returned.
+
+    Weights are git-ignored, so they are loaded from the local cache if present, otherwise rebuilt with the
+    published recipe (exact only on the OS and torch version that published it) and cached. Either way the model
+    must reproduce the published last-cycle point predictions AND all MC-dropout passes exactly, or
+    NotPublishedModel is raised. Returns (model, X_last, cfg)."""
     import torch
-    from models.deep import mc_dropout, predict, train_fixed
-    from models.sequences import datasets, make_windows, scaled_readings
+    from models.deep import THREADS, build, mc_dropout, predict, set_determinism, train_fixed
+    from models.sequences import datasets
 
     src = SOURCES[ds]
     r = json.loads(Path(src["results"]).read_text())
     m, env, passes = r["models"][MODEL], r["environment"], r["mc_dropout"]["passes"]
-    if env["os"] != sys.platform or env["torch"] != torch.__version__:
-        raise SystemExit(f"{ds} was published on {env['os']} / torch {env['torch']}; this is {sys.platform} / "
-                         f"torch {torch.__version__}. The rebuild is only exact there, so it is not attempted.")
     cfg = m["settings"]
     d = datasets(cfg["window"], ds)
     X_all, i_all = d["all"]
     X_last, _ = d["test"]
-    model, _ = train_fixed(cfg, 0, X_all, i_all.RUL.to_numpy(float), m["epochs_per_seed"][0])
+    path = Path(WEIGHTS.format(model_id=model_id(ds)))
+    set_determinism(0)
+    if path.exists():
+        model = build(cfg["arch"], X_last.shape[2], cfg["hidden"], cfg["dropout"], X_last.shape[1])
+        model.load_state_dict(torch.load(path, weights_only=True))
+        model.eval()
+    else:
+        if env["os"] != sys.platform or env["torch"] != torch.__version__:
+            raise NotPublishedModel(f"{ds} was published on {env['os']} / torch {env['torch']}; this is {sys.platform} / "
+                                    f"torch {torch.__version__}. The rebuild is only exact there, so it is not attempted.")
+        model, _ = train_fixed(cfg, 0, X_all, i_all.RUL.to_numpy(float), m["epochs_per_seed"][0])
+        path.parent.mkdir(parents=True, exist_ok=True)
+        torch.save(model.state_dict(), path)
+    if torch.get_num_threads() != THREADS:
+        raise NotPublishedModel(f"torch must run on {THREADS} thread(s)")
 
     # Identity proof: same model as published, value for value
     pub = pd.read_csv(src["preds"], **CSV)
@@ -121,8 +144,22 @@ def build_rolling(ds: str) -> pd.DataFrame:
     same_mc = np.array_equal(mc_dropout(model, X_last, passes, seed=0).T,
                              draws[[f"pass_{k}" for k in range(passes)]].to_numpy(float))
     if not (same_point and same_mc):
-        raise SystemExit(f"{ds}: rebuilt model differs from the published one (point {same_point}, MC {same_mc})")
+        raise NotPublishedModel(f"{ds}: model differs from the published one (point {same_point}, MC passes {same_mc})")
+    return model, X_last, cfg
 
+
+def build_rolling(ds: str) -> pd.DataFrame:
+    """Forecast every observed test cycle with the published seed-0 LSTM (see module docstring)."""
+    from models.deep import mc_dropout, predict
+    from models.sequences import make_windows, scaled_readings
+
+    src = SOURCES[ds]
+    passes = json.loads(Path(src["results"]).read_text())["mc_dropout"]["passes"]
+    pub = pd.read_csv(src["preds"], **CSV)
+    try:
+        model, _, cfg = published_model(ds)
+    except NotPublishedModel as exc:
+        raise SystemExit(str(exc))
     X, idx = make_windows(scaled_readings("test", ds), cfg["window"])
     mc = mc_dropout(model, X, passes, seed=0)  # a fresh set of draws over all windows, same model
     out = pd.DataFrame({"dataset": ds, "engine_id": idx.unit.astype(int), "cycle": idx.cycle.astype(int),

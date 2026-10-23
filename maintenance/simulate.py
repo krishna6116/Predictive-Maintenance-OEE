@@ -81,19 +81,26 @@ def fixed_interval_n(train_lives) -> int:
     return int(np.floor(np.percentile(np.asarray(train_lives, float), C.FIXED_INTERVAL_PERCENTILE)))
 
 
+def aged_forecast(machine: int, forecast_cycle: int, point: float, low: float, high: float, valid: bool, why: str,
+                  cycle: int) -> dict:
+    """A forecast made after `forecast_cycle` cycles, as the planner sees it after `cycle` cycles: unchanged if
+    it is the newest reading's forecast, otherwise aged by the cycles run since (ASSUMPTIONS['after_data_ends']).
+    Shared by the Phase 6 replay and the Phase 7 flow."""
+    age = cycle - forecast_cycle
+    if age < 0:
+        raise ValueError(f"engine {machine}: forecast from cycle {forecast_cycle} used at cycle {cycle}")
+    if age == 0:
+        return {"engine_id": machine, "forecast_cycle": forecast_cycle, "age": 0, "rul_point": point, "rul_low": low,
+                "rul_high": high, "valid": valid, "invalid_reason": why}
+    return {"engine_id": machine, "forecast_cycle": forecast_cycle, "age": age, "rul_point": max(0.0, point - age),
+            "rul_low": max(0.0, low - age), "rul_high": max(0.0, high - age), "valid": valid, "invalid_reason": why}
+
+
 def forecast_at(fc: dict, machine: int, cycle: int) -> dict:
-    """The forecast the planner has after `cycle` cycles: the newest reading's forecast, or, once the machine's
-    data has ended, its last forecast aged by the cycles run since (ASSUMPTIONS['after_data_ends'])."""
+    """The forecast the planner has after `cycle` cycles (newest reading's forecast, or the last one aged)."""
     f = fc[machine]
-    last = f["last_cycle"]
-    if cycle <= last:
-        i = cycle - 1
-        return {"engine_id": machine, "forecast_cycle": cycle, "age": 0, "rul_point": f["point"][i],
-                "rul_low": f["low"][i], "rul_high": f["high"][i], "valid": f["valid"][i], "invalid_reason": f["why"][i]}
-    i, age = last - 1, cycle - last
-    return {"engine_id": machine, "forecast_cycle": last, "age": age, "rul_point": max(0.0, f["point"][i] - age),
-            "rul_low": max(0.0, f["low"][i] - age), "rul_high": max(0.0, f["high"][i] - age), "valid": f["valid"][i],
-            "invalid_reason": f["why"][i]}
+    i = min(cycle, f["last_cycle"]) - 1
+    return aged_forecast(machine, i + 1, f["point"][i], f["low"][i], f["high"][i], f["valid"][i], f["why"][i], cycle)
 
 
 def forecast_table(rolling: pd.DataFrame) -> dict:
@@ -106,6 +113,42 @@ def forecast_table(rolling: pd.DataFrame) -> dict:
                        "high": g.rul_high.to_numpy(float), "valid": g.valid.to_numpy(bool),
                        "why": g.invalid_reason.astype(str).to_numpy()}
     return out
+
+
+ACTIVE_ORDER = ("open", "done", "due")     # orders that hold a crew on their day ("due": recommended, shadow mode)
+
+
+def plan_day(k: int, c: int, cand: pd.DataFrame, orders: dict, threshold: float = C.ALERT_THRESHOLD,
+             crews: int = C.CREWS_PER_DAY, days: int = C.HORIZON_DAYS, cpd: int = C.CYCLES_PER_DAY,
+             late_w: int = C.LATE_WEIGHT, early_w: int = C.EARLY_WEIGHT, unserved_w: int = C.UNSERVED_WEIGHT):
+    """One planning step at the start of day k (after c cycles), shared by the Phase 6 replay and the Phase 7 flow.
+    cand: forecasts (from aged_forecast) of running engines without a work order. Flags them on the lower bound,
+    schedules the new alerts with CP-SAT into the crews left over the next `days` days, re-checks the plan, and
+    adds the new orders to `orders` (status "open"). Returns (new [(engine, day offset)], log entries)."""
+    log = []
+    flagged = flag_engines(cand, threshold)
+    for _, r in flagged[flagged.risk == "invalid forecast"].iterrows():
+        log.append({"day": k, "event": "invalid forecast", "engine_id": int(r.engine_id), "detail": r.reason})
+    flagged = flagged[flagged.risk != "invalid forecast"]
+    if flagged.empty:
+        return [], log
+    if set(flagged.engine_id.astype(int)) & set(orders):
+        raise ValueError("an engine that already has a work order was flagged again")
+    booked = {d: sum(1 for o in orders.values() if o["day"] == k + d and o["status"] in ACTIVE_ORDER)
+              for d in range(days)}
+    status, plan, obj = schedule(flagged, days, crews, cpd, booked, late_w, early_w, unserved_w)
+    problems = check_plan(flagged, plan, days, crews, booked)
+    if status not in ("OPTIMAL", "FEASIBLE") or problems:
+        raise RuntimeError(f"day {k}: schedule {status}, violations {problems}")
+    log.append({"day": k, "event": "schedule", "status": status, "objective": obj, "flagged": len(flagged),
+                "booked": len(plan), "unserved": len(flagged) - len(plan)})
+    info = flagged.set_index("engine_id")
+    for m, d in plan:
+        r = info.loc[m]
+        orders[m] = {"engine_id": m, "created_day": k, "created_cycle": c, "day": k + d, "service_cycle": (k + d) * cpd,
+                     "rul_low": float(r.rul_low), "rul_point": float(r.rul_point), "forecast_cycle": int(r.forecast_cycle),
+                     "forecast_age": int(r.age), "risk": r.risk, "reason": r.reason, "status": "open"}
+    return plan, log
 
 
 def predictive(lives: dict, fc: dict, threshold: float = C.ALERT_THRESHOLD, crews: int = C.CREWS_PER_DAY,
@@ -138,27 +181,9 @@ def predictive(lives: dict, fc: dict, threshold: float = C.ALERT_THRESHOLD, crew
         cand = pd.DataFrame([forecast_at(fc, m, c) for m in lives if alive[m] and m not in orders])  # 3) plan
         if cand.empty:
             continue
-        flagged = flag_engines(cand, threshold)
-        bad = flagged[flagged.risk == "invalid forecast"]
-        for _, r in bad.iterrows():
-            log.append({"day": k, "event": "invalid forecast", "engine_id": int(r.engine_id), "detail": r.reason})
-        flagged = flagged[flagged.risk != "invalid forecast"]
-        if flagged.empty:
-            continue
-        booked = {d: sum(1 for o in orders.values() if o["day"] == k + d and o["status"] in ("open", "done"))
-                  for d in range(days)}
-        status, plan, obj = schedule(flagged, days, crews, cpd, booked, late_w, early_w, unserved_w)
-        problems = check_plan(flagged, plan, days, crews, booked)
-        if status not in ("OPTIMAL", "FEASIBLE") or problems:
-            raise RuntimeError(f"day {k}: schedule {status}, violations {problems}")
-        log.append({"day": k, "event": "schedule", "status": status, "objective": obj, "flagged": len(flagged),
-                    "booked": len(plan), "unserved": len(flagged) - len(plan)})
-        info = flagged.set_index("engine_id")
+        plan, entries = plan_day(k, c, cand, orders, threshold, crews, days, cpd, late_w, early_w, unserved_w)
+        log += entries
         for m, d in plan:
-            r = info.loc[m]
-            orders[m] = {"engine_id": m, "created_day": k, "created_cycle": c, "day": k + d, "service_cycle": (k + d) * cpd,
-                         "rul_low": float(r.rul_low), "rul_point": float(r.rul_point), "forecast_cycle": int(r.forecast_cycle),
-                         "forecast_age": int(r.age), "risk": r.risk, "reason": r.reason, "status": "open"}
             if d == 0:
                 serve(m)
     for m in lives:                                                           # anything left (cannot happen: all fail)
