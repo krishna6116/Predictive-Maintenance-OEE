@@ -66,3 +66,36 @@ jobs:
         run: python -m maintenance.verify_phase6
       - name: Committed files are unchanged by the run
         run: git diff --exit-code -- features/ pipeline/sensor_limits.json models/ maintenance/ docs/MODEL_METRICS.md docs/MODEL_METRICS_PHASE5.md docs/MODEL_METRICS_PHASE5B.md docs/MAINTENANCE_OEE.md
+
+  # Phase 7 on a clean Linux machine: the Prefect flow replays shifts in a fresh database (Prefect's test harness,
+  # no server) with the committed flow predictions, and the independent verifier re-checks the committed replay.
+  # The exact model re-run needs the OS that published the model (Windows); here the predictions are replayed.
+  phase7:
+    runs-on: ubuntu-24.04
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: ci
+          POSTGRES_PASSWORD: ci-only-password
+          POSTGRES_DB: pdm
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U ci" --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      DATABASE_URL: postgresql+psycopg://ci:ci-only-password@localhost:5432/pdm
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.14"
+      - run: pip install torch==2.14.1 --index-url https://download.pytorch.org/whl/cpu
+      - run: pip install -r requirements-lock.txt
+      - name: Download NASA C-MAPSS and check it against the pinned checksums
+        run: python -m pipeline.download_data
+      - name: Flow and monitoring tests (retry, resume, re-run, invalid forecasts, drift flag, label timing)
+        run: pytest -q tests/test_flow.py tests/test_monitoring.py
+      - name: Phase 7 verification, including a fresh replay of the first 150 shifts that must reproduce the committed rows
+        run: python -m pipeline.verify_phase7 --replay 150
+      - name: Committed files are unchanged by the run
+        run: git diff --exit-code -- pipeline/ docs/MONITORING.md
