@@ -1,0 +1,127 @@
+{
+  "shifts": 484,
+  "runs": 968,
+  "forecasts": 29692,
+  "invalid_forecasts": 0,
+  "work_orders": 198,
+  "drift_false_alarm_rate_test": 0.11643835616438356,
+  "datasets": {
+    "FD001": {
+      "runs": 484,
+      "first_label_shift": 141,
+      "all_labelled_shift": 341,
+      "rule_active_from_shift": 166,
+      "final_cum": {
+        "rmse": 13.301145719475876,
+        "coverage_90": 0.89,
+        "lower_bound_miss_rate": 0.05
+      },
+      "rolling_while_active": {
+        "rmse_max": 19.280787605559876,
+        "rmse_min": 7.701647110155815,
+        "miss_rate_max": 0.15,
+        "coverage_min": 0.7
+      },
+      "flagged_runs": 15,
+      "flagged_shifts": [
+        134,
+        136,
+        151,
+        165,
+        166,
+        167,
+        168,
+        169,
+        170,
+        171,
+        172,
+        173,
+        174,
+        177,
+        180
+      ],
+      "flag_reasons": {
+        "drift": 6,
+        "rolling RMSE": 10
+      },
+      "work_orders": 98
+    },
+    "FD003": {
+      "runs": 484,
+      "first_label_shift": 137,
+      "all_labelled_shift": 484,
+      "rule_active_from_shift": 185,
+      "final_cum": {
+        "rmse": 12.656307522914739,
+        "coverage_90": 0.89,
+        "lower_bound_miss_rate": 0.06
+      },
+      "rolling_while_active": {
+        "rmse_max": 16.753142055615392,
+        "rmse_min": 7.048167349066842,
+        "miss_rate_max": 0.2,
+        "coverage_min": 0.8
+      },
+      "flagged_runs": 45,
+      "flagged_shifts": [
+        165,
+        166,
+        167,
+        172,
+        173,
+        176,
+        181,
+        182,
+        183,
+        184,
+        185,
+        186,
+        187,
+        188,
+        189,
+        190,
+        191,
+        192,
+        193,
+        194,
+        195,
+        196,
+        197,
+        198,
+        199,
+        200,
+        201,
+        202,
+        203,
+        204,
+        205,
+        206,
+        207,
+        208,
+        209,
+        210,
+        211,
+        212,
+        213,
+        214,
+        215,
+        217,
+        218,
+        219,
+        222
+      ],
+      "flag_reasons": {
+        "drift": 45
+      },
+      "work_orders": 100
+    }
+  },
+  "environment": {
+    "os": "win32",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "python": "3.14.7",
+    "prefect": "3.8.8",
+    "sqlalchemy": "2.0.55",
+    "torch": "2.14.1+cpu"
+  }
+}

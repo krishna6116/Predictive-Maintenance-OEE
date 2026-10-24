@@ -1,0 +1,303 @@
+{
+  "flow_check": {
+    "dataset": "FD001",
+    "sensor": "s4",
+    "clean_runs": 18,
+    "clean_runs_flagged": 0,
+    "clean_runs_drifted": 0,
+    "plus5pct": {
+      "quarantined": 100,
+      "readings": 100,
+      "drifted": [
+        "s4"
+      ],
+      "needs_retraining": true,
+      "other_dataset_flagged": false
+    },
+    "plus1sd": {
+      "quarantined": 0,
+      "readings": 100,
+      "drifted": [
+        "s4"
+      ],
+      "needs_retraining": true
+    }
+  },
+  "test_window_power": {
+    "newest shift: +1%": {
+      "windows": 42,
+      "mean": 0.79421768707483,
+      "min": 0.38095238095238093,
+      "weakest_sensor": "s4",
+      "per_sensor": {
+        "s2": 1.0,
+        "s3": 0.5952380952380952,
+        "s4": 0.38095238095238093,
+        "s7": 0.9285714285714286,
+        "s8": 1.0,
+        "s9": 1.0,
+        "s11": 0.47619047619047616,
+        "s12": 0.9047619047619048,
+        "s13": 1.0,
+        "s14": 1.0,
+        "s15": 0.5,
+        "s17": 0.5952380952380952,
+        "s20": 0.8809523809523809,
+        "s21": 0.8571428571428571
+      }
+    },
+    "newest shift: +2%": {
+      "windows": 42,
+      "mean": 0.9557823129251701,
+      "min": 0.7619047619047619,
+      "weakest_sensor": "s4",
+      "per_sensor": {
+        "s2": 1.0,
+        "s3": 0.9761904761904762,
+        "s4": 0.7619047619047619,
+        "s7": 0.9761904761904762,
+        "s8": 1.0,
+        "s9": 1.0,
+        "s11": 0.7619047619047619,
+        "s12": 0.9761904761904762,
+        "s13": 1.0,
+        "s14": 1.0,
+        "s15": 0.9285714285714286,
+        "s17": 1.0,
+        "s20": 1.0,
+        "s21": 1.0
+      }
+    },
+    "newest shift: +5%": {
+      "windows": 42,
+      "mean": 1.0,
+      "min": 1.0,
+      "weakest_sensor": "s2",
+      "per_sensor": {
+        "s2": 1.0,
+        "s3": 1.0,
+        "s4": 1.0,
+        "s7": 1.0,
+        "s8": 1.0,
+        "s9": 1.0,
+        "s11": 1.0,
+        "s12": 1.0,
+        "s13": 1.0,
+        "s14": 1.0,
+        "s15": 1.0,
+        "s17": 1.0,
+        "s20": 1.0,
+        "s21": 1.0
+      }
+    },
+    "newest shift: +0.5 sd": {
+      "windows": 42,
+      "mean": 0.03571428571428571,
+      "min": 0.0,
+      "weakest_sensor": "s2",
+      "per_sensor": {
+        "s2": 0.0,
+        "s3": 0.0,
+        "s4": 0.023809523809523808,
+        "s7": 0.14285714285714285,
+        "s8": 0.023809523809523808,
+        "s9": 0.0,
+        "s11": 0.0,
+        "s12": 0.19047619047619047,
+        "s13": 0.0,
+        "s14": 0.0,
+        "s15": 0.0,
+        "s17": 0.023809523809523808,
+        "s20": 0.023809523809523808,
+        "s21": 0.07142857142857142
+      }
+    },
+    "newest shift: +1 sd": {
+      "windows": 42,
+      "mean": 0.2670068027210884,
+      "min": 0.023809523809523808,
+      "weakest_sensor": "s2",
+      "per_sensor": {
+        "s2": 0.023809523809523808,
+        "s3": 0.11904761904761904,
+        "s4": 0.047619047619047616,
+        "s7": 0.6428571428571429,
+        "s8": 0.23809523809523808,
+        "s9": 0.19047619047619047,
+        "s11": 0.047619047619047616,
+        "s12": 0.7857142857142857,
+        "s13": 0.14285714285714285,
+        "s14": 0.19047619047619047,
+        "s15": 0.16666666666666666,
+        "s17": 0.11904761904761904,
+        "s20": 0.47619047619047616,
+        "s21": 0.5476190476190477
+      }
+    }
+  },
+  "replay": {
+    "runs_with_drift_test": 438,
+    "runs_with_a_drifted_sensor": 51,
+    "drift_false_alarm_rate": 0.11643835616438356,
+    "by_dataset": {
+      "FD001": 0.031746031746031744,
+      "FD003": 0.18072289156626506
+    },
+    "drifted_runs": [
+      "FD001-test-s0134",
+      "FD001-test-s0136",
+      "FD001-test-s0151",
+      "FD001-test-s0165",
+      "FD001-test-s0166",
+      "FD001-test-s0177",
+      "FD003-test-s0165",
+      "FD003-test-s0166",
+      "FD003-test-s0167",
+      "FD003-test-s0172",
+      "FD003-test-s0173",
+      "FD003-test-s0176",
+      "FD003-test-s0181",
+      "FD003-test-s0182",
+      "FD003-test-s0183",
+      "FD003-test-s0184",
+      "FD003-test-s0185",
+      "FD003-test-s0186",
+      "FD003-test-s0187",
+      "FD003-test-s0188",
+      "FD003-test-s0189",
+      "FD003-test-s0190",
+      "FD003-test-s0191",
+      "FD003-test-s0192",
+      "FD003-test-s0193",
+      "FD003-test-s0194",
+      "FD003-test-s0195",
+      "FD003-test-s0196",
+      "FD003-test-s0197",
+      "FD003-test-s0198",
+      "FD003-test-s0199",
+      "FD003-test-s0200",
+      "FD003-test-s0201",
+      "FD003-test-s0202",
+      "FD003-test-s0203",
+      "FD003-test-s0204",
+      "FD003-test-s0205",
+      "FD003-test-s0206",
+      "FD003-test-s0207",
+      "FD003-test-s0208",
+      "FD003-test-s0209",
+      "FD003-test-s0210",
+      "FD003-test-s0211",
+      "FD003-test-s0212",
+      "FD003-test-s0213",
+      "FD003-test-s0214",
+      "FD003-test-s0215",
+      "FD003-test-s0217",
+      "FD003-test-s0218",
+      "FD003-test-s0219",
+      "FD003-test-s0222"
+    ],
+    "runs_flagged_for_retraining": 60,
+    "runs": 968
+  },
+  "drift_diagnosis": {
+    "by_dataset": {
+      "FD001": {
+        "clean_runs": {
+          "runs": 183,
+          "median_rul_test": 119.5,
+          "median_rul_reference": 107.0,
+          "share_near_failure_test": 0.12628927400845677,
+          "share_near_failure_reference": 0.1987913430542916
+        },
+        "drift_runs": {
+          "runs": 6,
+          "median_rul_test": 62.25,
+          "median_rul_reference": 43.0,
+          "share_near_failure_test": 0.3291685207474681,
+          "share_near_failure_reference": 0.5362138560195445
+        }
+      },
+      "FD003": {
+        "clean_runs": {
+          "runs": 204,
+          "median_rul_test": 137.75,
+          "median_rul_reference": 120.0,
+          "share_near_failure_test": 0.06085604875747557,
+          "share_near_failure_reference": 0.1537277389896635
+        },
+        "drift_runs": {
+          "runs": 45,
+          "median_rul_test": 104.0,
+          "median_rul_reference": 66.5,
+          "share_near_failure_test": 0.04973315078775912,
+          "share_near_failure_reference": 0.4087840841315583
+        }
+      }
+    },
+    "sensor_rul_correlation": {
+      "s2": 0.6803540998065514,
+      "s3": 0.6744944783051818,
+      "s4": 0.7624075814591438,
+      "s7": 0.5405666047628055,
+      "s8": 0.6253486894887299,
+      "s9": 0.5452200918727924,
+      "s11": 0.7891608211614138,
+      "s12": 0.557158148035631,
+      "s13": 0.6251392023317703,
+      "s14": 0.459622670825912,
+      "s15": 0.36159707525621004,
+      "s17": 0.7031448975186161,
+      "s20": 0.3782574374004485,
+      "s21": 0.374974339161817
+    },
+    "sensors_by_wear": [
+      "s11",
+      "s4",
+      "s17",
+      "s2",
+      "s3",
+      "s8",
+      "s13",
+      "s12",
+      "s9",
+      "s7",
+      "s14",
+      "s20",
+      "s21",
+      "s15"
+    ],
+    "drift_count_by_sensor": {
+      "s4": 30,
+      "s8": 23,
+      "s13": 21,
+      "s3": 18,
+      "s11": 18,
+      "s17": 16,
+      "s2": 15
+    },
+    "all_drifted_sensors_in_top_wear": true,
+    "top_wear_n": 7
+  },
+  "health_diagnosis": {
+    "FD001": {
+      "first_window": {
+        "median_life": 153.0,
+        "rmse": 19.003288460595595
+      },
+      "other_engines": {
+        "median_life": 209.5,
+        "rmse": 11.43981440995713
+      }
+    },
+    "FD003": {
+      "first_window": {
+        "median_life": 166.5,
+        "rmse": 18.78266981626487
+      },
+      "other_engines": {
+        "median_life": 238.5,
+        "rmse": 10.584445133616045
+      }
+    }
+  }
+}
