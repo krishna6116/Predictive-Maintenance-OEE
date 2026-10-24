@@ -80,9 +80,17 @@ def holm(p) -> np.ndarray:
     return adj
 
 
+MEAN_DECIMALS = 9      # NASA readings have <= 4 decimals; see engine_means
+
+
 def engine_means(readings: pd.DataFrame, sensors=SENSORS) -> pd.DataFrame:
-    """One row per engine: the mean of its readings (missing values skipped)."""
-    return readings.groupby("unit")[list(sensors)].mean()
+    """One row per engine: the mean of its readings (missing values skipped), rounded to MEAN_DECIMALS.
+
+    Rounding matters for the KS test: many engines have exactly equal means (readings have 2-4 decimals), and
+    without it the last binary digit of each mean depends on the order of the additions, which decides how tied
+    values are ordered and moved the KS statistic by a whole step (found by the Phase 7 verifier). Nine decimals
+    keep every digit of the data and make ties exact."""
+    return readings.groupby("unit")[list(sensors)].mean().round(MEAN_DECIMALS)
 
 
 def drift(recent: pd.DataFrame, reference: pd.DataFrame, alpha: float, sensors=SENSORS) -> pd.DataFrame:

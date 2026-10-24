@@ -150,7 +150,8 @@ def main() -> int:
                                "labelled engines > multiplier x validation RMSE OR their lower-bound miss rate > limit; "
                                "the health parts need >= 20 labelled engines",
             "combined_false_alarm_upper_estimate": 1 - float(np.prod([1 - x for x in fa]))}
-    M.RULE_FILE.write_text(json.dumps(rule, indent=2), encoding="utf-8")
+    out = Path(sys.argv[1]) if len(sys.argv) > 1 else M.RULE_FILE      # a path argument = dry run (robustness checks)
+    out.write_text(json.dumps(rule, indent=2), encoding="utf-8")
     print(f"drift: alpha {d['alpha']} -> false alarms {d['false_alarm_chosen']:.2%} of {d['runs']} clean runs "
           f"({ {k: f'{v:.2%}' for k, v in d['false_alarm_chosen_by_dataset'].items()} }); by alpha "
           f"{ {k: f'{v:.1%}' for k, v in d['false_alarm_by_alpha'].items()} }")
@@ -161,7 +162,7 @@ def main() -> int:
     for ds, r in h["reference"].items():
         print(f"   {ds}: reference RMSE {r['reference_rmse']:.2f}, LOEO miss rate {r['loeo_miss_rate_testlike']:.1%}, "
               f"coverage {r['loeo_coverage_testlike']:.1%}")
-    print(f"combined false-alarm estimate {rule['combined_false_alarm_upper_estimate']:.2%}; wrote {M.RULE_FILE}")
+    print(f"combined false-alarm estimate {rule['combined_false_alarm_upper_estimate']:.2%}; wrote {out}")
     return 0
 
 

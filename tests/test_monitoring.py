@@ -113,3 +113,24 @@ def test_committed_rule_was_chosen_within_budgets():
     # shift is shifted (the 3 misses are late FD003 windows with 15-19 validation engines, Holm p 0.011-0.014)
     assert r["drift"]["power"]["persistent: +5%"]["min"] == 1.0 and r["drift"]["power"]["newest shift: +5%"]["min"] >= 0.99
     assert r["combined_false_alarm_upper_estimate"] <= 0.05
+
+
+def test_engine_means_make_ties_exact_whatever_the_addition_order():
+    # 0.1 + 0.2 + 0.3 and 0.3 + 0.2 + 0.1 differ in the last binary digit; rounded means must not
+    a = pd.DataFrame({"unit": [1, 1, 1, 2, 2, 2], "s4": [0.1, 0.2, 0.3, 0.3, 0.2, 0.1]})
+    m = M.engine_means(a, ["s4"])
+    assert m.loc[1, "s4"] == m.loc[2, "s4"]
+    rng = np.random.default_rng(3)
+    vals = np.round(rng.normal(100, 1, size=(40, 3)), 2)      # 2-decimal readings, like NASA's
+    fwd = pd.DataFrame({"unit": np.repeat(range(40), 3), "s4": vals.ravel()})
+    rev = pd.DataFrame({"unit": np.repeat(range(40), 3), "s4": vals[:, ::-1].ravel()})
+    ref = pd.DataFrame({"unit": np.repeat(range(100, 140), 3), "s4": np.round(rng.normal(100, 1, size=120), 2)})
+    d1, d2 = M.drift(fwd, ref, 0.01, ["s4"]), M.drift(rev, ref, 0.01, ["s4"])
+    assert d1.ks_stat.iloc[0] == d2.ks_stat.iloc[0]
+
+
+def test_rounding_fix_does_not_change_the_pre_registered_rule():
+    a, b = M.load_rule(), M.load_rule(M.RULE_FILE.with_name("monitoring_rule_recheck.json"))
+    for part, key in (("drift", "alpha"), ("drift", "min_drifted_sensors"), ("health", "rmse_multiplier"),
+                      ("health", "miss_rate_limit"), ("health", "min_labelled_engines")):
+        assert a[part][key] == b[part][key]
