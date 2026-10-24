@@ -1,0 +1,30 @@
+{
+  "purpose": "Phase 7b pre-registration, part 1: success criteria and protocol, committed before any Phase 7b modelling, calibration or replay. The rules themselves are chosen later on validation engines only and committed separately (part 2), before any test or FD002/FD004 test data is replayed.",
+  "why": "Phase 7's pre-registered drift test raised false alarms in 11.6% of clean FD001/FD003 test runs (target 5%) because its reference matched engine age but not wear. FD001/FD003 test results have been seen, so the new rules are confirmed on fresh data.",
+  "fresh_confirmation_datasets": ["FD002", "FD004"],
+  "post_hoc_datasets": ["FD001", "FD003"],
+  "frozen_recipe_for_fresh_data": {
+    "model": "the published LSTM recipe (window 40, hidden 64, dropout 0.1, lr 0.003, seed 0); epoch count by early stopping on the dataset's own validation engines with the same function and settings as Phases 5/5b",
+    "split": "80/20 by engine, same function and seed as Phase 3",
+    "interval": "rule E (models/calibration_rule.json), scale factors re-learned on the dataset's validation engines",
+    "operating_conditions": "6 conditions = setting1 rounded to a whole number (checked on FD002/FD004 training data: exactly 6 groups, setting1 spread within a group <= 0.01); every sensor is standardised per condition with means and sds from training engines only",
+    "alerts_and_schedule": "unchanged from Phase 6 (lower bound <= 20, CP-SAT, 7 days, 3 crews)"
+  },
+  "replays": {
+    "synchronized": "every engine starts at cycle 1 on shift 1 (as in Phase 7)",
+    "staggered": "engine e starts on shift 1 + offset_e, offset_e uniform integer 0..150 drawn with numpy default_rng(7) in engine order; labels arrive at offset_e + true failure cycle"
+  },
+  "criteria": {
+    "C1_clean_false_alarms": "on each fresh dataset, in both the synchronized and the staggered clean replay: runs with needs_retraining set <= 5% of all runs",
+    "C2_guide_check": "on each fresh dataset: one shift with +5% added to one sensor of every engine (the guide's test) sets needs_retraining in that shift, with a reason naming that sensor",
+    "C3_persistent_step": "on each fresh dataset (staggered replay): a persistent +1 training-sd shift of one sensor in every engine is flagged (needs_retraining with a reason naming that sensor) within 10 shifts of onset in >= 80% of injections",
+    "C4_gradual_ramp": "on each fresh dataset (staggered replay): a linear ramp of one sensor from 0 to +2 training sd over 50 shifts is flagged before the ramp ends in >= 80% of injections"
+  },
+  "reported_without_pass_fail": [
+    "stuck sensor (one sensor frozen at its last value), noise x3, dropouts (10% missing values): detection rate and delay",
+    "closed loop: executing the recommended services, so serviced engines never fail; how many labels the health rules still receive, and what can be said from censored engines",
+    "FD001/FD003 re-scored with the new rules (post hoc: their test results were already seen)"
+  ],
+  "fault_suite_protocol": "injections into the staggered replay of each fresh dataset: every one of the 14 sensors x onsets at shifts 25, 50, 75, 100, 125, 150 (84 per fault type per dataset). The fault is fleet-wide (every engine reporting from the onset), as in the guide's +5% test: a recalibration or data-feed change, not one engine's broken sensor. Each injection re-runs the validate -> predict (point forecast with the injected inputs) -> drift -> flag steps from the onset onwards, with the same production functions as the flow; a flag counts as a detection only if its reason names the injected sensor.",
+  "honesty": "Every criterion is reported pass or fail as measured. No rule, threshold or window is changed after FD002/FD004 test data are replayed. If a criterion fails, the score reflects it."
+}
