@@ -1,0 +1,519 @@
+{
+  "pre_registered": "chosen on training and validation engines of FD001 and FD003 only; no test file was read. Decision parameters are frozen for FD002/FD004; only the dataset-specific values are re-learned.",
+  "budgets": {
+    "drift": 0.02,
+    "error": 0.015,
+    "miss": 0.015
+  },
+  "drift": {
+    "alpha": 0.05,
+    "k": 2,
+    "m": 3,
+    "alpha_strong": 1e-10,
+    "window_shifts": 3,
+    "min_engines": 15,
+    "false_alarm_chosen": {
+      "FD001 half 0 synchronized": 0.0,
+      "FD001 half 0 staggered": 0.0,
+      "FD001 half 1 synchronized": 0.0,
+      "FD001 half 1 staggered": 0.0,
+      "FD003 half 0 synchronized": 0.00195160031225605,
+      "FD003 half 0 staggered": 0.00993280747881975,
+      "FD003 half 1 synchronized": 0.0029271862422246614,
+      "FD003 half 1 staggered": 0.013927576601671309
+    },
+    "candidates_within_budget": 60,
+    "candidates": 64,
+    "power_chosen": {
+      "step +1 sd within 10": 0.9978991596638656,
+      "ramp to +2 sd within 50": 1.0,
+      "n step +1 sd within 10": 952,
+      "n ramp to +2 sd within 50": 1008
+    },
+    "old_phase7_test_false_alarms_on_same_fleets": {
+      "FD001 half 0": {
+        "synchronized": 0.004686834256497656,
+        "staggered": 0.04686987872828581
+      },
+      "FD001 half 1": {
+        "synchronized": 0.0025962786672436176,
+        "staggered": 0.07945736434108527
+      },
+      "FD003 half 0": {
+        "synchronized": 0.0,
+        "staggered": 0.0011685655857434998
+      },
+      "FD003 half 1": {
+        "synchronized": 0.18477863154043175,
+        "staggered": 0.40083565459610027
+      }
+    },
+    "false_alarm_table": {
+      "alpha 0.05 K1/M1 strong 0.0001": 0.0233983286908078,
+      "alpha 0.05 K1/M1 strong 1e-06": 0.0233983286908078,
+      "alpha 0.05 K1/M1 strong 1e-08": 0.0233983286908078,
+      "alpha 0.05 K1/M1 strong 1e-10": 0.0233983286908078,
+      "alpha 0.05 K2/M3 strong 0.0001": 0.013927576601671309,
+      "alpha 0.05 K2/M3 strong 1e-06": 0.013927576601671309,
+      "alpha 0.05 K2/M3 strong 1e-08": 0.013927576601671309,
+      "alpha 0.05 K2/M3 strong 1e-10": 0.013927576601671309,
+      "alpha 0.05 K3/M5 strong 0.0001": 0.010306406685236769,
+      "alpha 0.05 K3/M5 strong 1e-06": 0.010306406685236769,
+      "alpha 0.05 K3/M5 strong 1e-08": 0.010306406685236769,
+      "alpha 0.05 K3/M5 strong 1e-10": 0.010306406685236769,
+      "alpha 0.05 K4/M6 strong 0.0001": 0.006128133704735376,
+      "alpha 0.05 K4/M6 strong 1e-06": 0.006128133704735376,
+      "alpha 0.05 K4/M6 strong 1e-08": 0.006128133704735376,
+      "alpha 0.05 K4/M6 strong 1e-10": 0.006128133704735376,
+      "alpha 0.01 K1/M1 strong 0.0001": 0.0029271862422246614,
+      "alpha 0.01 K1/M1 strong 1e-06": 0.0029271862422246614,
+      "alpha 0.01 K1/M1 strong 1e-08": 0.0029271862422246614,
+      "alpha 0.01 K1/M1 strong 1e-10": 0.0029271862422246614,
+      "alpha 0.01 K2/M3 strong 0.0001": 0.0018294914013904135,
+      "alpha 0.01 K2/M3 strong 1e-06": 0.0018294914013904135,
+      "alpha 0.01 K2/M3 strong 1e-08": 0.0018294914013904135,
+      "alpha 0.01 K2/M3 strong 1e-10": 0.0018294914013904135,
+      "alpha 0.01 K3/M5 strong 0.0001": 0.0008356545961002785,
+      "alpha 0.01 K3/M5 strong 1e-06": 0.0008356545961002785,
+      "alpha 0.01 K3/M5 strong 1e-08": 0.0008356545961002785,
+      "alpha 0.01 K3/M5 strong 1e-10": 0.0008356545961002785,
+      "alpha 0.01 K4/M6 strong 0.0001": 0.0,
+      "alpha 0.01 K4/M6 strong 1e-06": 0.0,
+      "alpha 0.01 K4/M6 strong 1e-08": 0.0,
+      "alpha 0.01 K4/M6 strong 1e-10": 0.0,
+      "alpha 0.005 K1/M1 strong 0.0001": 0.0014635931211123307,
+      "alpha 0.005 K1/M1 strong 1e-06": 0.0014635931211123307,
+      "alpha 0.005 K1/M1 strong 1e-08": 0.0014635931211123307,
+      "alpha 0.005 K1/M1 strong 1e-10": 0.0014635931211123307,
+      "alpha 0.005 K2/M3 strong 0.0001": 0.0007317965605561653,
+      "alpha 0.005 K2/M3 strong 1e-06": 0.0007317965605561653,
+      "alpha 0.005 K2/M3 strong 1e-08": 0.0007317965605561653,
+      "alpha 0.005 K2/M3 strong 1e-10": 0.0007317965605561653,
+      "alpha 0.005 K3/M5 strong 0.0001": 0.0,
+      "alpha 0.005 K3/M5 strong 1e-06": 0.0,
+      "alpha 0.005 K3/M5 strong 1e-08": 0.0,
+      "alpha 0.005 K3/M5 strong 1e-10": 0.0,
+      "alpha 0.005 K4/M6 strong 0.0001": 0.0,
+      "alpha 0.005 K4/M6 strong 1e-06": 0.0,
+      "alpha 0.005 K4/M6 strong 1e-08": 0.0,
+      "alpha 0.005 K4/M6 strong 1e-10": 0.0,
+      "alpha 0.001 K1/M1 strong 0.0001": 0.00036589828027808267,
+      "alpha 0.001 K1/M1 strong 1e-06": 0.00036589828027808267,
+      "alpha 0.001 K1/M1 strong 1e-08": 0.00036589828027808267,
+      "alpha 0.001 K1/M1 strong 1e-10": 0.00036589828027808267,
+      "alpha 0.001 K2/M3 strong 0.0001": 0.0,
+      "alpha 0.001 K2/M3 strong 1e-06": 0.0,
+      "alpha 0.001 K2/M3 strong 1e-08": 0.0,
+      "alpha 0.001 K2/M3 strong 1e-10": 0.0,
+      "alpha 0.001 K3/M5 strong 0.0001": 0.0,
+      "alpha 0.001 K3/M5 strong 1e-06": 0.0,
+      "alpha 0.001 K3/M5 strong 1e-08": 0.0,
+      "alpha 0.001 K3/M5 strong 1e-10": 0.0,
+      "alpha 0.001 K4/M6 strong 0.0001": 0.0,
+      "alpha 0.001 K4/M6 strong 1e-06": 0.0,
+      "alpha 0.001 K4/M6 strong 1e-08": 0.0,
+      "alpha 0.001 K4/M6 strong 1e-10": 0.0
+    },
+    "power_table": {
+      "alpha 0.05 K2/M3 strong 0.0001": {
+        "step +1 sd within 10": 0.9978991596638656,
+        "ramp to +2 sd within 50": 1.0,
+        "n step +1 sd within 10": 952,
+        "n ramp to +2 sd within 50": 1008
+      },
+      "alpha 0.05 K2/M3 strong 1e-06": {
+        "step +1 sd within 10": 0.9978991596638656,
+        "ramp to +2 sd within 50": 1.0,
+        "n step +1 sd within 10": 952,
+        "n ramp to +2 sd within 50": 1008
+      },
+      "alpha 0.05 K2/M3 strong 1e-08": {
+        "step +1 sd within 10": 0.9978991596638656,
+        "ramp to +2 sd within 50": 1.0,
+        "n step +1 sd within 10": 952,
+        "n ramp to +2 sd within 50": 1008
+      },
+      "alpha 0.05 K2/M3 strong 1e-10": {
+        "step +1 sd within 10": 0.9978991596638656,
+        "ramp to +2 sd within 50": 1.0,
+        "n step +1 sd within 10": 952,
+        "n ramp to +2 sd within 50": 1008
+      },
+      "alpha 0.05 K3/M5 strong 0.0001": {
+        "step +1 sd within 10": 0.9863445378151261,
+        "ramp to +2 sd within 50": 1.0,
+        "n step +1 sd within 10": 952,
+        "n ramp to +2 sd within 50": 1008
+      },
+      "alpha 0.05 K3/M5 strong 1e-06": {
+        "step +1 sd within 10": 0.9705882352941176,
+        "ramp to +2 sd within 50": 1.0,
+        "n step +1 sd within 10": 952,
+        "n ramp to +2 sd within 50": 1008
+      },
+      "alpha 0.05 K3/M5 strong 1e-08": {
+        "step +1 sd within 10": 0.9537815126050421,
+        "ramp to +2 sd within 50": 1.0,
+        "n step +1 sd within 10": 952,
+        "n ramp to +2 sd within 50": 1008
+      },
+      "alpha 0.05 K3/M5 strong 1e-10": {
+        "step +1 sd within 10": 0.9453781512605042,
+        "ramp to +2 sd within 50": 1.0,
+        "n step +1 sd within 10": 952,
+        "n ramp to +2 sd within 50": 1008
+      },
+      "alpha 0.05 K4/M6 strong 0.0001": {
+        "step +1 sd within 10": 0.9831932773109243,
+        "ramp to +2 sd within 50": 1.0,
+        "n step +1 sd within 10": 952,
+        "n ramp to +2 sd within 50": 1008
+      },
+      "alpha 0.05 K4/M6 strong 1e-06": {
+        "step +1 sd within 10": 0.967436974789916,
+        "ramp to +2 sd within 50": 1.0,
+        "n step +1 sd within 10": 952,
+        "n ramp to +2 sd within 50": 1008
+      },
+      "alpha 0.05 K4/M6 strong 1e-08": {
+        "step +1 sd within 10": 0.9506302521008403,
+        "ramp to +2 sd within 50": 1.0,
+        "n step +1 sd within 10": 952,
+        "n ramp to +2 sd within 50": 1008
+      },
+      "alpha 0.05 K4/M6 strong 1e-10": {
+        "step +1 sd within 10": 0.9422268907563025,
+        "ramp to +2 sd within 50": 1.0,
+        "n step +1 sd within 10": 952,
+        "n ramp to +2 sd within 50": 1008
+      },
+      "alpha 0.01 K1/M1 strong 0.0001": {
+        "step +1 sd within 10": 0.9957983193277311,
+        "ramp to +2 sd within 50": 1.0,
+        "n step +1 sd within 10": 952,
+        "n ramp to +2 sd within 50": 1008
+      },
+      "alpha 0.01 K1/M1 strong 1e-06": {
+        "step +1 sd within 10": 0.9957983193277311,
+        "ramp to +2 sd within 50": 1.0,
+        "n step +1 sd within 10": 952,
+        "n ramp to +2 sd within 50": 1008
+      },
+      "alpha 0.01 K1/M1 strong 1e-08": {
+        "step +1 sd within 10": 0.9957983193277311,
+        "ramp to +2 sd within 50": 1.0,
+        "n step +1 sd within 10": 952,
+        "n ramp to +2 sd within 50": 1008
+      },
+      "alpha 0.01 K1/M1 strong 1e-10": {
+        "step +1 sd within 10": 0.9957983193277311,
+        "ramp to +2 sd within 50": 1.0,
+        "n step +1 sd within 10": 952,
+        "n ramp to +2 sd within 50": 1008
+      },
+      "alpha 0.01 K2/M3 strong 0.0001": {
+        "step +1 sd within 10": 0.9894957983193278,
+        "ramp to +2 sd within 50": 1.0,
+        "n step +1 sd within 10": 952,
+        "n ramp to +2 sd within 50": 1008
+      },
+      "alpha 0.01 K2/M3 strong 1e-06": {
+        "step +1 sd within 10": 0.9884453781512605,
+        "ramp to +2 sd within 50": 1.0,
+        "n step +1 sd within 10": 952,
+        "n ramp to +2 sd within 50": 1008
+      },
+      "alpha 0.01 K2/M3 strong 1e-08": {
+        "step +1 sd within 10": 0.9884453781512605,
+        "ramp to +2 sd within 50": 1.0,
+        "n step +1 sd within 10": 952,
+        "n ramp to +2 sd within 50": 1008
+      },
+      "alpha 0.01 K2/M3 strong 1e-10": {
+        "step +1 sd within 10": 0.9884453781512605,
+        "ramp to +2 sd within 50": 1.0,
+        "n step +1 sd within 10": 952,
+        "n ramp to +2 sd within 50": 1008
+      },
+      "alpha 0.01 K3/M5 strong 0.0001": {
+        "step +1 sd within 10": 0.9800420168067226,
+        "ramp to +2 sd within 50": 1.0,
+        "n step +1 sd within 10": 952,
+        "n ramp to +2 sd within 50": 1008
+      },
+      "alpha 0.01 K3/M5 strong 1e-06": {
+        "step +1 sd within 10": 0.9642857142857143,
+        "ramp to +2 sd within 50": 1.0,
+        "n step +1 sd within 10": 952,
+        "n ramp to +2 sd within 50": 1008
+      },
+      "alpha 0.01 K3/M5 strong 1e-08": {
+        "step +1 sd within 10": 0.9474789915966386,
+        "ramp to +2 sd within 50": 1.0,
+        "n step +1 sd within 10": 952,
+        "n ramp to +2 sd within 50": 1008
+      },
+      "alpha 0.01 K3/M5 strong 1e-10": {
+        "step +1 sd within 10": 0.9390756302521008,
+        "ramp to +2 sd within 50": 1.0,
+        "n step +1 sd within 10": 952,
+        "n ramp to +2 sd within 50": 1008
+      },
+      "alpha 0.01 K4/M6 strong 0.0001": {
+        "step +1 sd within 10": 0.9779411764705882,
+        "ramp to +2 sd within 50": 1.0,
+        "n step +1 sd within 10": 952,
+        "n ramp to +2 sd within 50": 1008
+      },
+      "alpha 0.01 K4/M6 strong 1e-06": {
+        "step +1 sd within 10": 0.9621848739495799,
+        "ramp to +2 sd within 50": 1.0,
+        "n step +1 sd within 10": 952,
+        "n ramp to +2 sd within 50": 1008
+      },
+      "alpha 0.01 K4/M6 strong 1e-08": {
+        "step +1 sd within 10": 0.9453781512605042,
+        "ramp to +2 sd within 50": 1.0,
+        "n step +1 sd within 10": 952,
+        "n ramp to +2 sd within 50": 1008
+      },
+      "alpha 0.01 K4/M6 strong 1e-10": {
+        "step +1 sd within 10": 0.9369747899159664,
+        "ramp to +2 sd within 50": 1.0,
+        "n step +1 sd within 10": 952,
+        "n ramp to +2 sd within 50": 1008
+      },
+      "alpha 0.005 K1/M1 strong 0.0001": {
+        "step +1 sd within 10": 0.990546218487395,
+        "ramp to +2 sd within 50": 1.0,
+        "n step +1 sd within 10": 952,
+        "n ramp to +2 sd within 50": 1008
+      },
+      "alpha 0.005 K1/M1 strong 1e-06": {
+        "step +1 sd within 10": 0.990546218487395,
+        "ramp to +2 sd within 50": 1.0,
+        "n step +1 sd within 10": 952,
+        "n ramp to +2 sd within 50": 1008
+      },
+      "alpha 0.005 K1/M1 strong 1e-08": {
+        "step +1 sd within 10": 0.990546218487395,
+        "ramp to +2 sd within 50": 1.0,
+        "n step +1 sd within 10": 952,
+        "n ramp to +2 sd within 50": 1008
+      },
+      "alpha 0.005 K1/M1 strong 1e-10": {
+        "step +1 sd within 10": 0.990546218487395,
+        "ramp to +2 sd within 50": 1.0,
+        "n step +1 sd within 10": 952,
+        "n ramp to +2 sd within 50": 1008
+      },
+      "alpha 0.005 K2/M3 strong 0.0001": {
+        "step +1 sd within 10": 0.9873949579831933,
+        "ramp to +2 sd within 50": 1.0,
+        "n step +1 sd within 10": 952,
+        "n ramp to +2 sd within 50": 1008
+      },
+      "alpha 0.005 K2/M3 strong 1e-06": {
+        "step +1 sd within 10": 0.9863445378151261,
+        "ramp to +2 sd within 50": 1.0,
+        "n step +1 sd within 10": 952,
+        "n ramp to +2 sd within 50": 1008
+      },
+      "alpha 0.005 K2/M3 strong 1e-08": {
+        "step +1 sd within 10": 0.9863445378151261,
+        "ramp to +2 sd within 50": 1.0,
+        "n step +1 sd within 10": 952,
+        "n ramp to +2 sd within 50": 1008
+      },
+      "alpha 0.005 K2/M3 strong 1e-10": {
+        "step +1 sd within 10": 0.9863445378151261,
+        "ramp to +2 sd within 50": 1.0,
+        "n step +1 sd within 10": 952,
+        "n ramp to +2 sd within 50": 1008
+      },
+      "alpha 0.005 K3/M5 strong 0.0001": {
+        "step +1 sd within 10": 0.9789915966386554,
+        "ramp to +2 sd within 50": 1.0,
+        "n step +1 sd within 10": 952,
+        "n ramp to +2 sd within 50": 1008
+      },
+      "alpha 0.005 K3/M5 strong 1e-06": {
+        "step +1 sd within 10": 0.9632352941176471,
+        "ramp to +2 sd within 50": 1.0,
+        "n step +1 sd within 10": 952,
+        "n ramp to +2 sd within 50": 1008
+      },
+      "alpha 0.005 K3/M5 strong 1e-08": {
+        "step +1 sd within 10": 0.9464285714285714,
+        "ramp to +2 sd within 50": 1.0,
+        "n step +1 sd within 10": 952,
+        "n ramp to +2 sd within 50": 1008
+      },
+      "alpha 0.005 K3/M5 strong 1e-10": {
+        "step +1 sd within 10": 0.9380252100840336,
+        "ramp to +2 sd within 50": 1.0,
+        "n step +1 sd within 10": 952,
+        "n ramp to +2 sd within 50": 1008
+      },
+      "alpha 0.005 K4/M6 strong 0.0001": {
+        "step +1 sd within 10": 0.9737394957983193,
+        "ramp to +2 sd within 50": 1.0,
+        "n step +1 sd within 10": 952,
+        "n ramp to +2 sd within 50": 1008
+      },
+      "alpha 0.005 K4/M6 strong 1e-06": {
+        "step +1 sd within 10": 0.957983193277311,
+        "ramp to +2 sd within 50": 1.0,
+        "n step +1 sd within 10": 952,
+        "n ramp to +2 sd within 50": 1008
+      },
+      "alpha 0.005 K4/M6 strong 1e-08": {
+        "step +1 sd within 10": 0.9411764705882353,
+        "ramp to +2 sd within 50": 1.0,
+        "n step +1 sd within 10": 952,
+        "n ramp to +2 sd within 50": 1008
+      },
+      "alpha 0.005 K4/M6 strong 1e-10": {
+        "step +1 sd within 10": 0.9327731092436975,
+        "ramp to +2 sd within 50": 1.0,
+        "n step +1 sd within 10": 952,
+        "n ramp to +2 sd within 50": 1008
+      },
+      "alpha 0.001 K1/M1 strong 0.0001": {
+        "step +1 sd within 10": 0.9852941176470589,
+        "ramp to +2 sd within 50": 1.0,
+        "n step +1 sd within 10": 952,
+        "n ramp to +2 sd within 50": 1008
+      },
+      "alpha 0.001 K1/M1 strong 1e-06": {
+        "step +1 sd within 10": 0.9852941176470589,
+        "ramp to +2 sd within 50": 1.0,
+        "n step +1 sd within 10": 952,
+        "n ramp to +2 sd within 50": 1008
+      },
+      "alpha 0.001 K1/M1 strong 1e-08": {
+        "step +1 sd within 10": 0.9852941176470589,
+        "ramp to +2 sd within 50": 1.0,
+        "n step +1 sd within 10": 952,
+        "n ramp to +2 sd within 50": 1008
+      },
+      "alpha 0.001 K1/M1 strong 1e-10": {
+        "step +1 sd within 10": 0.9852941176470589,
+        "ramp to +2 sd within 50": 1.0,
+        "n step +1 sd within 10": 952,
+        "n ramp to +2 sd within 50": 1008
+      },
+      "alpha 0.001 K2/M3 strong 0.0001": {
+        "step +1 sd within 10": 0.9726890756302521,
+        "ramp to +2 sd within 50": 1.0,
+        "n step +1 sd within 10": 952,
+        "n ramp to +2 sd within 50": 1008
+      },
+      "alpha 0.001 K2/M3 strong 1e-06": {
+        "step +1 sd within 10": 0.9705882352941176,
+        "ramp to +2 sd within 50": 1.0,
+        "n step +1 sd within 10": 952,
+        "n ramp to +2 sd within 50": 1008
+      },
+      "alpha 0.001 K2/M3 strong 1e-08": {
+        "step +1 sd within 10": 0.9695378151260504,
+        "ramp to +2 sd within 50": 1.0,
+        "n step +1 sd within 10": 952,
+        "n ramp to +2 sd within 50": 1008
+      },
+      "alpha 0.001 K2/M3 strong 1e-10": {
+        "step +1 sd within 10": 0.9695378151260504,
+        "ramp to +2 sd within 50": 1.0,
+        "n step +1 sd within 10": 952,
+        "n ramp to +2 sd within 50": 1008
+      },
+      "alpha 0.001 K3/M5 strong 0.0001": {
+        "step +1 sd within 10": 0.9642857142857143,
+        "ramp to +2 sd within 50": 1.0,
+        "n step +1 sd within 10": 952,
+        "n ramp to +2 sd within 50": 1008
+      },
+      "alpha 0.001 K3/M5 strong 1e-06": {
+        "step +1 sd within 10": 0.9464285714285714,
+        "ramp to +2 sd within 50": 1.0,
+        "n step +1 sd within 10": 952,
+        "n ramp to +2 sd within 50": 1008
+      },
+      "alpha 0.001 K3/M5 strong 1e-08": {
+        "step +1 sd within 10": 0.9296218487394958,
+        "ramp to +2 sd within 50": 1.0,
+        "n step +1 sd within 10": 952,
+        "n ramp to +2 sd within 50": 1008
+      },
+      "alpha 0.001 K3/M5 strong 1e-10": {
+        "step +1 sd within 10": 0.9212184873949579,
+        "ramp to +2 sd within 50": 1.0,
+        "n step +1 sd within 10": 952,
+        "n ramp to +2 sd within 50": 1008
+      },
+      "alpha 0.001 K4/M6 strong 0.0001": {
+        "step +1 sd within 10": 0.9621848739495799,
+        "ramp to +2 sd within 50": 1.0,
+        "n step +1 sd within 10": 952,
+        "n ramp to +2 sd within 50": 1008
+      },
+      "alpha 0.001 K4/M6 strong 1e-06": {
+        "step +1 sd within 10": 0.9411764705882353,
+        "ramp to +2 sd within 50": 1.0,
+        "n step +1 sd within 10": 952,
+        "n ramp to +2 sd within 50": 1008
+      },
+      "alpha 0.001 K4/M6 strong 1e-08": {
+        "step +1 sd within 10": 0.9233193277310925,
+        "ramp to +2 sd within 50": 1.0,
+        "n step +1 sd within 10": 952,
+        "n ramp to +2 sd within 50": 1008
+      },
+      "alpha 0.001 K4/M6 strong 1e-10": {
+        "step +1 sd within 10": 0.9149159663865546,
+        "ramp to +2 sd within 50": 1.0,
+        "n step +1 sd within 10": 952,
+        "n ramp to +2 sd within 50": 1008
+      }
+    },
+    "fleets": "cross-fitted: models on half A of the training engines, fleet = half B + validation (60 engines); 15 replicates per half and mode; cut-off 25%-95% of life; staggered offsets 0-150; injections in 3 staggered replicates per half"
+  },
+  "health": {
+    "error_ratio_limit": 2.9,
+    "miss_alpha": 0.01,
+    "min_labelled_engines": 20,
+    "false_alarm_error_chosen": {
+      "FD001 half 0": 0.0004,
+      "FD001 half 1": 0.0,
+      "FD003 half 0": 0.0044,
+      "FD003 half 1": 0.0,
+      "FD001 half 0 (life order)": 0.0007317073170731707,
+      "FD001 half 1 (life order)": 0.0,
+      "FD003 half 0 (life order)": 0.011463414634146341,
+      "FD003 half 1 (life order)": 0.0
+    },
+    "false_alarm_miss_chosen": {
+      "FD001": 0.004,
+      "FD003": 0.0124
+    },
+    "error_ratio_median_in_life_order": {
+      "FD001 half 0": 0.9079042939664683,
+      "FD001 half 1": 0.810455516805654,
+      "FD003 half 0": 1.0346024939472986,
+      "FD003 half 1": 0.7977116100648225
+    }
+  },
+  "datasets": {
+    "FD001": {
+      "p0": 0.05089605734767025,
+      "training_engines": 80,
+      "validation_engines": 20
+    },
+    "FD003": {
+      "p0": 0.06620689655172414,
+      "training_engines": 80,
+      "validation_engines": 20
+    }
+  },
+  "combined_false_alarm_upper_estimate": 0.03731846511311909
+}
