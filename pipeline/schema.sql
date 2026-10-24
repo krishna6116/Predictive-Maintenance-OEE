@@ -182,3 +182,8 @@ CREATE TABLE IF NOT EXISTS fact_drift (
     drifted     BOOLEAN NOT NULL,
     PRIMARY KEY (run_id, sensor)
 );
+
+-- ---- Phase 7b: the life-matched health rule (pipeline/monitoring2.py)
+ALTER TABLE fact_model_health ADD COLUMN IF NOT EXISTS error_ratio DOUBLE PRECISION;   -- squared error / expected for these lives
+ALTER TABLE fact_model_health ADD COLUMN IF NOT EXISTS miss_p      DOUBLE PRECISION;   -- binomial p of the lower-bound misses
+ALTER TABLE fact_model_health ALTER COLUMN drifted_sensors DROP NOT NULL;

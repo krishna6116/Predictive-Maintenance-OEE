@@ -513,6 +513,16 @@
       "p0": 0.06620689655172414,
       "training_engines": 80,
       "validation_engines": 20
+    },
+    "FD002": {
+      "p0": 0.0388121546961326,
+      "training_engines": 208,
+      "validation_engines": 52
+    },
+    "FD004": {
+      "p0": 0.04759206798866856,
+      "training_engines": 199,
+      "validation_engines": 50
     }
   },
   "combined_false_alarm_upper_estimate": 0.03731846511311909

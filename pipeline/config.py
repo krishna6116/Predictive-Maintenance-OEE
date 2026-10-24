@@ -24,4 +24,4 @@ CYCLES_PER_SHIFT = 1               # one 8-hour shift = one engine cycle (the Ph
 SERVE_INTERVAL_SECONDS = 600       # demo mode: every 10 minutes stands for one 8-hour shift
 TASK_RETRIES = 3                   # steps that touch the database or files
 TASK_RETRY_DELAY_SECONDS = 10
-MC_SEED_BASE = {"FD001": 1_000_000, "FD003": 2_000_000}   # MC-dropout seed = base + shift (deterministic reruns)
+MC_SEED_BASE = {"FD001": 1_000_000, "FD003": 2_000_000, "FD002": 3_000_000, "FD004": 4_000_000}   # MC-dropout seed = base + shift (deterministic reruns)

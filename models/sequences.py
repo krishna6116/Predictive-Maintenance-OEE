@@ -22,7 +22,11 @@ def scaled_readings(split: str, dataset: str = "FD001") -> pd.DataFrame:
     if split == "train":
         df = add_rul(df)
         df["RUL_true"] = df.groupby("unit")["cycle"].transform("max") - df["cycle"]
-    df = apply_scaler(df, load_json(scaler_file(dataset)))
+    from pipeline.conditions import CONDITION_DATASETS, normalise, stats_file
+    if dataset in CONDITION_DATASETS:      # FD002/FD004: standardised within each operating condition (Phase 7b)
+        df = normalise(df, load_json(stats_file(dataset)))
+    else:
+        df = apply_scaler(df, load_json(scaler_file(dataset)))
     return df.sort_values(["unit", "cycle"]).reset_index(drop=True)
 
 

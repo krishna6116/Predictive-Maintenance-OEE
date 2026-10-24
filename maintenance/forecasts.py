@@ -33,6 +33,9 @@ SOURCES = {
               "val": "models/val_predictions_phase5.csv", "draws": "models/mc_draws_test_phase5.csv"},
     "FD003": {"results": "models/results_phase5b.json", "preds": "models/predictions_phase5b.csv",
               "val": "models/val_predictions_phase5b.csv", "draws": "models/mc_draws_test_phase5b.csv"},
+    # Phase 7b fresh confirmation fleets: the deployed seed-0 LSTM of models/run_fresh.py (frozen FD001 recipe)
+    **{ds: {"results": f"models/results_{ds}.json", "preds": f"models/predictions_{ds}.csv",
+            "val": f"models/val_predictions_{ds}.csv", "draws": f"models/mc_draws_test_{ds}.csv"} for ds in ("FD002", "FD004")},
 }
 ROLLING = "maintenance/forecasts_rolling_{ds}.csv"
 COLUMNS = ["dataset", "engine_id", "cycle", "rul_point", "rul_mc_mean", "rul_mc_std", "k", "rul_low", "rul_high",
