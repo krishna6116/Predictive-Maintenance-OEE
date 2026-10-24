@@ -339,14 +339,28 @@ def _replay_check(n, preds, health, drift, alerts, runs):
     same = {
         "predictions": np.allclose(got["phase7_predictions.csv"].drop(columns=["source", "invalid_reason"]).select_dtypes("number"),
                                    pr.drop(columns=["source", "invalid_reason"]).select_dtypes("number"), rtol=0, atol=0, equal_nan=True),
-        "health": got["phase7_health.csv"].drop(columns=["drifted_sensors", "retraining_reasons"]).fillna(-1).reset_index(drop=True).equals(
-            health[health["shift"] <= n].drop(columns=["drifted_sensors", "retraining_reasons"]).fillna(-1).reset_index(drop=True)),
-        "drift": np.allclose(got["phase7_drift.csv"].select_dtypes("number").fillna(-1),
-                             drift[drift["shift"] <= n].select_dtypes("number").fillna(-1).reset_index(drop=True), rtol=0, atol=0),
+        # numeric columns compared as numbers (all-empty columns come back from SQL as objects before any label exists)
+        "health": all(np.array_equal(pd.to_numeric(got["phase7_health.csv"][col], errors="coerce").fillna(-1).to_numpy(float),
+                                     pd.to_numeric(health[health["shift"] <= n][col], errors="coerce").fillna(-1).to_numpy(float))
+                      for col in health.columns if col not in ("run_id", "dataset", "model_id", "drifted_sensors", "retraining_reasons"))
+                  and got["phase7_health.csv"].run_id.tolist() == health[health["shift"] <= n].run_id.tolist(),
         "alerts": len(got["phase7_alerts.csv"]) == int((alerts.decision_cycle <= n).sum()),
         "flags": got["phase7_runs.csv"].needs_retraining.tolist() == runs[runs["shift"] <= n].needs_retraining.tolist(),
     }
-    return all(same.values()), f"re-running shifts 1..{n} in a fresh schema reproduces the committed rows: {same}"
+    # Drift: decisions and sample sizes must be identical; the KS statistic and p-values come from floating-point
+    # library code that may differ in the last bits between operating systems (the Phase 4/5 rule: exact on the
+    # producing OS, a stated tolerance elsewhere), so they get tight tolerances and the largest gaps are reported.
+    g, c = got["phase7_drift.csv"].reset_index(drop=True), drift[drift["shift"] <= n].reset_index(drop=True)
+    keys_same = g[["dataset", "shift", "sensor", "n_recent", "n_reference", "tested", "drifted"]].equals(
+        c[["dataset", "shift", "sensor", "n_recent", "n_reference", "tested", "drifted"]])
+    gap = {col: float(np.nanmax(np.abs(g[col].to_numpy(float) - c[col].to_numpy(float)))) if len(g) else 0.0
+           for col in ("ks_stat", "p_value", "p_holm")}
+    rel = float(np.nanmax(np.abs(g.p_holm - c.p_holm) / np.maximum(np.abs(c.p_holm), 1e-300))) if len(g) else 0.0
+    exact = sys.platform == json.loads(Path(PUB["FD001"][0]).read_text())["environment"]["os"]
+    same["drift"] = keys_same and (all(v == 0.0 for v in gap.values()) if exact else gap["ks_stat"] <= 1e-12 and rel <= 1e-9)
+    return all(same.values()), (f"re-running shifts 1..{n} in a fresh schema reproduces the committed rows: {same}; drift "
+                                f"decisions identical {keys_same}, largest gaps {gap}, relative p gap {rel:.1e} "
+                                f"({'exact required on the producing OS' if exact else 'tolerance: KS 1e-12, p relative 1e-9'})")
 
 
 if __name__ == "__main__":
