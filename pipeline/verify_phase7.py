@@ -21,6 +21,7 @@ Run:  python -m pipeline.verify_phase7 [--replay N]
 import argparse
 import json
 import math
+import os
 import sys
 from pathlib import Path
 
@@ -43,6 +44,8 @@ RESULTS = []
 def check(ok, msg):
     RESULTS.append(bool(ok))
     print(("PASS " if ok else "FAIL ") + msg)
+    if not ok and os.environ.get("GITHUB_ACTIONS"):
+        print(f"::error title={Path(__file__).stem} check failed::{msg}")   # visible on the run page
 
 
 def read_raw(path):
@@ -347,4 +350,9 @@ def _replay_check(n, preds, health, drift, alerts, runs):
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    try:
+        sys.exit(main())
+    except Exception as exc:
+        if os.environ.get("GITHUB_ACTIONS"):
+            print(f"::error title={Path(__file__).stem} crashed::{type(exc).__name__}: {str(exc)[:900]}")
+        raise
