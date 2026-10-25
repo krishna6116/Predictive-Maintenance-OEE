@@ -97,5 +97,7 @@ jobs:
         run: pytest -q tests/test_flow.py tests/test_monitoring.py
       - name: Phase 7 verification, including a fresh replay of the first 150 shifts that must reproduce the committed rows
         run: python -m pipeline.verify_phase7 --replay 150
+      - name: Phase 7b verification (fresh-fleet criteria, decision rule re-applied, independent KS, fault suite, closed loop)
+        run: python -m pipeline.verify_phase7b
       - name: Committed files are unchanged by the run
-        run: git diff --exit-code -- pipeline/ docs/MONITORING.md
+        run: git diff --exit-code -- pipeline/ docs/MONITORING.md docs/MONITORING_7B.md

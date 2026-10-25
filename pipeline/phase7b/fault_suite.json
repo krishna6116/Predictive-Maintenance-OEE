@@ -1,0 +1,6992 @@
+{
+  "mirror_equivalence": {
+    "dataset": "FD001",
+    "sensor": "s11",
+    "onset": 60,
+    "shifts_compared": 3,
+    "same_flags": true,
+    "max_p_gap": 0.0,
+    "mirror_detected": true,
+    "flow_flags": [
+      false,
+      false,
+      true
+    ]
+  },
+  "FD002": {
+    "mirror_self_check_max_diff": 0.0,
+    "step": {
+      "injections": 84,
+      "testable": 84,
+      "detected": 84,
+      "rate": 1.0,
+      "median_delay": 2.0,
+      "by_sensor": {
+        "s11": 1.0,
+        "s12": 1.0,
+        "s13": 1.0,
+        "s14": 1.0,
+        "s15": 1.0,
+        "s17": 1.0,
+        "s2": 1.0,
+        "s20": 1.0,
+        "s21": 1.0,
+        "s3": 1.0,
+        "s4": 1.0,
+        "s7": 1.0,
+        "s8": 1.0,
+        "s9": 1.0
+      },
+      "rows": [
+        {
+          "sensor": "s2",
+          "onset": 25,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s2",
+          "onset": 50,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s2",
+          "onset": 75,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s2",
+          "onset": 100,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s2",
+          "onset": 125,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s2",
+          "onset": 150,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s3",
+          "onset": 25,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s3",
+          "onset": 50,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s3",
+          "onset": 75,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s3",
+          "onset": 100,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s3",
+          "onset": 125,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s3",
+          "onset": 150,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s4",
+          "onset": 25,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s4",
+          "onset": 50,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s4",
+          "onset": 75,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s4",
+          "onset": 100,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s4",
+          "onset": 125,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s4",
+          "onset": 150,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s7",
+          "onset": 25,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s7",
+          "onset": 50,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s7",
+          "onset": 75,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s7",
+          "onset": 100,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s7",
+          "onset": 125,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s7",
+          "onset": 150,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s8",
+          "onset": 25,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s8",
+          "onset": 50,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s8",
+          "onset": 75,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s8",
+          "onset": 100,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s8",
+          "onset": 125,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s8",
+          "onset": 150,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s9",
+          "onset": 25,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s9",
+          "onset": 50,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s9",
+          "onset": 75,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s9",
+          "onset": 100,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s9",
+          "onset": 125,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s9",
+          "onset": 150,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s11",
+          "onset": 25,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s11",
+          "onset": 50,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s11",
+          "onset": 75,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s11",
+          "onset": 100,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s11",
+          "onset": 125,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s11",
+          "onset": 150,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s12",
+          "onset": 25,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s12",
+          "onset": 50,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s12",
+          "onset": 75,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s12",
+          "onset": 100,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s12",
+          "onset": 125,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s12",
+          "onset": 150,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s13",
+          "onset": 25,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s13",
+          "onset": 50,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s13",
+          "onset": 75,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s13",
+          "onset": 100,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s13",
+          "onset": 125,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s13",
+          "onset": 150,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s14",
+          "onset": 25,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s14",
+          "onset": 50,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s14",
+          "onset": 75,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s14",
+          "onset": 100,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s14",
+          "onset": 125,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s14",
+          "onset": 150,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s15",
+          "onset": 25,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s15",
+          "onset": 50,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s15",
+          "onset": 75,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s15",
+          "onset": 100,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s15",
+          "onset": 125,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s15",
+          "onset": 150,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s17",
+          "onset": 25,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s17",
+          "onset": 50,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s17",
+          "onset": 75,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s17",
+          "onset": 100,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s17",
+          "onset": 125,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s17",
+          "onset": 150,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s20",
+          "onset": 25,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s20",
+          "onset": 50,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s20",
+          "onset": 75,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s20",
+          "onset": 100,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s20",
+          "onset": 125,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s20",
+          "onset": 150,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s21",
+          "onset": 25,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s21",
+          "onset": 50,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s21",
+          "onset": 75,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s21",
+          "onset": 100,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s21",
+          "onset": 125,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s21",
+          "onset": 150,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        }
+      ]
+    },
+    "ramp": {
+      "injections": 84,
+      "testable": 84,
+      "detected": 84,
+      "rate": 1.0,
+      "median_delay": 8.0,
+      "by_sensor": {
+        "s11": 1.0,
+        "s12": 1.0,
+        "s13": 1.0,
+        "s14": 1.0,
+        "s15": 1.0,
+        "s17": 1.0,
+        "s2": 1.0,
+        "s20": 1.0,
+        "s21": 1.0,
+        "s3": 1.0,
+        "s4": 1.0,
+        "s7": 1.0,
+        "s8": 1.0,
+        "s9": 1.0
+      },
+      "rows": [
+        {
+          "sensor": "s2",
+          "onset": 25,
+          "detected": true,
+          "delay": 5,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s2",
+          "onset": 50,
+          "detected": true,
+          "delay": 8,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s2",
+          "onset": 75,
+          "detected": true,
+          "delay": 6,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s2",
+          "onset": 100,
+          "detected": true,
+          "delay": 9,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s2",
+          "onset": 125,
+          "detected": true,
+          "delay": 8,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s2",
+          "onset": 150,
+          "detected": true,
+          "delay": 8,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s3",
+          "onset": 25,
+          "detected": true,
+          "delay": 6,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s3",
+          "onset": 50,
+          "detected": true,
+          "delay": 7,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s3",
+          "onset": 75,
+          "detected": true,
+          "delay": 8,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s3",
+          "onset": 100,
+          "detected": true,
+          "delay": 8,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s3",
+          "onset": 125,
+          "detected": true,
+          "delay": 9,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s3",
+          "onset": 150,
+          "detected": true,
+          "delay": 9,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s4",
+          "onset": 25,
+          "detected": true,
+          "delay": 9,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s4",
+          "onset": 50,
+          "detected": true,
+          "delay": 9,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s4",
+          "onset": 75,
+          "detected": true,
+          "delay": 7,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s4",
+          "onset": 100,
+          "detected": true,
+          "delay": 8,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s4",
+          "onset": 125,
+          "detected": true,
+          "delay": 8,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s4",
+          "onset": 150,
+          "detected": true,
+          "delay": 8,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s7",
+          "onset": 25,
+          "detected": true,
+          "delay": 11,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s7",
+          "onset": 50,
+          "detected": true,
+          "delay": 9,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s7",
+          "onset": 75,
+          "detected": true,
+          "delay": 7,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s7",
+          "onset": 100,
+          "detected": true,
+          "delay": 9,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s7",
+          "onset": 125,
+          "detected": true,
+          "delay": 8,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s7",
+          "onset": 150,
+          "detected": true,
+          "delay": 9,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s8",
+          "onset": 25,
+          "detected": true,
+          "delay": 9,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s8",
+          "onset": 50,
+          "detected": true,
+          "delay": 7,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s8",
+          "onset": 75,
+          "detected": true,
+          "delay": 7,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s8",
+          "onset": 100,
+          "detected": true,
+          "delay": 6,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s8",
+          "onset": 125,
+          "detected": true,
+          "delay": 6,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s8",
+          "onset": 150,
+          "detected": true,
+          "delay": 5,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s9",
+          "onset": 25,
+          "detected": true,
+          "delay": 9,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s9",
+          "onset": 50,
+          "detected": true,
+          "delay": 8,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s9",
+          "onset": 75,
+          "detected": true,
+          "delay": 8,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s9",
+          "onset": 100,
+          "detected": true,
+          "delay": 7,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s9",
+          "onset": 125,
+          "detected": true,
+          "delay": 7,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s9",
+          "onset": 150,
+          "detected": true,
+          "delay": 7,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s11",
+          "onset": 25,
+          "detected": true,
+          "delay": 10,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s11",
+          "onset": 50,
+          "detected": true,
+          "delay": 6,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s11",
+          "onset": 75,
+          "detected": true,
+          "delay": 10,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s11",
+          "onset": 100,
+          "detected": true,
+          "delay": 11,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s11",
+          "onset": 125,
+          "detected": true,
+          "delay": 9,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s11",
+          "onset": 150,
+          "detected": true,
+          "delay": 11,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s12",
+          "onset": 25,
+          "detected": true,
+          "delay": 12,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s12",
+          "onset": 50,
+          "detected": true,
+          "delay": 11,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s12",
+          "onset": 75,
+          "detected": true,
+          "delay": 8,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s12",
+          "onset": 100,
+          "detected": true,
+          "delay": 8,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s12",
+          "onset": 125,
+          "detected": true,
+          "delay": 7,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s12",
+          "onset": 150,
+          "detected": true,
+          "delay": 6,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s13",
+          "onset": 25,
+          "detected": true,
+          "delay": 8,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s13",
+          "onset": 50,
+          "detected": true,
+          "delay": 7,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s13",
+          "onset": 75,
+          "detected": true,
+          "delay": 7,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s13",
+          "onset": 100,
+          "detected": true,
+          "delay": 7,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s13",
+          "onset": 125,
+          "detected": true,
+          "delay": 6,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s13",
+          "onset": 150,
+          "detected": true,
+          "delay": 7,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s14",
+          "onset": 25,
+          "detected": true,
+          "delay": 11,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s14",
+          "onset": 50,
+          "detected": true,
+          "delay": 9,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s14",
+          "onset": 75,
+          "detected": true,
+          "delay": 9,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s14",
+          "onset": 100,
+          "detected": true,
+          "delay": 8,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s14",
+          "onset": 125,
+          "detected": true,
+          "delay": 8,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s14",
+          "onset": 150,
+          "detected": true,
+          "delay": 7,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s15",
+          "onset": 25,
+          "detected": true,
+          "delay": 8,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s15",
+          "onset": 50,
+          "detected": true,
+          "delay": 6,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s15",
+          "onset": 75,
+          "detected": true,
+          "delay": 8,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s15",
+          "onset": 100,
+          "detected": true,
+          "delay": 11,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s15",
+          "onset": 125,
+          "detected": true,
+          "delay": 9,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s15",
+          "onset": 150,
+          "detected": true,
+          "delay": 8,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s17",
+          "onset": 25,
+          "detected": true,
+          "delay": 7,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s17",
+          "onset": 50,
+          "detected": true,
+          "delay": 8,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s17",
+          "onset": 75,
+          "detected": true,
+          "delay": 6,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s17",
+          "onset": 100,
+          "detected": true,
+          "delay": 9,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s17",
+          "onset": 125,
+          "detected": true,
+          "delay": 7,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s17",
+          "onset": 150,
+          "detected": true,
+          "delay": 8,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s20",
+          "onset": 25,
+          "detected": true,
+          "delay": 8,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s20",
+          "onset": 50,
+          "detected": true,
+          "delay": 11,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s20",
+          "onset": 75,
+          "detected": true,
+          "delay": 8,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s20",
+          "onset": 100,
+          "detected": true,
+          "delay": 8,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s20",
+          "onset": 125,
+          "detected": true,
+          "delay": 8,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s20",
+          "onset": 150,
+          "detected": true,
+          "delay": 9,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s21",
+          "onset": 25,
+          "detected": true,
+          "delay": 14,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s21",
+          "onset": 50,
+          "detected": true,
+          "delay": 10,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s21",
+          "onset": 75,
+          "detected": true,
+          "delay": 7,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s21",
+          "onset": 100,
+          "detected": true,
+          "delay": 8,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s21",
+          "onset": 125,
+          "detected": true,
+          "delay": 8,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s21",
+          "onset": 150,
+          "detected": true,
+          "delay": 8,
+          "tested": true,
+          "how": "persistent"
+        }
+      ]
+    },
+    "stuck": {
+      "injections": 84,
+      "testable": 84,
+      "detected": 84,
+      "rate": 1.0,
+      "median_delay": 2.0,
+      "by_sensor": {
+        "s11": 1.0,
+        "s12": 1.0,
+        "s13": 1.0,
+        "s14": 1.0,
+        "s15": 1.0,
+        "s17": 1.0,
+        "s2": 1.0,
+        "s20": 1.0,
+        "s21": 1.0,
+        "s3": 1.0,
+        "s4": 1.0,
+        "s7": 1.0,
+        "s8": 1.0,
+        "s9": 1.0
+      },
+      "rows": [
+        {
+          "sensor": "s2",
+          "onset": 25,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s2",
+          "onset": 50,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s2",
+          "onset": 75,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s2",
+          "onset": 100,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s2",
+          "onset": 125,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s2",
+          "onset": 150,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s3",
+          "onset": 25,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s3",
+          "onset": 50,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s3",
+          "onset": 75,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s3",
+          "onset": 100,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s3",
+          "onset": 125,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s3",
+          "onset": 150,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s4",
+          "onset": 25,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s4",
+          "onset": 50,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s4",
+          "onset": 75,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s4",
+          "onset": 100,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s4",
+          "onset": 125,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s4",
+          "onset": 150,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s7",
+          "onset": 25,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s7",
+          "onset": 50,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s7",
+          "onset": 75,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s7",
+          "onset": 100,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s7",
+          "onset": 125,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s7",
+          "onset": 150,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s8",
+          "onset": 25,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s8",
+          "onset": 50,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s8",
+          "onset": 75,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s8",
+          "onset": 100,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s8",
+          "onset": 125,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s8",
+          "onset": 150,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s9",
+          "onset": 25,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s9",
+          "onset": 50,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s9",
+          "onset": 75,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s9",
+          "onset": 100,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s9",
+          "onset": 125,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s9",
+          "onset": 150,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s11",
+          "onset": 25,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s11",
+          "onset": 50,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s11",
+          "onset": 75,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s11",
+          "onset": 100,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s11",
+          "onset": 125,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s11",
+          "onset": 150,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s12",
+          "onset": 25,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s12",
+          "onset": 50,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s12",
+          "onset": 75,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s12",
+          "onset": 100,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s12",
+          "onset": 125,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s12",
+          "onset": 150,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s13",
+          "onset": 25,
+          "detected": true,
+          "delay": 4,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s13",
+          "onset": 50,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s13",
+          "onset": 75,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s13",
+          "onset": 100,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s13",
+          "onset": 125,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s13",
+          "onset": 150,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s14",
+          "onset": 25,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s14",
+          "onset": 50,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s14",
+          "onset": 75,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s14",
+          "onset": 100,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s14",
+          "onset": 125,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s14",
+          "onset": 150,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s15",
+          "onset": 25,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s15",
+          "onset": 50,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s15",
+          "onset": 75,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s15",
+          "onset": 100,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s15",
+          "onset": 125,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s15",
+          "onset": 150,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s17",
+          "onset": 25,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s17",
+          "onset": 50,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s17",
+          "onset": 75,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s17",
+          "onset": 100,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s17",
+          "onset": 125,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s17",
+          "onset": 150,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s20",
+          "onset": 25,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s20",
+          "onset": 50,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s20",
+          "onset": 75,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s20",
+          "onset": 100,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s20",
+          "onset": 125,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s20",
+          "onset": 150,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s21",
+          "onset": 25,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s21",
+          "onset": 50,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s21",
+          "onset": 75,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s21",
+          "onset": 100,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s21",
+          "onset": 125,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s21",
+          "onset": 150,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        }
+      ]
+    },
+    "noise": {
+      "injections": 84,
+      "testable": 84,
+      "detected": 81,
+      "rate": 0.9642857142857143,
+      "median_delay": 3.0,
+      "by_sensor": {
+        "s11": 0.8333333333333334,
+        "s12": 1.0,
+        "s13": 1.0,
+        "s14": 1.0,
+        "s15": 0.8333333333333334,
+        "s17": 1.0,
+        "s2": 1.0,
+        "s20": 1.0,
+        "s21": 1.0,
+        "s3": 1.0,
+        "s4": 1.0,
+        "s7": 0.8333333333333334,
+        "s8": 1.0,
+        "s9": 1.0
+      },
+      "rows": [
+        {
+          "sensor": "s2",
+          "onset": 25,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s2",
+          "onset": 50,
+          "detected": true,
+          "delay": 4,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s2",
+          "onset": 75,
+          "detected": true,
+          "delay": 4,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s2",
+          "onset": 100,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s2",
+          "onset": 125,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s2",
+          "onset": 150,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s3",
+          "onset": 25,
+          "detected": true,
+          "delay": 7,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s3",
+          "onset": 50,
+          "detected": true,
+          "delay": 5,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s3",
+          "onset": 75,
+          "detected": true,
+          "delay": 4,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s3",
+          "onset": 100,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s3",
+          "onset": 125,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s3",
+          "onset": 150,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s4",
+          "onset": 25,
+          "detected": true,
+          "delay": 5,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s4",
+          "onset": 50,
+          "detected": true,
+          "delay": 5,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s4",
+          "onset": 75,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s4",
+          "onset": 100,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s4",
+          "onset": 125,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s4",
+          "onset": 150,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s7",
+          "onset": 25,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s7",
+          "onset": 50,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s7",
+          "onset": 75,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s7",
+          "onset": 100,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s7",
+          "onset": 125,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s7",
+          "onset": 150,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s8",
+          "onset": 25,
+          "detected": true,
+          "delay": 4,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s8",
+          "onset": 50,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s8",
+          "onset": 75,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s8",
+          "onset": 100,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s8",
+          "onset": 125,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s8",
+          "onset": 150,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s9",
+          "onset": 25,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s9",
+          "onset": 50,
+          "detected": true,
+          "delay": 4,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s9",
+          "onset": 75,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s9",
+          "onset": 100,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s9",
+          "onset": 125,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s9",
+          "onset": 150,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s11",
+          "onset": 25,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s11",
+          "onset": 50,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s11",
+          "onset": 75,
+          "detected": true,
+          "delay": 9,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s11",
+          "onset": 100,
+          "detected": true,
+          "delay": 4,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s11",
+          "onset": 125,
+          "detected": true,
+          "delay": 4,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s11",
+          "onset": 150,
+          "detected": true,
+          "delay": 5,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s12",
+          "onset": 25,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s12",
+          "onset": 50,
+          "detected": true,
+          "delay": 4,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s12",
+          "onset": 75,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s12",
+          "onset": 100,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s12",
+          "onset": 125,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s12",
+          "onset": 150,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s13",
+          "onset": 25,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s13",
+          "onset": 50,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s13",
+          "onset": 75,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s13",
+          "onset": 100,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s13",
+          "onset": 125,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s13",
+          "onset": 150,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s14",
+          "onset": 25,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s14",
+          "onset": 50,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s14",
+          "onset": 75,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s14",
+          "onset": 100,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s14",
+          "onset": 125,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s14",
+          "onset": 150,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s15",
+          "onset": 25,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s15",
+          "onset": 50,
+          "detected": true,
+          "delay": 4,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s15",
+          "onset": 75,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s15",
+          "onset": 100,
+          "detected": true,
+          "delay": 4,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s15",
+          "onset": 125,
+          "detected": true,
+          "delay": 4,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s15",
+          "onset": 150,
+          "detected": true,
+          "delay": 4,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s17",
+          "onset": 25,
+          "detected": true,
+          "delay": 9,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s17",
+          "onset": 50,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s17",
+          "onset": 75,
+          "detected": true,
+          "delay": 4,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s17",
+          "onset": 100,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s17",
+          "onset": 125,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s17",
+          "onset": 150,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s20",
+          "onset": 25,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s20",
+          "onset": 50,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s20",
+          "onset": 75,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s20",
+          "onset": 100,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s20",
+          "onset": 125,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s20",
+          "onset": 150,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s21",
+          "onset": 25,
+          "detected": true,
+          "delay": 4,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s21",
+          "onset": 50,
+          "detected": true,
+          "delay": 4,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s21",
+          "onset": 75,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s21",
+          "onset": 100,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s21",
+          "onset": 125,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s21",
+          "onset": 150,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        }
+      ]
+    },
+    "dropout": {
+      "injections": 84,
+      "testable": 84,
+      "detected": 0,
+      "rate": 0.0,
+      "median_delay": null,
+      "by_sensor": {
+        "s11": 0.0,
+        "s12": 0.0,
+        "s13": 0.0,
+        "s14": 0.0,
+        "s15": 0.0,
+        "s17": 0.0,
+        "s2": 0.0,
+        "s20": 0.0,
+        "s21": 0.0,
+        "s3": 0.0,
+        "s4": 0.0,
+        "s7": 0.0,
+        "s8": 0.0,
+        "s9": 0.0
+      },
+      "rows": [
+        {
+          "sensor": "s2",
+          "onset": 25,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s2",
+          "onset": 50,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s2",
+          "onset": 75,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s2",
+          "onset": 100,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s2",
+          "onset": 125,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s2",
+          "onset": 150,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s3",
+          "onset": 25,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s3",
+          "onset": 50,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s3",
+          "onset": 75,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s3",
+          "onset": 100,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s3",
+          "onset": 125,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s3",
+          "onset": 150,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s4",
+          "onset": 25,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s4",
+          "onset": 50,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s4",
+          "onset": 75,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s4",
+          "onset": 100,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s4",
+          "onset": 125,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s4",
+          "onset": 150,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s7",
+          "onset": 25,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s7",
+          "onset": 50,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s7",
+          "onset": 75,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s7",
+          "onset": 100,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s7",
+          "onset": 125,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s7",
+          "onset": 150,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s8",
+          "onset": 25,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s8",
+          "onset": 50,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s8",
+          "onset": 75,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s8",
+          "onset": 100,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s8",
+          "onset": 125,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s8",
+          "onset": 150,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s9",
+          "onset": 25,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s9",
+          "onset": 50,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s9",
+          "onset": 75,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s9",
+          "onset": 100,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s9",
+          "onset": 125,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s9",
+          "onset": 150,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s11",
+          "onset": 25,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s11",
+          "onset": 50,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s11",
+          "onset": 75,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s11",
+          "onset": 100,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s11",
+          "onset": 125,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s11",
+          "onset": 150,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s12",
+          "onset": 25,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s12",
+          "onset": 50,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s12",
+          "onset": 75,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s12",
+          "onset": 100,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s12",
+          "onset": 125,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s12",
+          "onset": 150,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s13",
+          "onset": 25,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s13",
+          "onset": 50,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s13",
+          "onset": 75,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s13",
+          "onset": 100,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s13",
+          "onset": 125,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s13",
+          "onset": 150,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s14",
+          "onset": 25,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s14",
+          "onset": 50,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s14",
+          "onset": 75,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s14",
+          "onset": 100,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s14",
+          "onset": 125,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s14",
+          "onset": 150,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s15",
+          "onset": 25,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s15",
+          "onset": 50,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s15",
+          "onset": 75,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s15",
+          "onset": 100,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s15",
+          "onset": 125,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s15",
+          "onset": 150,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s17",
+          "onset": 25,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s17",
+          "onset": 50,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s17",
+          "onset": 75,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s17",
+          "onset": 100,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s17",
+          "onset": 125,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s17",
+          "onset": 150,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s20",
+          "onset": 25,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s20",
+          "onset": 50,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s20",
+          "onset": 75,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s20",
+          "onset": 100,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s20",
+          "onset": 125,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s20",
+          "onset": 150,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s21",
+          "onset": 25,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s21",
+          "onset": 50,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s21",
+          "onset": 75,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s21",
+          "onset": 100,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s21",
+          "onset": 125,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s21",
+          "onset": 150,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        }
+      ]
+    }
+  },
+  "FD004": {
+    "mirror_self_check_max_diff": 0.0,
+    "step": {
+      "injections": 84,
+      "testable": 84,
+      "detected": 84,
+      "rate": 1.0,
+      "median_delay": 2.0,
+      "by_sensor": {
+        "s11": 1.0,
+        "s12": 1.0,
+        "s13": 1.0,
+        "s14": 1.0,
+        "s15": 1.0,
+        "s17": 1.0,
+        "s2": 1.0,
+        "s20": 1.0,
+        "s21": 1.0,
+        "s3": 1.0,
+        "s4": 1.0,
+        "s7": 1.0,
+        "s8": 1.0,
+        "s9": 1.0
+      },
+      "rows": [
+        {
+          "sensor": "s2",
+          "onset": 25,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s2",
+          "onset": 50,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s2",
+          "onset": 75,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s2",
+          "onset": 100,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s2",
+          "onset": 125,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s2",
+          "onset": 150,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s3",
+          "onset": 25,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s3",
+          "onset": 50,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s3",
+          "onset": 75,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s3",
+          "onset": 100,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s3",
+          "onset": 125,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s3",
+          "onset": 150,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s4",
+          "onset": 25,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s4",
+          "onset": 50,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s4",
+          "onset": 75,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s4",
+          "onset": 100,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s4",
+          "onset": 125,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s4",
+          "onset": 150,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s7",
+          "onset": 25,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s7",
+          "onset": 50,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s7",
+          "onset": 75,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s7",
+          "onset": 100,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s7",
+          "onset": 125,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s7",
+          "onset": 150,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s8",
+          "onset": 25,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s8",
+          "onset": 50,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s8",
+          "onset": 75,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s8",
+          "onset": 100,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s8",
+          "onset": 125,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s8",
+          "onset": 150,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s9",
+          "onset": 25,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s9",
+          "onset": 50,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s9",
+          "onset": 75,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s9",
+          "onset": 100,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s9",
+          "onset": 125,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s9",
+          "onset": 150,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s11",
+          "onset": 25,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s11",
+          "onset": 50,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s11",
+          "onset": 75,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s11",
+          "onset": 100,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s11",
+          "onset": 125,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s11",
+          "onset": 150,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s12",
+          "onset": 25,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s12",
+          "onset": 50,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s12",
+          "onset": 75,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s12",
+          "onset": 100,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s12",
+          "onset": 125,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s12",
+          "onset": 150,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s13",
+          "onset": 25,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s13",
+          "onset": 50,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s13",
+          "onset": 75,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s13",
+          "onset": 100,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s13",
+          "onset": 125,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s13",
+          "onset": 150,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s14",
+          "onset": 25,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s14",
+          "onset": 50,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s14",
+          "onset": 75,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s14",
+          "onset": 100,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s14",
+          "onset": 125,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s14",
+          "onset": 150,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s15",
+          "onset": 25,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s15",
+          "onset": 50,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s15",
+          "onset": 75,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s15",
+          "onset": 100,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s15",
+          "onset": 125,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s15",
+          "onset": 150,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s17",
+          "onset": 25,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s17",
+          "onset": 50,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s17",
+          "onset": 75,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s17",
+          "onset": 100,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s17",
+          "onset": 125,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s17",
+          "onset": 150,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s20",
+          "onset": 25,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s20",
+          "onset": 50,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s20",
+          "onset": 75,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s20",
+          "onset": 100,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s20",
+          "onset": 125,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s20",
+          "onset": 150,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s21",
+          "onset": 25,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s21",
+          "onset": 50,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s21",
+          "onset": 75,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s21",
+          "onset": 100,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s21",
+          "onset": 125,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s21",
+          "onset": 150,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        }
+      ]
+    },
+    "ramp": {
+      "injections": 84,
+      "testable": 84,
+      "detected": 84,
+      "rate": 1.0,
+      "median_delay": 8.0,
+      "by_sensor": {
+        "s11": 1.0,
+        "s12": 1.0,
+        "s13": 1.0,
+        "s14": 1.0,
+        "s15": 1.0,
+        "s17": 1.0,
+        "s2": 1.0,
+        "s20": 1.0,
+        "s21": 1.0,
+        "s3": 1.0,
+        "s4": 1.0,
+        "s7": 1.0,
+        "s8": 1.0,
+        "s9": 1.0
+      },
+      "rows": [
+        {
+          "sensor": "s2",
+          "onset": 25,
+          "detected": true,
+          "delay": 13,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s2",
+          "onset": 50,
+          "detected": true,
+          "delay": 9,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s2",
+          "onset": 75,
+          "detected": true,
+          "delay": 11,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s2",
+          "onset": 100,
+          "detected": true,
+          "delay": 10,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s2",
+          "onset": 125,
+          "detected": true,
+          "delay": 9,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s2",
+          "onset": 150,
+          "detected": true,
+          "delay": 9,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s3",
+          "onset": 25,
+          "detected": true,
+          "delay": 9,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s3",
+          "onset": 50,
+          "detected": true,
+          "delay": 10,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s3",
+          "onset": 75,
+          "detected": true,
+          "delay": 10,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s3",
+          "onset": 100,
+          "detected": true,
+          "delay": 8,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s3",
+          "onset": 125,
+          "detected": true,
+          "delay": 8,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s3",
+          "onset": 150,
+          "detected": true,
+          "delay": 10,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s4",
+          "onset": 25,
+          "detected": true,
+          "delay": 13,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s4",
+          "onset": 50,
+          "detected": true,
+          "delay": 11,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s4",
+          "onset": 75,
+          "detected": true,
+          "delay": 12,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s4",
+          "onset": 100,
+          "detected": true,
+          "delay": 9,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s4",
+          "onset": 125,
+          "detected": true,
+          "delay": 10,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s4",
+          "onset": 150,
+          "detected": true,
+          "delay": 10,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s7",
+          "onset": 25,
+          "detected": true,
+          "delay": 6,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s7",
+          "onset": 50,
+          "detected": true,
+          "delay": 5,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s7",
+          "onset": 75,
+          "detected": true,
+          "delay": 4,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s7",
+          "onset": 100,
+          "detected": true,
+          "delay": 5,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s7",
+          "onset": 125,
+          "detected": true,
+          "delay": 4,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s7",
+          "onset": 150,
+          "detected": true,
+          "delay": 4,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s8",
+          "onset": 25,
+          "detected": true,
+          "delay": 7,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s8",
+          "onset": 50,
+          "detected": true,
+          "delay": 8,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s8",
+          "onset": 75,
+          "detected": true,
+          "delay": 8,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s8",
+          "onset": 100,
+          "detected": true,
+          "delay": 5,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s8",
+          "onset": 125,
+          "detected": true,
+          "delay": 5,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s8",
+          "onset": 150,
+          "detected": true,
+          "delay": 6,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s9",
+          "onset": 25,
+          "detected": true,
+          "delay": 11,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s9",
+          "onset": 50,
+          "detected": true,
+          "delay": 8,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s9",
+          "onset": 75,
+          "detected": true,
+          "delay": 8,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s9",
+          "onset": 100,
+          "detected": true,
+          "delay": 6,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s9",
+          "onset": 125,
+          "detected": true,
+          "delay": 6,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s9",
+          "onset": 150,
+          "detected": true,
+          "delay": 7,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s11",
+          "onset": 25,
+          "detected": true,
+          "delay": 14,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s11",
+          "onset": 50,
+          "detected": true,
+          "delay": 9,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s11",
+          "onset": 75,
+          "detected": true,
+          "delay": 11,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s11",
+          "onset": 100,
+          "detected": true,
+          "delay": 9,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s11",
+          "onset": 125,
+          "detected": true,
+          "delay": 11,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s11",
+          "onset": 150,
+          "detected": true,
+          "delay": 9,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s12",
+          "onset": 25,
+          "detected": true,
+          "delay": 6,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s12",
+          "onset": 50,
+          "detected": true,
+          "delay": 4,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s12",
+          "onset": 75,
+          "detected": true,
+          "delay": 5,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s12",
+          "onset": 100,
+          "detected": true,
+          "delay": 4,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s12",
+          "onset": 125,
+          "detected": true,
+          "delay": 5,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s12",
+          "onset": 150,
+          "detected": true,
+          "delay": 5,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s13",
+          "onset": 25,
+          "detected": true,
+          "delay": 7,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s13",
+          "onset": 50,
+          "detected": true,
+          "delay": 8,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s13",
+          "onset": 75,
+          "detected": true,
+          "delay": 7,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s13",
+          "onset": 100,
+          "detected": true,
+          "delay": 5,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s13",
+          "onset": 125,
+          "detected": true,
+          "delay": 5,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s13",
+          "onset": 150,
+          "detected": true,
+          "delay": 6,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s14",
+          "onset": 25,
+          "detected": true,
+          "delay": 10,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s14",
+          "onset": 50,
+          "detected": true,
+          "delay": 8,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s14",
+          "onset": 75,
+          "detected": true,
+          "delay": 7,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s14",
+          "onset": 100,
+          "detected": true,
+          "delay": 7,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s14",
+          "onset": 125,
+          "detected": true,
+          "delay": 6,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s14",
+          "onset": 150,
+          "detected": true,
+          "delay": 7,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s15",
+          "onset": 25,
+          "detected": true,
+          "delay": 7,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s15",
+          "onset": 50,
+          "detected": true,
+          "delay": 9,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s15",
+          "onset": 75,
+          "detected": true,
+          "delay": 8,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s15",
+          "onset": 100,
+          "detected": true,
+          "delay": 7,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s15",
+          "onset": 125,
+          "detected": true,
+          "delay": 7,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s15",
+          "onset": 150,
+          "detected": true,
+          "delay": 7,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s17",
+          "onset": 25,
+          "detected": true,
+          "delay": 12,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s17",
+          "onset": 50,
+          "detected": true,
+          "delay": 9,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s17",
+          "onset": 75,
+          "detected": true,
+          "delay": 8,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s17",
+          "onset": 100,
+          "detected": true,
+          "delay": 8,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s17",
+          "onset": 125,
+          "detected": true,
+          "delay": 11,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s17",
+          "onset": 150,
+          "detected": true,
+          "delay": 9,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s20",
+          "onset": 25,
+          "detected": true,
+          "delay": 9,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s20",
+          "onset": 50,
+          "detected": true,
+          "delay": 9,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s20",
+          "onset": 75,
+          "detected": true,
+          "delay": 6,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s20",
+          "onset": 100,
+          "detected": true,
+          "delay": 4,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s20",
+          "onset": 125,
+          "detected": true,
+          "delay": 6,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s20",
+          "onset": 150,
+          "detected": true,
+          "delay": 7,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s21",
+          "onset": 25,
+          "detected": true,
+          "delay": 11,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s21",
+          "onset": 50,
+          "detected": true,
+          "delay": 6,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s21",
+          "onset": 75,
+          "detected": true,
+          "delay": 7,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s21",
+          "onset": 100,
+          "detected": true,
+          "delay": 5,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s21",
+          "onset": 125,
+          "detected": true,
+          "delay": 7,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s21",
+          "onset": 150,
+          "detected": true,
+          "delay": 6,
+          "tested": true,
+          "how": "persistent"
+        }
+      ]
+    },
+    "stuck": {
+      "injections": 84,
+      "testable": 84,
+      "detected": 84,
+      "rate": 1.0,
+      "median_delay": 1.0,
+      "by_sensor": {
+        "s11": 1.0,
+        "s12": 1.0,
+        "s13": 1.0,
+        "s14": 1.0,
+        "s15": 1.0,
+        "s17": 1.0,
+        "s2": 1.0,
+        "s20": 1.0,
+        "s21": 1.0,
+        "s3": 1.0,
+        "s4": 1.0,
+        "s7": 1.0,
+        "s8": 1.0,
+        "s9": 1.0
+      },
+      "rows": [
+        {
+          "sensor": "s2",
+          "onset": 25,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s2",
+          "onset": 50,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s2",
+          "onset": 75,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s2",
+          "onset": 100,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s2",
+          "onset": 125,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s2",
+          "onset": 150,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s3",
+          "onset": 25,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s3",
+          "onset": 50,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s3",
+          "onset": 75,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s3",
+          "onset": 100,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s3",
+          "onset": 125,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s3",
+          "onset": 150,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s4",
+          "onset": 25,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s4",
+          "onset": 50,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s4",
+          "onset": 75,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s4",
+          "onset": 100,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s4",
+          "onset": 125,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s4",
+          "onset": 150,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s7",
+          "onset": 25,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s7",
+          "onset": 50,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s7",
+          "onset": 75,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s7",
+          "onset": 100,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s7",
+          "onset": 125,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s7",
+          "onset": 150,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s8",
+          "onset": 25,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s8",
+          "onset": 50,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s8",
+          "onset": 75,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s8",
+          "onset": 100,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s8",
+          "onset": 125,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s8",
+          "onset": 150,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s9",
+          "onset": 25,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s9",
+          "onset": 50,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s9",
+          "onset": 75,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s9",
+          "onset": 100,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s9",
+          "onset": 125,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s9",
+          "onset": 150,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s11",
+          "onset": 25,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s11",
+          "onset": 50,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s11",
+          "onset": 75,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s11",
+          "onset": 100,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s11",
+          "onset": 125,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s11",
+          "onset": 150,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s12",
+          "onset": 25,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s12",
+          "onset": 50,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s12",
+          "onset": 75,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s12",
+          "onset": 100,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s12",
+          "onset": 125,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s12",
+          "onset": 150,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s13",
+          "onset": 25,
+          "detected": true,
+          "delay": 5,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s13",
+          "onset": 50,
+          "detected": true,
+          "delay": 4,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s13",
+          "onset": 75,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s13",
+          "onset": 100,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s13",
+          "onset": 125,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s13",
+          "onset": 150,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s14",
+          "onset": 25,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s14",
+          "onset": 50,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s14",
+          "onset": 75,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s14",
+          "onset": 100,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s14",
+          "onset": 125,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s14",
+          "onset": 150,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s15",
+          "onset": 25,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s15",
+          "onset": 50,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s15",
+          "onset": 75,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s15",
+          "onset": 100,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s15",
+          "onset": 125,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s15",
+          "onset": 150,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s17",
+          "onset": 25,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s17",
+          "onset": 50,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s17",
+          "onset": 75,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s17",
+          "onset": 100,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s17",
+          "onset": 125,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s17",
+          "onset": 150,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s20",
+          "onset": 25,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s20",
+          "onset": 50,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s20",
+          "onset": 75,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s20",
+          "onset": 100,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s20",
+          "onset": 125,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s20",
+          "onset": 150,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s21",
+          "onset": 25,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s21",
+          "onset": 50,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s21",
+          "onset": 75,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s21",
+          "onset": 100,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s21",
+          "onset": 125,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        },
+        {
+          "sensor": "s21",
+          "onset": 150,
+          "detected": true,
+          "delay": 1,
+          "tested": true,
+          "how": "sudden"
+        }
+      ]
+    },
+    "noise": {
+      "injections": 84,
+      "testable": 84,
+      "detected": 77,
+      "rate": 0.9166666666666666,
+      "median_delay": 3.0,
+      "by_sensor": {
+        "s11": 0.5,
+        "s12": 1.0,
+        "s13": 0.8333333333333334,
+        "s14": 1.0,
+        "s15": 1.0,
+        "s17": 1.0,
+        "s2": 0.8333333333333334,
+        "s20": 1.0,
+        "s21": 1.0,
+        "s3": 0.8333333333333334,
+        "s4": 0.8333333333333334,
+        "s7": 1.0,
+        "s8": 1.0,
+        "s9": 1.0
+      },
+      "rows": [
+        {
+          "sensor": "s2",
+          "onset": 25,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s2",
+          "onset": 50,
+          "detected": true,
+          "delay": 4,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s2",
+          "onset": 75,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s2",
+          "onset": 100,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s2",
+          "onset": 125,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s2",
+          "onset": 150,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s3",
+          "onset": 25,
+          "detected": true,
+          "delay": 7,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s3",
+          "onset": 50,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s3",
+          "onset": 75,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s3",
+          "onset": 100,
+          "detected": true,
+          "delay": 4,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s3",
+          "onset": 125,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s3",
+          "onset": 150,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s4",
+          "onset": 25,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s4",
+          "onset": 50,
+          "detected": true,
+          "delay": 5,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s4",
+          "onset": 75,
+          "detected": true,
+          "delay": 10,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s4",
+          "onset": 100,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s4",
+          "onset": 125,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s4",
+          "onset": 150,
+          "detected": true,
+          "delay": 5,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s7",
+          "onset": 25,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s7",
+          "onset": 50,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s7",
+          "onset": 75,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s7",
+          "onset": 100,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s7",
+          "onset": 125,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s7",
+          "onset": 150,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s8",
+          "onset": 25,
+          "detected": true,
+          "delay": 5,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s8",
+          "onset": 50,
+          "detected": true,
+          "delay": 4,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s8",
+          "onset": 75,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s8",
+          "onset": 100,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s8",
+          "onset": 125,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s8",
+          "onset": 150,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s9",
+          "onset": 25,
+          "detected": true,
+          "delay": 4,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s9",
+          "onset": 50,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s9",
+          "onset": 75,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s9",
+          "onset": 100,
+          "detected": true,
+          "delay": 4,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s9",
+          "onset": 125,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s9",
+          "onset": 150,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s11",
+          "onset": 25,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s11",
+          "onset": 50,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s11",
+          "onset": 75,
+          "detected": true,
+          "delay": 6,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s11",
+          "onset": 100,
+          "detected": true,
+          "delay": 10,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s11",
+          "onset": 125,
+          "detected": true,
+          "delay": 5,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s11",
+          "onset": 150,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s12",
+          "onset": 25,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s12",
+          "onset": 50,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s12",
+          "onset": 75,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s12",
+          "onset": 100,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s12",
+          "onset": 125,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s12",
+          "onset": 150,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s13",
+          "onset": 25,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s13",
+          "onset": 50,
+          "detected": true,
+          "delay": 10,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s13",
+          "onset": 75,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s13",
+          "onset": 100,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s13",
+          "onset": 125,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s13",
+          "onset": 150,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s14",
+          "onset": 25,
+          "detected": true,
+          "delay": 4,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s14",
+          "onset": 50,
+          "detected": true,
+          "delay": 4,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s14",
+          "onset": 75,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s14",
+          "onset": 100,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s14",
+          "onset": 125,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s14",
+          "onset": 150,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s15",
+          "onset": 25,
+          "detected": true,
+          "delay": 4,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s15",
+          "onset": 50,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s15",
+          "onset": 75,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s15",
+          "onset": 100,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s15",
+          "onset": 125,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s15",
+          "onset": 150,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s17",
+          "onset": 25,
+          "detected": true,
+          "delay": 5,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s17",
+          "onset": 50,
+          "detected": true,
+          "delay": 4,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s17",
+          "onset": 75,
+          "detected": true,
+          "delay": 5,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s17",
+          "onset": 100,
+          "detected": true,
+          "delay": 4,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s17",
+          "onset": 125,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s17",
+          "onset": 150,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s20",
+          "onset": 25,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s20",
+          "onset": 50,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s20",
+          "onset": 75,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s20",
+          "onset": 100,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s20",
+          "onset": 125,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s20",
+          "onset": 150,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s21",
+          "onset": 25,
+          "detected": true,
+          "delay": 4,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s21",
+          "onset": 50,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s21",
+          "onset": 75,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s21",
+          "onset": 100,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s21",
+          "onset": 125,
+          "detected": true,
+          "delay": 3,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s21",
+          "onset": 150,
+          "detected": true,
+          "delay": 2,
+          "tested": true,
+          "how": "persistent"
+        }
+      ]
+    },
+    "dropout": {
+      "injections": 84,
+      "testable": 84,
+      "detected": 5,
+      "rate": 0.05952380952380952,
+      "median_delay": 9.0,
+      "by_sensor": {
+        "s11": 0.16666666666666666,
+        "s12": 0.0,
+        "s13": 0.0,
+        "s14": 0.0,
+        "s15": 0.0,
+        "s17": 0.16666666666666666,
+        "s2": 0.0,
+        "s20": 0.0,
+        "s21": 0.16666666666666666,
+        "s3": 0.0,
+        "s4": 0.3333333333333333,
+        "s7": 0.0,
+        "s8": 0.0,
+        "s9": 0.0
+      },
+      "rows": [
+        {
+          "sensor": "s2",
+          "onset": 25,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s2",
+          "onset": 50,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s2",
+          "onset": 75,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s2",
+          "onset": 100,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s2",
+          "onset": 125,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s2",
+          "onset": 150,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s3",
+          "onset": 25,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s3",
+          "onset": 50,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s3",
+          "onset": 75,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s3",
+          "onset": 100,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s3",
+          "onset": 125,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s3",
+          "onset": 150,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s4",
+          "onset": 25,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s4",
+          "onset": 50,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s4",
+          "onset": 75,
+          "detected": true,
+          "delay": 9,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s4",
+          "onset": 100,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s4",
+          "onset": 125,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s4",
+          "onset": 150,
+          "detected": true,
+          "delay": 8,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s7",
+          "onset": 25,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s7",
+          "onset": 50,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s7",
+          "onset": 75,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s7",
+          "onset": 100,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s7",
+          "onset": 125,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s7",
+          "onset": 150,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s8",
+          "onset": 25,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s8",
+          "onset": 50,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s8",
+          "onset": 75,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s8",
+          "onset": 100,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s8",
+          "onset": 125,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s8",
+          "onset": 150,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s9",
+          "onset": 25,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s9",
+          "onset": 50,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s9",
+          "onset": 75,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s9",
+          "onset": 100,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s9",
+          "onset": 125,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s9",
+          "onset": 150,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s11",
+          "onset": 25,
+          "detected": true,
+          "delay": 10,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s11",
+          "onset": 50,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s11",
+          "onset": 75,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s11",
+          "onset": 100,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s11",
+          "onset": 125,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s11",
+          "onset": 150,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s12",
+          "onset": 25,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s12",
+          "onset": 50,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s12",
+          "onset": 75,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s12",
+          "onset": 100,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s12",
+          "onset": 125,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s12",
+          "onset": 150,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s13",
+          "onset": 25,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s13",
+          "onset": 50,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s13",
+          "onset": 75,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s13",
+          "onset": 100,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s13",
+          "onset": 125,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s13",
+          "onset": 150,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s14",
+          "onset": 25,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s14",
+          "onset": 50,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s14",
+          "onset": 75,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s14",
+          "onset": 100,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s14",
+          "onset": 125,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s14",
+          "onset": 150,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s15",
+          "onset": 25,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s15",
+          "onset": 50,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s15",
+          "onset": 75,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s15",
+          "onset": 100,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s15",
+          "onset": 125,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s15",
+          "onset": 150,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s17",
+          "onset": 25,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s17",
+          "onset": 50,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s17",
+          "onset": 75,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s17",
+          "onset": 100,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s17",
+          "onset": 125,
+          "detected": true,
+          "delay": 9,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s17",
+          "onset": 150,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s20",
+          "onset": 25,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s20",
+          "onset": 50,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s20",
+          "onset": 75,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s20",
+          "onset": 100,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s20",
+          "onset": 125,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s20",
+          "onset": 150,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s21",
+          "onset": 25,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s21",
+          "onset": 50,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s21",
+          "onset": 75,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s21",
+          "onset": 100,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        },
+        {
+          "sensor": "s21",
+          "onset": 125,
+          "detected": true,
+          "delay": 9,
+          "tested": true,
+          "how": "persistent"
+        },
+        {
+          "sensor": "s21",
+          "onset": 150,
+          "detected": false,
+          "delay": null,
+          "tested": true,
+          "how": null
+        }
+      ]
+    }
+  }
+}

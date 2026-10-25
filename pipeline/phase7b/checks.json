@@ -1,0 +1,197 @@
+{
+  "C1": {
+    "FD002 synchronized": {
+      "runs": 554,
+      "flagged": 0,
+      "rate": 0.0,
+      "kind": "confirmation"
+    },
+    "FD004 synchronized": {
+      "runs": 554,
+      "flagged": 108,
+      "rate": 0.19494584837545126,
+      "kind": "confirmation"
+    },
+    "FD002 staggered": {
+      "runs": 667,
+      "flagged": 6,
+      "rate": 0.008995502248875561,
+      "kind": "confirmation"
+    },
+    "FD004 staggered": {
+      "runs": 667,
+      "flagged": 93,
+      "rate": 0.13943028485757122,
+      "kind": "confirmation"
+    },
+    "FD001 synchronized": {
+      "runs": 484,
+      "flagged": 0,
+      "rate": 0.0,
+      "kind": "post hoc"
+    },
+    "FD003 synchronized": {
+      "runs": 484,
+      "flagged": 0,
+      "rate": 0.0,
+      "kind": "post hoc"
+    },
+    "FD001 staggered": {
+      "runs": 560,
+      "flagged": 0,
+      "rate": 0.0,
+      "kind": "post hoc"
+    },
+    "FD003 staggered": {
+      "runs": 560,
+      "flagged": 0,
+      "rate": 0.0,
+      "kind": "post hoc"
+    }
+  },
+  "C2": {
+    "FD002": {
+      "dataset": "FD002",
+      "sensor": "s4",
+      "shift": 10,
+      "readings": 259,
+      "quarantined": 3,
+      "drifted": [
+        "s4"
+      ],
+      "needs_retraining": true,
+      "reasons": "sudden shift in s4: sensor fault suspected, check the sensor before retraining",
+      "clean_runs_flagged": 0,
+      "passed": true
+    },
+    "FD004": {
+      "dataset": "FD004",
+      "sensor": "s4",
+      "shift": 10,
+      "readings": 248,
+      "quarantined": 1,
+      "drifted": [
+        "s4"
+      ],
+      "needs_retraining": true,
+      "reasons": "sudden shift in s4: sensor fault suspected, check the sensor before retraining",
+      "clean_runs_flagged": 0,
+      "passed": true
+    }
+  },
+  "closed_loop": {
+    "FD002": {
+      "engines": 259,
+      "failed_labelled": 37,
+      "censored": 222,
+      "censored_certainly_not_miss": 15,
+      "censored_undetermined": 207,
+      "miss_rate_from_labels_only": 0.24324324324324326,
+      "miss_rate_bounds_all_engines": [
+        0.03474903474903475,
+        0.833976833976834
+      ],
+      "true_miss_rate_same_forecasts": 0.03861003861003861
+    },
+    "FD004": {
+      "engines": 248,
+      "failed_labelled": 5,
+      "censored": 243,
+      "censored_certainly_not_miss": 19,
+      "censored_undetermined": 224,
+      "miss_rate_from_labels_only": 1.0,
+      "miss_rate_bounds_all_engines": [
+        0.020161290322580645,
+        0.9233870967741935
+      ],
+      "true_miss_rate_same_forecasts": 0.04435483870967742
+    }
+  },
+  "diagnosis": {
+    "spread": {
+      "FD001": {
+        "readings": 13096,
+        "v2": {
+          "readings_abs_z_over_20": 0,
+          "max_abs_z": 5.274515172,
+          "smallest_predicted_spread": 0.015426646355251851
+        },
+        "v2.1": {
+          "readings_abs_z_over_20": 0,
+          "max_abs_z": 5.903023059,
+          "smallest_predicted_spread": 0.014796918308884459
+        }
+      },
+      "FD003": {
+        "readings": 16596,
+        "v2": {
+          "readings_abs_z_over_20": 2,
+          "max_abs_z": 69.657350806,
+          "smallest_predicted_spread": 0.016787266525379284
+        },
+        "v2.1": {
+          "readings_abs_z_over_20": 0,
+          "max_abs_z": 11.829725167,
+          "smallest_predicted_spread": 0.018531831369094608
+        }
+      },
+      "FD002": {
+        "readings": 33991,
+        "v2": {
+          "readings_abs_z_over_20": 0,
+          "max_abs_z": 5.080098714,
+          "smallest_predicted_spread": 0.30304278235757903
+        },
+        "v2.1": {
+          "readings_abs_z_over_20": 0,
+          "max_abs_z": 5.087589348,
+          "smallest_predicted_spread": 0.29631414050381033
+        }
+      },
+      "FD004": {
+        "readings": 41214,
+        "v2": {
+          "readings_abs_z_over_20": 975,
+          "max_abs_z": 1906941.120989218,
+          "smallest_predicted_spread": -0.311539795914334
+        },
+        "v2.1": {
+          "readings_abs_z_over_20": 0,
+          "max_abs_z": 16.818157593,
+          "smallest_predicted_spread": 0.12393953411842809
+        }
+      }
+    },
+    "fd004": {
+      "flagged_shifts_v21_synchronized": [
+        172,
+        342
+      ],
+      "flagged_runs": 104,
+      "training_engines_by_proxy_mode": {
+        "-1": 116,
+        "1": 83
+      },
+      "flagged_window_mean_z": {
+        "s2": 0.12250838043901001,
+        "s3": 0.015579857817324697,
+        "s4": 0.10159597454714202,
+        "s7": -0.41637166006099,
+        "s8": -0.5745784594549205,
+        "s9": -0.7295862679608132,
+        "s11": 0.11222951468915733,
+        "s12": -0.41518697433441365,
+        "s13": -0.5801849047165586,
+        "s14": -0.9330838307622275,
+        "s15": 0.5696700846658809,
+        "s17": 0.04057311985120802,
+        "s20": -0.35527198416764877,
+        "s21": -0.3482759501096052
+      },
+      "correlation_with_mode_signature": {
+        "-1": 0.7673138282926569,
+        "1": -0.8216809419787446
+      }
+    }
+  }
+}
