@@ -20,7 +20,8 @@ in fixed batches of 100 windows so they are bit-identical to the published ones.
 Phase 7b scenarios (defaults reproduce Phase 7 exactly: FD001+FD003, synchronized, monitor v1, shadow mode):
   fleet="staggered"   engine e starts at shift 1 + offset_e (offsets: numpy default_rng(7), 0..150, engine order);
                       its cycle c arrives at shift offset_e + c, its failure at offset_e + L.
-  monitor="v2"        the Phase 7b rule (pipeline/monitoring2.py, pipeline/monitoring_rule_v2.json).
+  monitor="v2"        the pre-registered Phase 7b rule (pipeline/monitoring2.py, pipeline/monitoring_rule_v2.json);
+  monitor="v2.1"      the same rule with the post-hoc spread fix (monitoring_rule_v2_1.json; never a confirmation).
   closed_loop=True    recommended services are carried out: a serviced engine stops reporting after its service
                       shift and never produces a failure label (censored), unless it failed first.
 Engine cycles and plant shifts coincide in a synchronized fleet; with offsets, forecasts and orders keep engine
@@ -113,13 +114,13 @@ VAL_FILES = {"FD001": "models/val_predictions_phase5.csv", "FD003": "models/val_
 
 
 @lru_cache(maxsize=None)
-def v2_models(ds: str) -> dict:
+def v2_models(ds: str, variant: str = "v2") -> dict:
     """The Phase 7b rule's dataset-specific models, fitted on ALL training-split engines (the flow's deployment)."""
     from pipeline.calibrate_monitoring2 import fit_models, load_dataset
     from pipeline.conditions import normalised_train
     raw = normalised_train(ds) if ds in CONDITION_DATASETS else None
     d = load_dataset(ds, VAL_FILES.get(ds, f"models/val_predictions_{ds}.csv"), f"models/oof_predictions_{ds}.csv", raw)
-    return fit_models(d["tr"])
+    return fit_models(d["tr"], variant)
 
 
 def scale(ds: str, df: pd.DataFrame) -> pd.DataFrame:
@@ -397,10 +398,11 @@ def model_health(engine, schema, ds: str, shift: int) -> dict:
 
 
 @task(**RETRY)
-def model_health_v2(engine, schema, ds: str, shift: int, fleet: str, serviced: dict | None, p0: float) -> dict:
+def model_health_v2(engine, schema, ds: str, shift: int, fleet: str, serviced: dict | None, p0: float,
+                    variant: str = "v2") -> dict:
     """Phase 7b rule: life-matched error ratio and binomial miss-rate test on the last 20 labelled engines."""
     last = latest_forecasts(engine, schema, ds, run_id_for(ds, shift), valid_only=True)
-    h = M2.health(last, label_shifts(ds, fleet, serviced), shift, v2_models(ds)["error"], p0)
+    h = M2.health(last, label_shifts(ds, fleet, serviced), shift, v2_models(ds, variant)["error"], p0)
     get_run_logger().info(f"{ds}: {h['n_labelled']} engines labelled; error ratio {h['error_ratio']}, miss rate "
                           f"{h['miss_rate']} (p {h['miss_p']})")
     return h
@@ -436,10 +438,10 @@ def drift_step(engine, schema, ds: str, shift: int, run_id: str, alpha: float) -
 
 
 @task(**RETRY)
-def drift_step_v2(engine, schema, ds: str, shift: int, run_id: str, rule: dict):
+def drift_step_v2(engine, schema, ds: str, shift: int, run_id: str, rule: dict, variant: str = "v2"):
     """Phase 7b rule: wear-adjusted residuals of everything received in the last 3 shifts, KS vs the training
     engines' residuals, Holm; persistent (K of M runs) or sudden (one run below alpha_strong)."""
-    m = v2_models(ds)
+    m = v2_models(ds, variant)
     rows = received_rows(engine, schema, ds, [run_id_for(ds, k) for k in range(max(1, shift - M2.WINDOW_SHIFTS + 1), shift + 1)])
     if len(rows):
         if ds in CONDITION_DATASETS:
@@ -556,7 +558,7 @@ def shift_pipeline(shift: int | None = None, predictor: str = "model", inject: d
     if shift > last_shift(datasets, fleet):
         log.info(f"replay complete: every engine's failure is known by shift {last_shift(datasets, fleet)}")
         return {"shift": shift, "done": True}
-    rule = MON.load_rule() if monitor == "v1" else M2.load_rule()
+    rule = MON.load_rule() if monitor == "v1" else M2.load_rule(monitor)
     opts = {} if retry_delay_seconds is None else {"retry_delay_seconds": retry_delay_seconds}
     t = {name: fn.with_options(**opts) for name, fn in (
         ("ingest", ingest), ("validate", validate_batch), ("load", load_step), ("features", features),
@@ -584,8 +586,8 @@ def shift_pipeline(shift: int | None = None, predictor: str = "model", inject: d
                 drifted = d[d.drifted].sensor.tolist()
             else:
                 p0 = rule["datasets"][ds]["p0"]
-                h = t["health2"](engine, schema, ds, shift, fleet, serviced, p0)
-                d, persistent, sudden = t["drift2"](engine, schema, ds, shift, rid, rule["drift"])
+                h = t["health2"](engine, schema, ds, shift, fleet, serviced, p0, monitor)
+                d, persistent, sudden = t["drift2"](engine, schema, ds, shift, rid, rule["drift"], monitor)
                 flag = t["flag2"](engine, schema, ds, shift, rid, d, persistent, sudden, h, {"health": {**rule["health"], "p0": p0}})
                 drifted = d[d.drifted].sensor.tolist()
             out[ds] = {"run_id": rid, "readings": len(batch), "quarantined": len(bad), "flagged": len(flagged),
@@ -658,7 +660,7 @@ def main(argv=None) -> int:
                    help=f"with --serve: seconds between runs (default {C.SERVE_INTERVAL_SECONDS}, from pipeline/config.py)")
     p.add_argument("--datasets", nargs="+", default=list(C.FLOW_DATASETS))
     p.add_argument("--fleet", default="synchronized", choices=["synchronized", "staggered"])
-    p.add_argument("--monitor", default="v1", choices=["v1", "v2"])
+    p.add_argument("--monitor", default="v1", choices=["v1", "v2", "v2.1"])
     p.add_argument("--closed-loop", action="store_true")
     p.add_argument("--out-dir", default=str(OUT), help="with --replay-all: where to export the results")
     p.add_argument("--recorded-file", default=str(RECORDED))

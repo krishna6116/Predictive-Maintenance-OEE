@@ -53,8 +53,8 @@ class Fault:
 
 
 class Mirror:
-    def __init__(self, ds: str, clean_dir: Path, fleet: str = "staggered"):
-        self.ds, self.fleet = ds, fleet
+    def __init__(self, ds: str, clean_dir: Path, fleet: str = "staggered", variant: str = "v2"):
+        self.ds, self.fleet, self.variant = ds, fleet, variant
         self.off = F.offsets(ds, fleet)
         t = F.test_file(ds)
         self.raw = {int(u): g.sort_values("cycle").reset_index(drop=True) for u, g in t.groupby("unit")}
@@ -65,14 +65,14 @@ class Mirror:
         d = pd.read_csv(clean_dir / "phase7_drift.csv", **CSV)
         d = d[d.dataset == ds]
         self.hist = {int(s): ({r.sensor: r.p_holm for r in g.itertuples()} if g.tested.all() else {}) for s, g in d.groupby("shift")}
-        self.models = F.v2_models(ds)
-        self.rule = M2.load_rule()["drift"]
+        self.models = F.v2_models(ds, variant)
+        self.rule = M2.load_rule(variant)["drift"]
         self.window = json.loads(Path(F.SOURCES[ds]["results"]).read_text())["models"]["LSTM"]["settings"]["window"]
         self._model = None
         grid = M2._inputs(np.repeat(np.linspace(0, 125, 26), 15), np.tile(np.linspace(1, 300, 15), 26))
         self.noise_sd = {}                                        # normal residual spread, in training-sd units
         for s in SENSORS:
-            spread = float(np.median(self.models["level"].spread[s].predict(grid))) * np.sqrt(np.pi / 2)
+            spread = float(np.median(self.models["level"].sd(s, grid)))
             unit_sd = 1.0 if ds in CONDITION_DATASETS else float(F.training_engines(ds)[s].std())
             self.noise_sd[s] = spread / unit_sd
 

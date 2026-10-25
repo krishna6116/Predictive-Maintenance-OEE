@@ -37,6 +37,8 @@ from features.build import RUL_CAP
 from pipeline.config import SENSORS
 
 RULE_FILE = Path("pipeline/monitoring_rule_v2.json")
+RULE_FILES = {"v2": RULE_FILE, "v2.1": Path("pipeline/monitoring_rule_v2_1.json")}
+SPREAD = {"v2": "linear", "v2.1": "log"}   # v2 = pre-registered; v2.1 = post-hoc fix of the spread model
 WINDOW_SHIFTS = 3
 MIN_ENGINES = 15
 HEALTH_WINDOW = 20
@@ -56,10 +58,15 @@ def _inputs(rhat, cycle) -> np.ndarray:
 
 
 class ExpectedLevel:
-    """Expected level and spread of each sensor given predicted remaining life and age (fitted on training engines)."""
+    """Expected level and spread of each sensor given predicted remaining life and age (fitted on training engines).
 
-    def __init__(self, sensors=SENSORS):
-        self.sensors, self.mean, self.spread = list(sensors), {}, {}
+    spread="linear" (the pre-registered v2 rule) fits the mean absolute residual directly; the fit can go to zero or
+    below in sparse corners (found on FD004: z of -10^5), where the spread is floored at MIN_SPREAD. spread="log"
+    (v2.1, a POST-HOC fix) fits log|residual| and exponentiates, so the spread is positive by construction; a
+    constant factor makes its training mean equal the mean absolute residual."""
+
+    def __init__(self, sensors=SENSORS, spread: str = "linear"):
+        self.sensors, self.mean, self.spread, self.kind, self.corr = list(sensors), {}, {}, spread, {}
 
     def fit(self, readings: pd.DataFrame, rhat: str = "rhat") -> "ExpectedLevel":
         X = _inputs(readings[rhat], readings.cycle)
@@ -67,15 +74,29 @@ class ExpectedLevel:
             y = readings[s].to_numpy(float)
             self.mean[s] = _design().fit(X, y)
             resid = np.abs(y - self.mean[s].predict(X))
-            self.spread[s] = _design().fit(X, resid)
+            if self.kind == "log":
+                eps = 1e-3 * float(np.median(resid)) + 1e-12
+                self.spread[s] = _design().fit(X, np.log(resid + eps))
+                self.corr[s] = float(resid.mean() / np.exp(self.spread[s].predict(X)).mean())
+            else:
+                self.spread[s] = _design().fit(X, resid)
         return self
+
+    def mad(self, s: str, X: np.ndarray) -> np.ndarray:
+        """Expected mean absolute residual of sensor s at inputs X."""
+        if self.kind == "log":
+            return np.exp(self.spread[s].predict(X)) * self.corr[s]
+        return self.spread[s].predict(X)
+
+    def sd(self, s: str, X: np.ndarray) -> np.ndarray:
+        return np.maximum(self.mad(s, X) * np.sqrt(np.pi / 2), MIN_SPREAD)      # mean |dev| -> sd (normal)
 
     def z(self, readings: pd.DataFrame, rhat: str = "rhat") -> pd.DataFrame:
         """Standardised residuals (rounded to DECIMALS so ties are exact); keeps unit and cycle."""
         X = _inputs(readings[rhat], readings.cycle)
         out = readings[["unit", "cycle"]].copy()
         for s in self.sensors:
-            sd = np.maximum(self.spread[s].predict(X) * np.sqrt(np.pi / 2), MIN_SPREAD)   # mean |dev| -> sd (normal)
+            sd = self.sd(s, X)
             out[s] = np.round((readings[s].to_numpy(float) - self.mean[s].predict(X)) / sd, DECIMALS)
         return out
 
@@ -203,5 +224,6 @@ def retraining(rule: dict, persistent: list, sudden: list, h: dict) -> tuple[boo
     return bool(reasons), reasons
 
 
-def load_rule(path: Path = RULE_FILE) -> dict:
-    return json.loads(Path(path).read_text())
+def load_rule(path=RULE_FILE) -> dict:
+    """A rule file path, or a variant name ("v2", "v2.1")."""
+    return json.loads(Path(RULE_FILES.get(path, path)).read_text())

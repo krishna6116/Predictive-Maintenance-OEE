@@ -74,9 +74,12 @@ def load_dataset(ds: str, val_file: str, oof_file: str, raw_train: pd.DataFrame 
             "sd_raw": tr[SENSORS].std()}
 
 
-def fit_models(train: pd.DataFrame) -> dict:
+VARIANT = "v2"                     # set by main: "v2" (pre-registered) or "v2.1" (post-hoc spread fix)
+
+
+def fit_models(train: pd.DataFrame, variant: str | None = None) -> dict:
     """Expected level, drift reference and expected error, fitted on the given training engines (with rhat)."""
-    lev = M2.ExpectedLevel().fit(train)
+    lev = M2.ExpectedLevel(spread=M2.SPREAD[variant or VARIANT]).fit(train)
     ref, n_ref = M2.reference_windows(lev.z(train))
     life = train.groupby("unit").cycle.transform("max")
     tl = test_like(train.cycle, life - train.cycle)
@@ -95,8 +98,7 @@ def fleet_arrays(d: dict, models: dict, fleet: pd.DataFrame, ref_raw: pd.DataFra
     f = fleet.sort_values(["unit", "cycle"]).reset_index(drop=True)
     z = models["level"].z(f)
     X = M2._inputs(f.rhat, f.cycle)
-    scale = np.column_stack([d["sd_raw"][s] / np.maximum(models["level"].spread[s].predict(X) * np.sqrt(np.pi / 2), M2.MIN_SPREAD)
-                             for s in SENSORS])
+    scale = np.column_stack([d["sd_raw"][s] / models["level"].sd(s, X) for s in SENSORS])
     out = {}
     for u, g in z.groupby("unit", sort=True):
         if not np.array_equal(g.cycle.to_numpy(), np.arange(1, len(g) + 1)):
@@ -314,33 +316,44 @@ def dataset_entry(d: dict) -> dict:
 
 
 def main(argv=None) -> int:
-    args = argv if argv is not None else sys.argv[1:]
+    global VARIANT
+    args = list(argv if argv is not None else sys.argv[1:])
+    if "--variant" in args:
+        i = args.index("--variant")
+        VARIANT = args[i + 1]
+        del args[i:i + 2]
+    out_file = M2.RULE_FILES[VARIANT]
     if args:                                           # fresh datasets: frozen decision parameters, own values
         from pipeline.conditions import normalised_train
-        rule = M2.load_rule()
+        rule = M2.load_rule(VARIANT)
         for ds in args:
             d = load_dataset(ds, f"models/val_predictions_{ds}.csv", f"models/oof_predictions_{ds}.csv", normalised_train(ds))
             rule["datasets"][ds] = dataset_entry(d)
             print(f"{ds}: p0 {d['p0']:.1%}")
-        M2.RULE_FILE.write_text(json.dumps(rule, indent=2), encoding="utf-8")
+        out_file.write_text(json.dumps(rule, indent=2), encoding="utf-8")
         return 0
     data = {ds: load_dataset(ds, VAL[ds], f"models/oof_predictions_{ds}.csv") for ds in VAL}
     pools = build_pools(data)
     d, h = calibrate_drift(pools), calibrate_health(data, pools)
     fa_total = 1 - (1 - max(d["false_alarm_chosen"].values())) * (1 - max(h["false_alarm_error_chosen"].values())) * \
         (1 - max(h["false_alarm_miss_chosen"].values()))
-    rule = {"pre_registered": "chosen on training and validation engines of FD001 and FD003 only; no test file was read. "
-                              "Decision parameters are frozen for FD002/FD004; only the dataset-specific values are re-learned.",
+    note = ("chosen on training and validation engines of FD001 and FD003 only; no test file was read. Decision parameters "
+            "are frozen for FD002/FD004; only the dataset-specific values are re-learned.")
+    if VARIANT != "v2":
+        note = ("POST HOC (v2.1): the spread model was changed after the pre-registered v2 rule failed on FD004 test data "
+                "(negative spread fits). Chosen with the same validation-only procedure, but every test set had already been "
+                "seen, so no test result with this rule is a confirmation. " + note)
+    rule = {"variant": VARIANT, "pre_registered": note,
             "budgets": BUDGET, "drift": d, "health": h, "datasets": {ds: dataset_entry(x) for ds, x in data.items()},
             "combined_false_alarm_upper_estimate": fa_total}
-    M2.RULE_FILE.write_text(json.dumps(rule, indent=2, default=float), encoding="utf-8")
+    out_file.write_text(json.dumps(rule, indent=2, default=float), encoding="utf-8")
     print(f"drift: alpha {d['alpha']}, K{d['k']}/M{d['m']}, strong {d['alpha_strong']:g}; {d['candidates_within_budget']} of "
           f"{d['candidates']} settings within budget; new-test false alarms {d['false_alarm_chosen']}")
     print(f"   old Phase 7 test on the same fleets: {d['old_phase7_test_false_alarms_on_same_fleets']}")
     print(f"   power: {d['power_chosen']}")
     print(f"health: error-ratio limit {h['error_ratio_limit']} (FA {h['false_alarm_error_chosen']}), miss alpha {h['miss_alpha']} "
           f"(FA {h['false_alarm_miss_chosen']}); life-order median ratio {h['error_ratio_median_in_life_order']}")
-    print(f"combined false-alarm estimate {fa_total:.2%}; wrote {M2.RULE_FILE}")
+    print(f"combined false-alarm estimate {fa_total:.2%}; wrote {out_file}")
     return 0
 
 

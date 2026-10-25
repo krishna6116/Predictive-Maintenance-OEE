@@ -99,3 +99,27 @@ def test_retraining_reasons_distinguish_sudden_and_persistent():
     flag, why = M2.retraining(rule, ["s4"], ["s11"], {"n_scored": 5})
     assert flag and why[0] == "persistent drift in s4" and "sensor fault suspected" in why[1]
     assert M2.retraining(rule, [], [], {"n_scored": 20, "error_ratio": 1.0, "miss_p": 0.5, "miss_rate": 0.05}) == (False, [])
+
+
+def test_log_spread_stays_positive_where_a_linear_fit_goes_negative():
+    # noise shrinks steeply with age and few readings are old: a linear spread fit dips below zero there
+    rng = np.random.default_rng(4)
+    rows = []
+    for u in range(60):
+        L = 120 if u < 55 else 400                                   # five long-lived engines: a sparse corner
+        for c in range(1, L + 1):
+            r = L - c
+            rows.append({"unit": u, "cycle": c, "rhat": float(min(125, r)),
+                         **{s: 100 + rng.normal(0, 3.0 * np.exp(-c / 40) + 0.01) for s in SENSORS}})
+    tr = pd.DataFrame(rows)
+    lin, log = M2.ExpectedLevel().fit(tr), M2.ExpectedLevel(spread="log").fit(tr)
+    X = M2._inputs(tr.rhat, tr.cycle)
+    assert lin.kind == "linear" and M2.SPREAD["v2"] == "linear"                       # pre-registered default unchanged
+    assert (log.mad("s4", X) > 0).all()
+    assert np.isclose(log.mad("s4", X).mean(), np.abs(tr.s4 - lin.mean["s4"].predict(X)).mean(), rtol=0.05)
+    assert np.abs(log.z(tr)[SENSORS]).max().max() < 50
+
+
+def test_rule_variants_resolve_to_their_files():
+    assert M2.RULE_FILES["v2"].name == "monitoring_rule_v2.json" and M2.RULE_FILES["v2.1"].name == "monitoring_rule_v2_1.json"
+    assert M2.load_rule("v2") == M2.load_rule(M2.RULE_FILE)
