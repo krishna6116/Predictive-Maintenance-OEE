@@ -1,6 +1,6 @@
 # Predictive Maintenance & OEE
 
-Portfolio project: predict remaining useful life (RUL) of turbofan engines from NASA C-MAPSS sensor data, schedule maintenance under crew limits, and show the effect on OEE. Built phase by phase from the study guide (Claude Doc: https://claude.ai/code/artifact/7dd89f2e-799d-48a0-aa7e-f2e28c2fbd3d; PDF copy in `docs/`, git-ignored).
+Portfolio project: predict remaining useful life (RUL) of turbofan engines from NASA C-MAPSS sensor data, schedule maintenance under crew limits, and show the effect on OEE. Built phase by phase from the study guide (PDF copy in `docs/`, git-ignored).
 
 ## Status (2026-10-25)
 
