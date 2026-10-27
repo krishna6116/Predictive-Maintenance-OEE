@@ -54,7 +54,7 @@ from pipeline.ingest import load_file
 from pipeline.load import last_received_cycles, load_batch
 from pipeline.validate import load_limits, validate as check
 
-OUT = Path("pipeline")
+OUT = Path("results/phase7")
 RECORDED = OUT / "phase7_predictions.csv"
 BATCH = 100                                   # fixed prediction batch (bit-identical to the published predictions)
 UNREADABLE = ("missing value", "duplicate cycle")   # quarantined rows the drift test cannot use (decision D1)

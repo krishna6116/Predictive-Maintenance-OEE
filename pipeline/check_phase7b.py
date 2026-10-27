@@ -6,8 +6,8 @@ C2 (the guide's test): in a throwaway schema, clean shifts 1-9 of the synchroniz
 s4 of every engine (s4, as in Phase 7; shift 10 so that every engine reports). Pass: needs_retraining is set in shift
 10 with a reason naming s4, and the clean shifts before it set nothing. Runs the deployed model (predictor "model"),
 so the shifted readings that pass validation also change the model's predictions, as they would in the plant.
-C1 is read from the four clean replays (pipeline/phase7b/<scenario>/phase7_health.csv).
-Writes pipeline/phase7b/checks.json.
+C1 is read from the four clean replays (results/phase7b/<scenario>/phase7_health.csv).
+Writes results/phase7b/checks.json.
 """
 import json
 import sys
@@ -17,7 +17,7 @@ from pathlib import Path
 import pandas as pd
 from sqlalchemy import text
 
-OUT = Path("pipeline/phase7b")
+OUT = Path("results/phase7b")
 FRESH = ("FD002", "FD004")
 
 
@@ -71,7 +71,7 @@ if __name__ == "__main__" and not {"--closed-loop", "--diagnosis"} & set(sys.arg
 
 
 def closed_loop() -> dict:
-    """Censoring in the closed loop (pipeline/phase7b/fresh_closed_loop, synchronized). Labels arrive only for engines
+    """Censoring in the closed loop (results/phase7b/fresh_closed_loop, synchronized). Labels arrive only for engines
     that failed before their service. A serviced engine is censored, but not uninformative: it survived until its
     service, so its true remaining life at its last forecast is at least (service cycle - forecast cycle). If that is
     already >= the forecast's lower bound, it cannot have been a lower-bound miss. This gives bounds on the miss rate

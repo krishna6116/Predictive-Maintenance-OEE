@@ -104,12 +104,12 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--replay", type=int, default=0, help="re-run shifts 1..N in a throwaway schema and compare rows")
     args = ap.parse_args(argv)
-    preds = pd.read_csv("pipeline/phase7_predictions.csv", **CSV)
-    health = pd.read_csv("pipeline/phase7_health.csv", **CSV)
-    drift = pd.read_csv("pipeline/phase7_drift.csv", **CSV)
-    alerts = pd.read_csv("pipeline/phase7_alerts.csv", **CSV)
-    runs = pd.read_csv("pipeline/phase7_runs.csv", **CSV)
-    res = json.loads(Path("pipeline/results_phase7.json").read_text())
+    preds = pd.read_csv("results/phase7/phase7_predictions.csv", **CSV)
+    health = pd.read_csv("results/phase7/phase7_health.csv", **CSV)
+    drift = pd.read_csv("results/phase7/phase7_drift.csv", **CSV)
+    alerts = pd.read_csv("results/phase7/phase7_alerts.csv", **CSV)
+    runs = pd.read_csv("results/phase7/phase7_runs.csv", **CSV)
+    res = json.loads(Path("results/phase7/results_phase7.json").read_text())
 
     raw = {ds: read_raw(f"data/raw/test_{ds}.txt") for ds in DS}
     last = {ds: raw[ds].groupby("unit").cycle.max().to_dict() for ds in DS}
@@ -228,7 +228,7 @@ def main(argv=None) -> int:
                                f"bound <= 20, made before the engine failed, within 7 days; at most {per_day} per day (3 crews)")
 
     print("\n== Guide checks")
-    chk = json.loads(Path("pipeline/phase7_checks.json").read_text())
+    chk = json.loads(Path("results/phase7/phase7_checks.json").read_text())
     fc = chk["flow_check"]
     check(fc["clean_runs_flagged"] == 0 and fc["plus5pct"]["drifted"] == [fc["sensor"]] and fc["plus5pct"]["needs_retraining"]
           and fc["plus5pct"]["quarantined"] == fc["plus5pct"]["readings"],

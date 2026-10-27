@@ -36,7 +36,7 @@ from pipeline.validate import load_limits
 
 ONSETS = (25, 50, 75, 100, 125, 150)
 CSV = {"float_precision": "round_trip"}
-OUT = Path("pipeline/phase7b")
+OUT = Path("results/phase7b")
 
 
 class Fault:

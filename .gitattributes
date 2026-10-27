@@ -1,0 +1,2 @@
+# Notebooks are walkthroughs generated from the scripts; keep the language bar on the Python code
+*.ipynb linguist-documentation

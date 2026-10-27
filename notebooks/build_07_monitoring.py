@@ -2,7 +2,7 @@
 
 Run from the project root:  python notebooks/build_07_monitoring.py
 Then execute it:            jupyter nbconvert --to notebook --execute --inplace notebooks/07_monitoring.ipynb
-Reads the saved replay (pipeline/phase7_*.csv, results_phase7.json, phase7_checks.json, monitoring_rule.json); it
+Reads the saved replay (results/phase7/phase7_*.csv, results_phase7.json, phase7_checks.json, monitoring_rule.json); it
 re-runs nothing. Findings are generated from those files and every claim is asserted.
 """
 import json
@@ -18,9 +18,9 @@ md, code = nbf.v4.new_markdown_cell, nbf.v4.new_code_cell
 def findings() -> str:
     import pandas as pd
     rule = json.loads(Path("pipeline/monitoring_rule.json").read_text())
-    chk = json.loads(Path("pipeline/phase7_checks.json").read_text())
-    res = json.loads(Path("pipeline/results_phase7.json").read_text())
-    runs = pd.read_csv("pipeline/phase7_runs.csv")
+    chk = json.loads(Path("results/phase7/phase7_checks.json").read_text())
+    res = json.loads(Path("results/phase7/results_phase7.json").read_text())
+    runs = pd.read_csv("results/phase7/phase7_runs.csv")
     fc, rp = chk["flow_check"], chk["replay"]
     assert (runs.flow_status == "complete").all() and len(runs) == res["runs"], "claim: every run completed"
     pub = {"FD001": json.loads(Path("models/results_phase5.json").read_text())["models"]["LSTM"]["rmse"],
@@ -100,9 +100,9 @@ def build():
         code("import json, sys\nfrom pathlib import Path\nimport matplotlib.pyplot as plt\nimport pandas as pd\n\n"
              "ROOT = Path.cwd().parent if Path.cwd().name == 'notebooks' else Path.cwd()\nsys.path.insert(0, str(ROOT))\n"
              "FIG = ROOT / 'docs' / 'figures'\nrule = json.loads((ROOT / 'pipeline/monitoring_rule.json').read_text())\n"
-             "chk = json.loads((ROOT / 'pipeline/phase7_checks.json').read_text())\n"
-             "res = json.loads((ROOT / 'pipeline/results_phase7.json').read_text())\n"
-             "health = pd.read_csv(ROOT / 'pipeline/phase7_health.csv')\ndrift = pd.read_csv(ROOT / 'pipeline/phase7_drift.csv')\n"
+             "chk = json.loads((ROOT / 'results/phase7/phase7_checks.json').read_text())\n"
+             "res = json.loads((ROOT / 'results/phase7/results_phase7.json').read_text())\n"
+             "health = pd.read_csv(ROOT / 'results/phase7/phase7_health.csv')\ndrift = pd.read_csv(ROOT / 'results/phase7/phase7_drift.csv')\n"
              "print({k: res[k] for k in ('shifts', 'runs', 'forecasts', 'invalid_forecasts', 'work_orders')})"),
         md("## 7.1 The rule, fixed before the test replay"),
         code("pd.DataFrame({'alpha': [rule['drift']['alpha']], 'drift false alarms (validation)': [rule['drift']['false_alarm_chosen']],\n"

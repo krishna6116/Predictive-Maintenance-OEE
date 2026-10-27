@@ -4,7 +4,39 @@ Predicts turbofan engine failures from sensor data, schedules maintenance under 
 
 [![CI](https://github.com/krishna6116/Predictive-Maintenance-OEE/actions/workflows/ci.yml/badge.svg)](https://github.com/krishna6116/Predictive-Maintenance-OEE/actions/workflows/ci.yml)
 
-> **Work in progress.** Phases 0-7 complete, plus a confirmation on a second NASA dataset (5b); Phase 8 (dashboards) next.
+**Status:** Phases 0-7b done (data pipeline, models, maintenance scheduling, orchestration and monitoring). Phases 8-9 (dashboards, write-up) are future work.
+
+**Tech stack:** Python · PostgreSQL · pandas · scikit-learn · XGBoost · PyTorch (LSTM, 1D-CNN) · OR-Tools CP-SAT · Prefect · pytest · GitHub Actions
+
+## Results at a glance
+
+| What | Result |
+| --- | --- |
+| Remaining-life forecast (NASA FD003, unseen test engines, RMSE in cycles; lower is better) | **LSTM 12.66** vs XGBoost 15.50 |
+| Simulated OEE, 200 test engines: predictive / fixed interval / run to failure | **98.2%** / 97.8% / 95.2% |
+| Unplanned failures: predictive / fixed interval / run to failure | **8** / 21 / 200 |
+
+OEE and failures come from a simulated plant driven by NASA's engine data, not from a real plant. Every number above is recomputed by independent verifier code on each push.
+
+![Simulated OEE and failures for the three maintenance policies](docs/figures/phase6_policies.png)
+
+## How it works
+
+```mermaid
+flowchart LR
+    A[NASA C-MAPSS<br/>sensor readings] --> B[Ingest and validate<br/>bad rows quarantined]
+    B --> C[(PostgreSQL<br/>star schema)]
+    C --> D[168 causal features<br/>and sensor windows]
+    D --> E[LSTM remaining-life forecast<br/>with 90% interval]
+    E --> F[Alert when the lower bound<br/>reaches 20 cycles]
+    F --> G[OR-Tools CP-SAT<br/>crew schedule]
+    G --> H[Simulated plant<br/>and OEE]
+    E --> I[Model health, drift test,<br/>retraining flag]
+    P{Prefect flow: one run per 8-hour shift} -.-> B
+    P -.-> E
+    P -.-> G
+    P -.-> I
+```
 
 ## Progress
 
@@ -20,7 +52,45 @@ Predicts turbofan engine failures from sensor data, schedules maintenance under 
 | 6. Maintenance alerts on the interval's lower bound, OR-Tools CP-SAT crew schedule, simulated plant and OEE, 3-policy comparison | Done | [Maintenance and OEE](docs/MAINTENANCE_OEE.md) · [notebook](notebooks/06_maintenance.ipynb) |
 | 7. Orchestration and monitoring: Prefect shift flow with retries, model health once labels exist, KS drift, pre-registered retraining flag | Done | [Monitoring](docs/MONITORING.md) · [notebook](notebooks/07_monitoring.ipynb) |
 | 7b. Monitoring re-tested: wear-adjusted drift rule pre-registered on validation, confirmed on unseen FD002/FD004, fault suite, closed loop | Done (FD004 failed one criterion) | [Phase 7b results](docs/MONITORING_7B.md) · [notebook](notebooks/07b_monitoring.ipynb) |
-| 8-9. Dashboards, write-up | Next / planned | |
+| 8-9. Dashboards, write-up | Future work | |
+
+## Run locally
+
+Windows (PowerShell):
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements-lock.txt   # exact versions; requirements.txt lists the top-level packages
+pytest -q
+```
+
+macOS / Linux (bash):
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements-lock.txt   # exact versions; requirements.txt lists the top-level packages
+pytest -q
+```
+
+## Data
+
+NASA C-MAPSS Turbofan Engine Degradation Simulation (A. Saxena and K. Goebel, NASA Prognostics Center of Excellence, 2008). Download it with one command; every file is checked against the SHA-256 checksums in `data/checksums.sha256`, so results are always reproduced on byte-identical data:
+
+```powershell
+python -m pipeline.download_data
+```
+
+```bash
+python -m pipeline.download_data
+```
+
+FD001: 100 training engines (20,631 rows), 100 test engines (13,096 rows), 26 columns. Data files are not committed.
+
+**Continuous verification:** on every push, GitHub Actions downloads the pinned data, runs the pipeline into a fresh PostgreSQL database, builds the features, and runs the test suite plus the Phase 3, 4, 5, 5b, 6 and 7 verifiers (Phase 7 also replays 150 shifts of the flow in a fresh database), which recompute the published numbers with independent code.
+
+## Technical details
 
 **Highlights so far**
 
@@ -37,28 +107,7 @@ Predicts turbofan engine failures from sensor data, schedules maintenance under 
 
 ![Sensors drift as engines approach failure](docs/figures/fd001_sensor_trends.png)
 
-## Data
-
-NASA C-MAPSS Turbofan Engine Degradation Simulation (A. Saxena and K. Goebel, NASA Prognostics Center of Excellence, 2008). Download it with one command; every file is checked against the SHA-256 checksums in `data/checksums.sha256`, so results are always reproduced on byte-identical data:
-
-```powershell
-python -m pipeline.download_data
-```
-
-FD001: 100 training engines (20,631 rows), 100 test engines (13,096 rows), 26 columns. Data files are not committed.
-
-**Continuous verification:** on every push, GitHub Actions downloads the pinned data, runs the pipeline into a fresh PostgreSQL database, builds the features, and runs the test suite plus the Phase 3, 4, 5, 5b, 6 and 7 verifiers (Phase 7 also replays 150 shifts of the flow in a fresh database), which recompute the published numbers with independent code.
-
-## Run locally
-
-```powershell
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-pip install -r requirements-lock.txt   # exact versions; requirements.txt lists the top-level packages
-pytest -q
-```
-
-## Shift pipeline and monitoring (Phase 7)
+### Shift pipeline and monitoring (Phase 7)
 
 `pipeline/flow.py` is a Prefect flow. Each run is one 8-hour shift: for each test fleet it ingests the readings that arrived, validates them (bad rows are quarantined with a reason), loads them into PostgreSQL, predicts remaining life with the published LSTM and its 90% interval, flags engines whose lower bound reaches 20 cycles, schedules them with OR-Tools under 3 crews a day, scores the model on engines whose failure is already known, tests every sensor for drift, and sets a retraining flag when the pre-registered rule fires. Database and file steps retry automatically; each shift has a fixed run ID, so re-running it replaces its rows and a failed shift is resumed by the next run.
 
@@ -71,4 +120,21 @@ python -m pipeline.flow --replay-all    # every shift until all failures are kno
 python -m pipeline.verify_phase7        # independent check of the replay
 ```
 
+```bash
+prefect server start                                           # terminal 1; dashboard at http://127.0.0.1:4200
+prefect config set PREFECT_API_URL=http://127.0.0.1:4200/api   # terminal 2, once
+python -m pipeline.flow --once
+python -m pipeline.flow --serve
+python -m pipeline.flow --replay-all
+python -m pipeline.verify_phase7
+```
+
 Monitoring, in short: a prediction is scored only after the engine has actually failed (no future labels); drift is a KS test per sensor on per-engine means against training engines of the same age, corrected for 14 tests (Holm); the drift and retraining limits were chosen on validation engines and committed before the replay. Results, including where the rule did not meet its targets on clean test data and why, are in [docs/MONITORING.md](docs/MONITORING.md).
+
+## How this was built
+
+Built phase by phase from a study guide, with Claude (Anthropic's AI assistant) as a coding assistant. Model choices, statistical tests and monitoring rules were fixed on validation data before the test results were seen, and CI re-checks every published number with independent verifier code. Where a result missed its target (Phase 7 drift false alarms, Phase 7b on FD004), it is reported as it came out, not re-tuned.
+
+## License
+
+MIT, see [LICENSE](LICENSE).
