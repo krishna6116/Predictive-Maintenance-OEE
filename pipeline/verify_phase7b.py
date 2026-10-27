@@ -24,7 +24,7 @@ import pandas as pd
 from scipy.stats import kstwo
 
 CSV = {"float_precision": "round_trip"}
-OUT = Path("pipeline/phase7b")
+OUT = Path("results/phase7b")
 SENSORS = ["s2", "s3", "s4", "s7", "s8", "s9", "s11", "s12", "s13", "s14", "s15", "s17", "s20", "s21"]
 SCEN = {"fresh_synchronized": ("FD002", "FD004", "synchronized", "v2"), "fresh_staggered": ("FD002", "FD004", "staggered", "v2"),
         "posthoc_synchronized": ("FD001", "FD003", "synchronized", "v2"), "posthoc_staggered": ("FD001", "FD003", "staggered", "v2"),

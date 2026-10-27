@@ -100,4 +100,4 @@ jobs:
       - name: Phase 7b verification (fresh-fleet criteria, decision rule re-applied, independent KS, fault suite, closed loop)
         run: python -m pipeline.verify_phase7b
       - name: Committed files are unchanged by the run
-        run: git diff --exit-code -- pipeline/ docs/MONITORING.md docs/MONITORING_7B.md
+        run: git diff --exit-code -- pipeline/ results/ docs/MONITORING.md docs/MONITORING_7B.md

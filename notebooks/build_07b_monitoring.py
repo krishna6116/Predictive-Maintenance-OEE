@@ -16,16 +16,16 @@ md, code = nbf.v4.new_markdown_cell, nbf.v4.new_code_cell
 
 def findings() -> str:
     import pandas as pd
-    chk = json.loads(Path("pipeline/phase7b/checks.json").read_text())
-    fs = json.loads(Path("pipeline/phase7b/fault_suite.json").read_text())
+    chk = json.loads(Path("results/phase7b/checks.json").read_text())
+    fs = json.loads(Path("results/phase7b/fault_suite.json").read_text())
     c1 = chk["C1"]
     fd2_ok = all(c1[f"FD002 {f}"]["rate"] <= 0.05 for f in ("synchronized", "staggered"))
     fd4_ok = all(c1[f"FD004 {f}"]["rate"] <= 0.05 for f in ("synchronized", "staggered"))
     assert fd2_ok and not fd4_ok, "claim: C1 passes on FD002 and fails on FD004"
     assert all(chk["C2"][d]["passed"] for d in ("FD002", "FD004")), "claim: C2 passes on both"
     assert all(fs[d]["step"]["rate"] >= 0.8 and fs[d]["ramp"]["rate"] >= 0.8 for d in ("FD002", "FD004")), "claim: C3, C4 pass"
-    post = {f: pd.read_csv(f"pipeline/phase7b/posthoc_{f}/phase7_health.csv").needs_retraining.sum() for f in ("synchronized", "staggered")}
-    v21 = pd.read_csv("pipeline/phase7b/v21_fresh_synchronized/phase7_health.csv")
+    post = {f: pd.read_csv(f"results/phase7b/posthoc_{f}/phase7_health.csv").needs_retraining.sum() for f in ("synchronized", "staggered")}
+    v21 = pd.read_csv("results/phase7b/v21_fresh_synchronized/phase7_health.csv")
     v21_fd4 = v21[v21.dataset == "FD004"].needs_retraining.mean()
     assert v21_fd4 > 0.05, "claim: the post-hoc spread fix does not rescue FD004"
     sp = chk["diagnosis"]["spread"]["FD004"]
@@ -84,7 +84,7 @@ def build():
            "- **Censoring:** a serviced engine never fails, so we never learn its true remaining life."),
         code("import json, sys\nfrom pathlib import Path\nimport matplotlib.pyplot as plt\nimport pandas as pd\n\n"
              "ROOT = Path.cwd().parent if Path.cwd().name == 'notebooks' else Path.cwd()\nsys.path.insert(0, str(ROOT))\n"
-             "FIG = ROOT / 'docs' / 'figures'\nOUT = ROOT / 'pipeline' / 'phase7b'\n"
+             "FIG = ROOT / 'docs' / 'figures'\nOUT = ROOT / 'results' / 'phase7b'\n"
              "chk = json.loads((OUT / 'checks.json').read_text())\nfs = json.loads((OUT / 'fault_suite.json').read_text())\n"
              "pd.DataFrame(chk['C1']).T"),
         md("## Clean-run flags over the replay"),

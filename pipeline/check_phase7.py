@@ -9,7 +9,7 @@ Run:  python -m pipeline.check_phase7      (after python -m pipeline.flow --repl
 2. Power on test windows: every 10th shift of the replay, the newest shift's readings of one sensor at a time are
    shifted (+1%, +2%, +5%, +0.5 sd, +1 sd) and the drift test is re-run on that window (~100 engines).
 3. False alarms on the clean test replay, as recorded by the flow (out of sample; the rule was chosen on validation).
-Writes pipeline/phase7_checks.json.
+Writes results/phase7/phase7_checks.json.
 """
 import json
 import sys
@@ -23,7 +23,7 @@ from sqlalchemy import text
 from pipeline import monitoring as M
 from pipeline.config import FLOW_DATASETS, SENSORS
 
-OUT = Path("pipeline/phase7_checks.json")
+OUT = Path("results/phase7/phase7_checks.json")
 SIZES = (("pct", 0.01), ("pct", 0.02), ("pct", 0.05), ("sd", 0.5), ("sd", 1.0))
 
 
@@ -91,8 +91,8 @@ def test_window_power(alpha: float) -> dict:
 
 
 def replay_false_alarms() -> dict:
-    d = pd.read_csv("pipeline/phase7_drift.csv")
-    h = pd.read_csv("pipeline/phase7_health.csv")
+    d = pd.read_csv("results/phase7/phase7_drift.csv")
+    h = pd.read_csv("results/phase7/phase7_health.csv")
     tested = d[d.tested].groupby("run_id").drifted.any()
     out = {"runs_with_drift_test": int(len(tested)), "runs_with_a_drifted_sensor": int(tested.sum()),
            "drift_false_alarm_rate": float(tested.mean()),
@@ -103,15 +103,15 @@ def replay_false_alarms() -> dict:
 
 
 def summarize(checks: dict) -> dict:
-    """pipeline/results_phase7.json: the replay in numbers, generated from the exported tables."""
+    """results/phase7/results_phase7.json: the replay in numbers, generated from the exported tables."""
     import platform
     import prefect
     import sqlalchemy
     import torch
-    h = pd.read_csv("pipeline/phase7_health.csv", float_precision="round_trip")
-    runs = pd.read_csv("pipeline/phase7_runs.csv")
-    alerts = pd.read_csv("pipeline/phase7_alerts.csv")
-    preds = pd.read_csv("pipeline/phase7_predictions.csv", usecols=["dataset", "valid"])
+    h = pd.read_csv("results/phase7/phase7_health.csv", float_precision="round_trip")
+    runs = pd.read_csv("results/phase7/phase7_runs.csv")
+    alerts = pd.read_csv("results/phase7/phase7_alerts.csv")
+    preds = pd.read_csv("results/phase7/phase7_predictions.csv", usecols=["dataset", "valid"])
     out = {"shifts": int(runs["shift"].max()), "runs": len(runs), "forecasts": len(preds),
            "invalid_forecasts": int((~preds.valid).sum()), "work_orders": len(alerts),
            "drift_false_alarm_rate_test": checks["replay"]["drift_false_alarm_rate"], "datasets": {}}
@@ -146,7 +146,7 @@ def drift_diagnosis() -> dict:
     window with the training engines of the reference, and how strongly each flagged sensor tracks wear.
     A diagnosis after the fact; it changes no rule."""
     from pipeline import flow as F
-    d = pd.read_csv("pipeline/phase7_drift.csv")
+    d = pd.read_csv("results/phase7/phase7_drift.csv")
     flagged = d[d.tested].groupby(["dataset", "shift"]).drifted.any().reset_index()
     out = {"by_dataset": {}}
     corr = {s: [] for s in SENSORS}
@@ -181,7 +181,7 @@ def health_diagnosis() -> dict:
     """Labels arrive in order of failure, so the first window holds the shortest-lived engines. Compare them with the
     rest (each engine's last prediction, as the health rule scores it). A diagnosis after the fact; it changes no rule."""
     from pipeline import flow as F
-    p = pd.read_csv("pipeline/phase7_predictions.csv", float_precision="round_trip")
+    p = pd.read_csv("results/phase7/phase7_predictions.csv", float_precision="round_trip")
     out = {}
     for ds in FLOW_DATASETS:
         L = F.failure_log(ds)
@@ -200,7 +200,7 @@ def main() -> int:
     res = {"flow_check": flow_check(), "test_window_power": test_window_power(rule["drift"]["alpha"]),
            "replay": replay_false_alarms(), "drift_diagnosis": drift_diagnosis(), "health_diagnosis": health_diagnosis()}
     OUT.write_text(json.dumps(res, indent=2), encoding="utf-8")
-    Path("pipeline/results_phase7.json").write_text(json.dumps(summarize(res), indent=2), encoding="utf-8")
+    Path("results/phase7/results_phase7.json").write_text(json.dumps(summarize(res), indent=2), encoding="utf-8")
     fc = res["flow_check"]
     print(f"guide check ({fc['dataset']} {fc['sensor']}): clean runs flagged {fc['clean_runs_flagged']}/{fc['clean_runs']}; "
           f"+5%: {fc['plus5pct']['quarantined']}/{fc['plus5pct']['readings']} quarantined, drifted {fc['plus5pct']['drifted']}, "

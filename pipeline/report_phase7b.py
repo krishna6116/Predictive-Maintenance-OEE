@@ -9,7 +9,7 @@ from pathlib import Path
 
 import pandas as pd
 
-OUT = Path("pipeline/phase7b")
+OUT = Path("results/phase7b")
 DOC = Path("docs/MONITORING_7B.md")
 CRITERIA = json.loads(Path("pipeline/phase7b_criteria.json").read_text())
 
@@ -165,7 +165,7 @@ def render() -> str:
             "- The plant clock, services and labels are simulated from NASA's data.", "",
             "## Reproduce", "",
             "Each scenario is one command, e.g. `python -m pipeline.flow --replay-all --monitor v2 --fleet staggered --datasets "
-            "FD002 FD004 --schema ops7b_fresh_staggered --out-dir pipeline/phase7b/fresh_staggered` (`--monitor v2.1` for the post-hoc "
+            "FD002 FD004 --schema ops7b_fresh_staggered --out-dir results/phase7b/fresh_staggered` (`--monitor v2.1` for the post-hoc "
             "fix, `--closed-loop` for the closed loop). Health, drift, alert and run tables of every scenario are committed; of the "
             "forecast tables (about 15 MB each) only the three the verifier reads are committed, gzip-compressed. Then "
             "`python -m pipeline.check_phase7b` (with `--closed-loop` and `--diagnosis`), `python -m pipeline.fault_suite FD002 FD004` "
