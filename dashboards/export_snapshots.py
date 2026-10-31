@@ -11,12 +11,15 @@ file's rows, sha256, key and run IDs, the sha256 of every source file, and one d
 import hashlib
 import io
 import json
+import re
 import sys
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
 from sqlalchemy import text
+
+from models.calibration import NOMINAL
 
 OUT = Path("dashboards/snapshots")
 RUN6 = json.loads(Path("maintenance/results_phase6.json").read_text())["run_id"]
@@ -28,7 +31,8 @@ SOURCES = ["maintenance/snapshot_decisions_phase6.csv", "maintenance/results_pha
            "models/results_phase5b.json", "models/predictions_phase4.csv", "models/predictions_phase5.csv",
            "models/predictions_phase5b.csv", "results/phase7/phase7_drift.csv", "results/phase7/phase7_health.csv",
            "results/phase7/results_phase7.json", "results/phase7b/fresh_synchronized/phase7_health.csv",
-           "results/phase7b/fresh_staggered/phase7_health.csv", "results/phase7b/checks.json"]
+           "results/phase7b/fresh_staggered/phase7_health.csv", "results/phase7b/checks.json",
+           "pipeline/phase7b_criteria.json", "dashboards/phase8_spec.json", "models/calibration.py"]
 # model display name -> (key in the results files, column in the predictions files)
 MODELS = {"Fleet average": "Fleet average", "Age only": "Age only (cycle count)", "Ridge (168 features)": "Ridge, all 168 features",
           "XGBoost (168 features)": "XGBoost, all 168 features", "LSTM": "LSTM", "CNN": "CNN"}
@@ -149,9 +153,58 @@ def build(conn) -> dict[str, pd.DataFrame]:
     return frames
 
 
+def limit_pct(text_: str, pattern: str) -> float:
+    """A percentage limit parsed from pre-registered criterion text, e.g. '<= 5%' -> 0.05."""
+    m = re.search(pattern, text_)
+    if not m:
+        raise RuntimeError(f"limit not found: {pattern!r}")
+    return float(m.group(1)) / 100
+
+
+def facts() -> dict:
+    """Scalar facts shown on the pages, each with its source (phase8_spec.json snapshots.facts.json)."""
+    r5b = json.loads(Path("models/results_phase5b.json").read_text())
+    r6 = json.loads(Path("maintenance/results_phase6.json").read_text())
+    crit = json.loads(Path("pipeline/phase7b_criteria.json").read_text())
+    spec = json.loads(Path("dashboards/phase8_spec.json").read_text())
+    mc, st = r5b["mc_dropout"], r6["settings"]
+    f = lambda value, source: {"value": value, "source": source}
+    out = {
+        "published_model": f(r5b["verdict"]["published_winner"], "models/results_phase5b.json verdict.published_winner"),
+        "published_rule": f(r5b["verdict"]["rule"], "models/results_phase5b.json verdict.rule"),
+        "interval_nominal": f(NOMINAL, "models/calibration.py NOMINAL"),
+        "interval_passes": f(mc["passes"], "models/results_phase5b.json mc_dropout.passes"),
+        "coverage_stated_FD003": f(mc["FD003"]["test_coverage"], "models/results_phase5b.json mc_dropout.FD003.test_coverage"),
+        "coverage_kind_FD003": f("confirmation on fresh data", "models/results_phase5b.json (FD003 scored once)"),
+        "coverage_stated_FD001": f(mc["FD001_post_hoc"]["test_coverage"], "models/results_phase5b.json mc_dropout.FD001_post_hoc.test_coverage"),
+        "coverage_kind_FD001": f("post hoc", "models/results_phase5b.json mc_dropout.FD001_post_hoc.note: " + mc["FD001_post_hoc"]["note"]),
+        "k_near_FD001": f(mc["FD001_post_hoc"]["k_near"], "models/results_phase5b.json mc_dropout.FD001_post_hoc.k_near"),
+        "k_far_FD001": f(mc["FD001_post_hoc"]["k_far"], "models/results_phase5b.json mc_dropout.FD001_post_hoc.k_far"),
+        "k_near_FD003": f(mc["FD003"]["k_near"], "models/results_phase5b.json mc_dropout.FD003.k_near"),
+        "k_far_FD003": f(mc["FD003"]["k_far"], "models/results_phase5b.json mc_dropout.FD003.k_far"),
+        "alert_threshold": f(st["alert_threshold"], "maintenance/results_phase6.json settings.alert_threshold"),
+        "crews_per_day": f(st["crews_per_day"], "maintenance/results_phase6.json settings.crews_per_day"),
+        "horizon_days": f(st["horizon_days"], "maintenance/results_phase6.json settings.horizon_days"),
+        "cycles_per_day": f(st["cycles_per_day"], "maintenance/results_phase6.json settings.cycles_per_day"),
+        "simulation_notice": f(r6["simulation_notice"], "maintenance/results_phase6.json simulation_notice"),
+        "plant_assumptions": f(r6["assumptions"], "maintenance/results_phase6.json assumptions"),
+        "p7_drift_target": f(limit_pct(crit["why"], r"target (\d+(?:\.\d+)?)%"), "pipeline/phase7b_criteria.json why ('target 5%')"),
+        "c1_limit": f(limit_pct(crit["criteria"]["C1_clean_false_alarms"], r"<= (\d+(?:\.\d+)?)%"),
+                      "pipeline/phase7b_criteria.json criteria.C1_clean_false_alarms"),
+        "definitions": f(spec["definitions"], "dashboards/phase8_spec.json definitions"),
+    }
+    for ds in r6["datasets"]:
+        s = r6["datasets"][ds]["snapshot"]
+        out[f"solver_status_{ds}"] = f(s["schedule_status"], f"maintenance/results_phase6.json datasets.{ds}.snapshot.schedule_status")
+    return dict(sorted(out.items()))
+
+
 def manifest(blobs: dict[str, bytes], frames: dict[str, pd.DataFrame]) -> dict:
     files = {}
     for name, b in blobs.items():
+        if name == "facts.json":
+            files[name] = {"rows": None, "sha256": sha256(b), "key": None, "run_ids_count": 0, "run_ids": None, "run_ids_sha256": None}
+            continue
         ids = sorted(frames[name].run_id.dropna().unique()) if "run_id" in frames[name] else []
         files[name] = {"rows": len(frames[name]), "sha256": sha256(b), "key": KEYS[name], "run_ids_count": len(ids),
                        "run_ids": ids if len(ids) <= 5 else None, "run_ids_sha256": sha256("\n".join(ids).encode()) if ids else None}
@@ -168,6 +221,7 @@ def export() -> dict[str, bytes]:
         conn.execute(text("SET TRANSACTION READ ONLY"))
         frames = build(conn)
     blobs = {n: to_bytes(df) for n, df in frames.items()}
+    blobs["facts.json"] = (json.dumps(facts(), indent=2) + "\n").encode()
     blobs["manifest.json"] = (json.dumps(manifest(blobs, frames), indent=2) + "\n").encode()
     return blobs
 
@@ -184,7 +238,7 @@ def main() -> int:
     man = json.loads(blobs["manifest.json"])
     total = sum(len(b) for b in blobs.values())
     for n, f in man["files"].items():
-        print(f"{n:22s} {f['rows']:6d} rows  {f['sha256'][:12]}")
+        print(f"{n:22s} {f['rows'] if f['rows'] is not None else '-':>6} rows  {f['sha256'][:12]}")
     print(f"total {total / 1e6:.2f} MB; data checksum {man['data_checksum'][:16]}")
     return 0
 

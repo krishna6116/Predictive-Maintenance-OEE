@@ -90,6 +90,14 @@
       "run_ids_count": 2302,
       "run_ids": null,
       "run_ids_sha256": "9fca16f513b61c6ec393e5b87d486d9d2e81a7060beb9c43a0eb5ea2ff3075b2"
+    },
+    "facts.json": {
+      "rows": null,
+      "sha256": "404d705fea40c1f78db5cff1d602478257db381f61a637de60f13f7f468c8ae4",
+      "key": null,
+      "run_ids_count": 0,
+      "run_ids": null,
+      "run_ids_sha256": null
     }
   },
   "sources": {
@@ -110,7 +118,10 @@
     "results/phase7/results_phase7.json": "01a36d5cb30d688877486d255952b5eab63664e2a30af5d7568104d57b4cdde3",
     "results/phase7b/fresh_synchronized/phase7_health.csv": "d193d27de9000b4281f35e7eef9ec46fdb31a87ac259cea7fe74b2ae615cb693",
     "results/phase7b/fresh_staggered/phase7_health.csv": "7a676a554537ac13729fca1aa2867af4f951108f7f73e6a1c94e5e24c88aa345",
-    "results/phase7b/checks.json": "a700ca18d0b6ace3c169ce435204ae35a33d197e1d915d714c5b9f04abe44b19"
+    "results/phase7b/checks.json": "a700ca18d0b6ace3c169ce435204ae35a33d197e1d915d714c5b9f04abe44b19",
+    "pipeline/phase7b_criteria.json": "c0408d069bc8cbcfa809dd65677e31eff9ecb39a55fd1d893ba01bf6e7bb7339",
+    "dashboards/phase8_spec.json": "e57e0d4bf9689900d9197e8fab374c8b8c068768e6e2ada8e8e5c33f6a2f3189",
+    "models/calibration.py": "257929cf86f6d9b2d40aa3ddb0006ba0b39f88890ecf1c9b863d2248f8c798e5"
   },
-  "data_checksum": "de46bc536d9b7f3333af4b75ebde2585945e24f5a6cbb0c2b3e69ecbf701d31c"
+  "data_checksum": "6467d24fa7dd4e586f0e37eaffc2914ccfadca104692fd51a6dd3149766ea079"
 }

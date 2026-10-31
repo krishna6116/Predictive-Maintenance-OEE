@@ -1,0 +1,114 @@
+{
+  "alert_threshold": {
+    "value": 20,
+    "source": "maintenance/results_phase6.json settings.alert_threshold"
+  },
+  "c1_limit": {
+    "value": 0.05,
+    "source": "pipeline/phase7b_criteria.json criteria.C1_clean_false_alarms"
+  },
+  "coverage_kind_FD001": {
+    "value": "post hoc",
+    "source": "models/results_phase5b.json mc_dropout.FD001_post_hoc.note: FD001 test coverage had already been seen in Phase 5, so this is not a confirmation"
+  },
+  "coverage_kind_FD003": {
+    "value": "confirmation on fresh data",
+    "source": "models/results_phase5b.json (FD003 scored once)"
+  },
+  "coverage_stated_FD001": {
+    "value": 0.89,
+    "source": "models/results_phase5b.json mc_dropout.FD001_post_hoc.test_coverage"
+  },
+  "coverage_stated_FD003": {
+    "value": 0.86,
+    "source": "models/results_phase5b.json mc_dropout.FD003.test_coverage"
+  },
+  "crews_per_day": {
+    "value": 3,
+    "source": "maintenance/results_phase6.json settings.crews_per_day"
+  },
+  "cycles_per_day": {
+    "value": 2,
+    "source": "maintenance/results_phase6.json settings.cycles_per_day"
+  },
+  "definitions": {
+    "value": {
+      "RUL": "Remaining useful life: cycles left before the engine fails. Training targets and test truth are capped at 125 cycles.",
+      "interval": "MC-dropout 90% interval with rule E scale factors (models/calibration_rule.json): mean +/- k x sd over 100 dropout passes, k switched on predicted RUL <= 50.",
+      "flagged": "Lower 90% bound <= 20 cycles (guide threshold, maintenance/config.py).",
+      "near_failure": "Test engines whose true RUL <= 50 cycles.",
+      "RMSE": "Root mean squared error of predicted vs true (capped) RUL over the 100 test engines of a dataset, in cycles.",
+      "near_failure_MAE": "Mean absolute error over near-failure test engines, in cycles.",
+      "coverage": "Share of test engines whose true capped RUL lies inside the 90% interval.",
+      "OEE": "Availability x Performance x Quality from summed hours and units (maintenance/simulate.py oee()). Availability = run hours / planned hours; Performance = actual units / ideal units; Quality = good units / actual units. SIMULATED plant: not measured data.",
+      "drift_false_alarm_rate": "Phase 7 rule v1: share of clean test runs with a drift test in which at least one sensor was flagged drifted.",
+      "clean_run_flag_rate": "Phase 7b rule v2: share of clean replay runs with needs_retraining set (criterion C1, limit 5%, pipeline/phase7b_criteria.json).",
+      "shift": "One flow run per dataset per 8-hour shift = one engine cycle."
+    },
+    "source": "dashboards/phase8_spec.json definitions"
+  },
+  "horizon_days": {
+    "value": 7,
+    "source": "maintenance/results_phase6.json settings.horizon_days"
+  },
+  "interval_nominal": {
+    "value": 0.9,
+    "source": "models/calibration.py NOMINAL"
+  },
+  "interval_passes": {
+    "value": 100,
+    "source": "models/results_phase5b.json mc_dropout.passes"
+  },
+  "k_far_FD001": {
+    "value": 2.8693516825281047,
+    "source": "models/results_phase5b.json mc_dropout.FD001_post_hoc.k_far"
+  },
+  "k_far_FD003": {
+    "value": 4.100723703931326,
+    "source": "models/results_phase5b.json mc_dropout.FD003.k_far"
+  },
+  "k_near_FD001": {
+    "value": 3.5125821804191504,
+    "source": "models/results_phase5b.json mc_dropout.FD001_post_hoc.k_near"
+  },
+  "k_near_FD003": {
+    "value": 3.676463461869275,
+    "source": "models/results_phase5b.json mc_dropout.FD003.k_near"
+  },
+  "p7_drift_target": {
+    "value": 0.05,
+    "source": "pipeline/phase7b_criteria.json why ('target 5%')"
+  },
+  "plant_assumptions": {
+    "value": {
+      "renewal": "A service or a repair ends the machine's current engine life (the engine is replaced or overhauled to new). OEE is totalled over each machine's single life; by the renewal-reward theorem the fleet ratio equals the long-run ratio if lives repeat.",
+      "calendar": "All machines start at cycle 1 on day 0 and run CYCLES_PER_DAY cycles a day (the Phase 2 replay convention). A machine fails when it completes cycle L (its true failure point, RUL 0). It runs degraded (speed loss, more scrap) in its last 20 cycles, i.e. while its TRUE remaining life is < 20.",
+      "service_timing": "A service booked for day d happens at the start of day d, before that day's cycles run.",
+      "after_data_ends": "NASA test files stop before failure. After a machine's last reading the predictive policy has no new data, so it keeps using its last forecast, aged by one cycle per cycle run.",
+      "crew_limit": "Only the predictive policy is crew-limited (as in the guide). Run-to-failure and fixed-interval services are not, which favours the two baselines.",
+      "work_orders": "A booked service is kept (no re-planning of booked orders). An engine with an open order is not re-booked. If it fails before its service day, that is an unplanned failure and the order is cancelled. Flagged engines left unserved are retried the next day.",
+      "rounding": "rul_low is floored to whole cycles before scheduling (the guide's int()); flooring is conservative."
+    },
+    "source": "maintenance/results_phase6.json assumptions"
+  },
+  "published_model": {
+    "value": "LSTM",
+    "source": "models/results_phase5b.json verdict.published_winner"
+  },
+  "published_rule": {
+    "value": "LSTM replaces XGBoost only if H1 is significant after Holm with LSTM better AND its pooled near-failure MAE is not worse",
+    "source": "models/results_phase5b.json verdict.rule"
+  },
+  "simulation_notice": {
+    "value": "SIMULATED plant: production, downtime and OEE are not measured data",
+    "source": "maintenance/results_phase6.json simulation_notice"
+  },
+  "solver_status_FD001": {
+    "value": "OPTIMAL",
+    "source": "maintenance/results_phase6.json datasets.FD001.snapshot.schedule_status"
+  },
+  "solver_status_FD003": {
+    "value": "OPTIMAL",
+    "source": "maintenance/results_phase6.json datasets.FD003.snapshot.schedule_status"
+  }
+}
