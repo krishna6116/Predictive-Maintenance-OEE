@@ -70,6 +70,11 @@
         "independent": "results/phase7/phase7_health.csv, results/phase7/phase7_drift.csv, results/phase7b/fresh_*/phase7_health.csv, results/phase7/results_phase7.json, results/phase7b/checks.json"
       }
     },
+    "facts.json": {
+      "added": "Amendment 2, before any app code: scalar facts the pages show that are not table rows, so the app still reads only snapshots. Each fact stores its value and its source (file + key path, or the criterion text it was parsed from). No criterion changed.",
+      "contents": "published model and its rule; stated interval coverage per dataset with its kind (confirmation / post hoc) and nominal level; rule E k values; alert threshold, crews per day, horizon days, cycles per day; solver status per dataset; simulation notice and plant assumptions; Phase 7 drift target and Phase 7b C1 limit (parsed from pipeline/phase7b_criteria.json text); the definitions block of this spec",
+      "independent": "verify_phase8 re-reads every fact from its stated source"
+    },
     "size_limit_bytes_total": 5000000
   },
 
