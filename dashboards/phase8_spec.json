@@ -1,0 +1,166 @@
+{
+  "phase": "8",
+  "title": "Dashboards: Streamlit (public demo) and Power BI (local report), both read the same frozen snapshots",
+  "committed_before_code": true,
+  "rule": "Pages, numbers, sources and tolerances are fixed here before any dashboard code exists. Values are never typed into this file or the app: every number is computed from a snapshot, and the verifier recomputes it independently from the raw results files. A change to this file after results are seen must be a separate, explained commit and may not loosen any criterion in phase8_scorecard.json.",
+
+  "definitions": {
+    "RUL": "Remaining useful life: cycles left before the engine fails. Training targets and test truth are capped at 125 cycles.",
+    "interval": "MC-dropout 90% interval with rule E scale factors (models/calibration_rule.json): mean +/- k x sd over 100 dropout passes, k switched on predicted RUL <= 50.",
+    "flagged": "Lower 90% bound <= 20 cycles (guide threshold, maintenance/config.py).",
+    "near_failure": "Test engines whose true RUL <= 50 cycles.",
+    "RMSE": "Root mean squared error of predicted vs true (capped) RUL over the 100 test engines of a dataset, in cycles.",
+    "near_failure_MAE": "Mean absolute error over near-failure test engines, in cycles.",
+    "coverage": "Share of test engines whose true capped RUL lies inside the 90% interval.",
+    "OEE": "Availability x Performance x Quality from summed hours and units (maintenance/simulate.py oee()). Availability = run hours / planned hours; Performance = actual units / ideal units; Quality = good units / actual units. SIMULATED plant: not measured data.",
+    "drift_false_alarm_rate": "Phase 7 rule v1: share of clean test runs with a drift test in which at least one sensor was flagged drifted.",
+    "clean_run_flag_rate": "Phase 7b rule v2: share of clean replay runs with needs_retraining set (criterion C1, limit 5%, pipeline/phase7b_criteria.json).",
+    "shift": "One flow run per dataset per 8-hour shift = one engine cycle."
+  },
+
+  "snapshots": {
+    "directory": "dashboards/snapshots/",
+    "builder": "python -m dashboards.export_snapshots",
+    "format": "CSV, UTF-8, LF line endings, fixed column order, rows sorted by the listed key, floats written with repr (round-trip exact), no timestamps in any file",
+    "manifest": "dashboards/snapshots/manifest.json: per file row count, sha256, run IDs, key; sha256 of every source file used; one data_checksum = sha256 over the sorted (file, sha256) pairs",
+    "files": {
+      "fleet.csv": {
+        "rows": "one per test engine, FD001 + FD003 (published LSTM, last observed cycle)",
+        "key": ["dataset", "engine_id"],
+        "db_source": "public.fact_prediction, last cycle per engine (run_id from maintenance/results_phase6.json)",
+        "file_source": "maintenance/snapshot_decisions_phase6.csv (true RUL, flag, risk, outcome)",
+        "independent": "models/predictions_phase5.csv (FD001) and models/predictions_phase5b.csv (FD003): MC mean/sd, true RUL; bounds rebuilt from rule E k values in models/results_phase5b.json"
+      },
+      "models.csv": {
+        "rows": "one per dataset x model: Fleet average, Age only, Ridge (168 features), XGBoost (168 features), LSTM (published), CNN",
+        "key": ["dataset", "model"],
+        "file_source": "models/results_phase4.json + models/results_phase5.json (FD001), models/results_phase5b.json (FD003)",
+        "independent": "RMSE and near-failure MAE recomputed from models/predictions_phase4.csv, predictions_phase5.csv, predictions_phase5b.csv against the RUL column"
+      },
+      "plan.csv": {
+        "rows": "snapshot alerts (context = snapshot)",
+        "key": ["dataset", "engine_id"],
+        "db_source": "public.fact_alert WHERE context = 'snapshot'",
+        "independent": "maintenance/snapshot_decisions_phase6.csv (flagged rows) and maintenance/results_phase6.json snapshot block"
+      },
+      "work_orders.csv": {
+        "rows": "predictive-replay work orders",
+        "key": ["dataset", "engine_id", "decision_cycle"],
+        "db_source": "public.fact_alert WHERE context <> 'snapshot'",
+        "independent": "maintenance/work_orders_phase6.csv"
+      },
+      "oee_machines.csv": {
+        "rows": "one per simulated machine x policy (FD001 + FD003, 3 policies)",
+        "key": ["dataset", "policy", "machine_id"],
+        "db_source": "public.fact_oee",
+        "independent": "maintenance/machines_phase6.csv"
+      },
+      "oee_policies.csv": {
+        "rows": "per scope (FD001, FD003, pooled) x policy: availability, performance, quality, OEE, failures, planned services, downtime hours, wasted cycles; plus the two pooled OEE gaps with their bootstrap 95% CI",
+        "key": ["scope", "policy"],
+        "file_source": "aggregated from oee_machines.csv with the oee() formula; gaps and CI copied from maintenance/results_phase6.json",
+        "independent": "re-aggregated from maintenance/machines_phase6.csv with a separate implementation; compared to maintenance/results_phase6.json"
+      },
+      "monitoring_runs.csv": {
+        "rows": "one per flow run: Phase 7 (rule v1, FD001/FD003) and Phase 7b fresh synchronized + staggered (rule v2, FD002/FD004)",
+        "key": ["scenario", "dataset", "shift"],
+        "db_source": "ops.fact_model_health; ops7b_fresh_synchronized / ops7b_fresh_staggered.fact_model_health (columns run_id, dataset, shift, n_labelled, n_scored, rmse, coverage_90, drifted_sensors, needs_retraining, retraining_reasons)",
+        "file_source": "results/phase7/phase7_drift.csv aggregated per run (drift_tested, any_drifted) for Phase 7",
+        "independent": "results/phase7/phase7_health.csv, results/phase7/phase7_drift.csv, results/phase7b/fresh_*/phase7_health.csv, results/phase7/results_phase7.json, results/phase7b/checks.json"
+      }
+    },
+    "size_limit_bytes_total": 5000000
+  },
+
+  "pages": [
+    {
+      "id": "fleet",
+      "title": "Which engines are closest to failure, and how sure is the model?",
+      "filters": {"dataset": ["FD001", "FD003", "Both"]},
+      "numbers": [
+        {"id": "fleet.engines", "label": "Engines", "per": "dataset", "source": "fleet.csv row count", "independent": "rows in predictions_phase5.csv / predictions_phase5b.csv", "tolerance": "exact"},
+        {"id": "fleet.flagged", "label": "Flagged (lower bound <= 20 cycles)", "per": "dataset", "source": "fleet.csv flagged", "independent": "rebuilt bounds <= 20", "tolerance": "exact"},
+        {"id": "fleet.coverage_observed", "label": "Interval coverage on these engines", "per": "dataset", "source": "fleet.csv: true capped RUL inside [low, high]", "independent": "rebuilt bounds vs RUL column", "tolerance": "exact count; shown to 0.1%"},
+        {"id": "fleet.coverage_stated", "label": "Stated coverage (nominal 90%)", "per": "dataset", "source": "results_phase5b.json mc_dropout FD003.test_coverage (confirmation) and FD001_post_hoc.test_coverage (post hoc, labelled as such)", "independent": "equals fleet.coverage_observed", "tolerance": "exact"},
+        {"id": "fleet.published_model", "label": "Published model", "source": "results_phase5b.json verdict.published_winner", "independent": "results_phase5b.json verdict rule re-applied (H1 Holm-significant, pooled near-failure MAE not worse)", "tolerance": "exact"},
+        {"id": "fleet.model_table", "label": "All models on the same 100 test engines: RMSE, near-failure MAE", "per": "dataset x model", "source": "models.csv", "independent": "recomputed from predictions CSVs", "tolerance": "abs 1e-9 before rounding; shown to 2 decimals"}
+      ],
+      "charts": [
+        {"id": "fleet.rul_chart", "type": "point + error bar per engine, sorted by predicted RUL", "x": "Engine (sorted by predicted RUL)", "y": "Remaining useful life (cycles)", "encodings": "flagged shown by colour AND marker shape AND a text column in the table", "reference_line": "alert threshold 20 cycles, labelled"}
+      ],
+      "required_text": ["90%", "coverage", "LSTM", "same 100 test engines", "post hoc"]
+    },
+    {
+      "id": "plan",
+      "title": "Which engines should the crews service in the next 7 days?",
+      "filters": {"dataset": ["FD001", "FD003", "Both"]},
+      "numbers": [
+        {"id": "plan.capacity", "label": "Crew slots in the horizon", "per": "dataset", "source": "results_phase6.json settings: crews_per_day x horizon_days", "independent": "maintenance/config.py values", "tolerance": "exact"},
+        {"id": "plan.flagged", "label": "Engines flagged", "per": "dataset", "source": "plan.csv rows", "independent": "snapshot_decisions_phase6.csv flagged; results_phase6.json snapshot.flagged", "tolerance": "exact"},
+        {"id": "plan.scheduled", "label": "Scheduled", "per": "dataset", "source": "plan.csv scheduled_day not null", "independent": "results_phase6.json snapshot.scheduled", "tolerance": "exact"},
+        {"id": "plan.unscheduled", "label": "Flagged, no crew in horizon", "per": "dataset", "source": "plan.csv status", "independent": "snapshot_decisions_phase6.csv outcome", "tolerance": "exact"},
+        {"id": "plan.per_day", "label": "Services per day (limit 3)", "per": "dataset x day", "source": "plan.csv scheduled_day counts", "independent": "results_phase6.json snapshot.per_day", "tolerance": "exact"},
+        {"id": "plan.risk_counts", "label": "Risk level counts", "per": "dataset", "source": "plan.csv risk", "independent": "results_phase6.json snapshot.risk_counts", "tolerance": "exact"},
+        {"id": "plan.solver_status", "label": "Solver status", "per": "dataset", "source": "results_phase6.json snapshot.schedule_status", "independent": "crew limit re-checked from plan.csv (max per day <= crews_per_day)", "tolerance": "exact"},
+        {"id": "plan.work_orders", "label": "Work orders in the predictive replay, by status", "source": "work_orders.csv", "independent": "work_orders_phase6.csv", "tolerance": "exact"}
+      ],
+      "charts": [
+        {"id": "plan.day_chart", "type": "stacked bar per plan day by risk", "x": "Plan day (0 = today)", "y": "Engines serviced (count)", "encodings": "risk by colour AND bar text label", "reference_line": "crew limit 3 per day, labelled"}
+      ],
+      "required_text": ["assumption", "crew", "lower 90% bound"]
+    },
+    {
+      "id": "oee",
+      "title": "Which maintenance policy gives the highest OEE? (Simulated plant)",
+      "filters": {"scope": ["Pooled", "FD001", "FD003"]},
+      "numbers": [
+        {"id": "oee.policy_table", "label": "Availability, Performance, Quality, OEE, unplanned failures, planned services, downtime hours, wasted cycles", "per": "scope x policy", "source": "oee_policies.csv", "independent": "machines_phase6.csv re-aggregated; results_phase6.json", "tolerance": "counts exact; ratios abs 1e-12; shown to 0.1 percentage point"},
+        {"id": "oee.gap_predictive_fixed", "label": "Predictive minus fixed interval, OEE points, 95% CI", "per": "pooled", "source": "oee_policies.csv gap rows", "independent": "diff recomputed from machines; CI equals results_phase6.json", "tolerance": "abs 1e-12; shown to 0.01 points"},
+        {"id": "oee.gap_predictive_rtf", "label": "Predictive minus run to failure, OEE points, 95% CI", "per": "pooled", "source": "oee_policies.csv gap rows", "independent": "as above", "tolerance": "abs 1e-12; shown to 0.01 points"}
+      ],
+      "charts": [
+        {"id": "oee.policy_chart", "type": "bar per policy with value labels", "x": "Policy", "y": "OEE (%)", "encodings": "policy named on the axis; colour only repeats the axis"}
+      ],
+      "required_text": ["Simulated", "not measured", "OEE ="]
+    },
+    {
+      "id": "monitoring",
+      "title": "Can we trust the model's forecasts this shift?",
+      "filters": {"scenario": ["Phase 7: FD001/FD003, rule v1", "Phase 7b: FD002/FD004 synchronized, rule v2", "Phase 7b: FD002/FD004 staggered, rule v2"]},
+      "numbers": [
+        {"id": "mon.p7_false_alarm", "label": "Phase 7 drift false-alarm rate on clean test runs (target 5%)", "source": "monitoring_runs.csv Phase 7 drift_tested/any_drifted", "independent": "results/phase7/phase7_drift.csv; results_phase7.json drift_false_alarm_rate_test", "tolerance": "exact counts; shown to 0.1%"},
+        {"id": "mon.p7_retraining_flags", "label": "Phase 7 runs flagged for retraining", "source": "monitoring_runs.csv", "independent": "phase7_health.csv", "tolerance": "exact"},
+        {"id": "mon.c1", "label": "Phase 7b C1 clean-run flag rate (limit 5%), pass/fail per dataset x fleet", "per": "FD002/FD004 x synchronized/staggered", "source": "monitoring_runs.csv", "independent": "results/phase7b/fresh_*/phase7_health.csv; results/phase7b/checks.json C1", "tolerance": "exact counts; shown to 0.1%"}
+      ],
+      "charts": [
+        {"id": "mon.flag_chart", "type": "line per dataset: share of the last 10 runs flagged", "x": "Shift (8-hour shift number)", "y": "Runs flagged, last 10 (%)", "encodings": "dataset by colour AND stroke dash AND end-of-line label", "reference_line": "5% limit, labelled"}
+      ],
+      "required_text": ["FD004", "FAIL", "target 5%", "not met", "pre-registered"]
+    },
+    {
+      "id": "about",
+      "title": "How were these numbers made, and can I check them?",
+      "numbers": [
+        {"id": "about.data_checksum", "label": "Snapshot data checksum", "source": "manifest.json data_checksum", "independent": "recomputed from the snapshot files", "tolerance": "exact"}
+      ],
+      "required_text": ["Simulated", "docs/", "data checksum", "github.com/krishna6116/Predictive-Maintenance-OEE"]
+    }
+  ],
+
+  "app": {
+    "entry": "app/streamlit_app.py",
+    "reads": "dashboards/snapshots/ only (no database, no model weights, no network)",
+    "requirements": "app/requirements.txt, exact pins, used by Streamlit Community Cloud and by the clean-install CI job",
+    "palette": "Okabe-Ito colour-blind-safe palette; colour never the only carrier of meaning",
+    "every_metric_has_help": "each st.metric carries its definition from this file's definitions block"
+  },
+
+  "powerbi": {
+    "connection": "PostgreSQL connector, localhost/pdm, read-only login powerbi_ro (dashboards/create_readonly_role.py); Import mode",
+    "tables": ["public.fact_prediction", "public.fact_alert", "public.fact_oee", "public.dim_engine", "ops.fact_model_health", "ops7b_fresh_synchronized.fact_model_health", "ops7b_fresh_staggered.fact_model_health", "dashboards/snapshots/fleet.csv (true RUL is not in the database)", "dashboards/snapshots/monitoring_runs.csv (per-run drift result is aggregated from the drift table)"],
+    "pages": "same four question pages as the app (fleet, plan, oee, monitoring)",
+    "measures": ["OEE = DIVIDE(run hours, planned hours) x DIVIDE(actual units, ideal units) x DIVIDE(good units, actual units)", "Unplanned failures = COUNTROWS(event = failure)", "Interval coverage = share of engines with true RUL inside [rul_low, rul_high]", "Flagged = COUNTROWS(rul_low <= 20) at the last cycle", "Retraining flag rate = share of runs with needs_retraining"],
+    "evidence": "docs/figures/phase8/powerbi_report.pdf, one PNG per page, and one exported CSV per checked visual in docs/figures/phase8/powerbi_exports/ (Power BI 'Export data'); the .pbix is not committed",
+    "check": "verify_phase8 compares every exported Power BI value with the independent recomputation at displayed precision"
+  }
+}
