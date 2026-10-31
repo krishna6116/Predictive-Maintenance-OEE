@@ -1,0 +1,191 @@
+{
+  "score": 2,
+  "out_of": 5,
+  "dimensions": [
+    {
+      "id": "D1",
+      "name": "Data correctness",
+      "passed": false,
+      "checks": [
+        {
+          "id": "D1.1",
+          "kind": "code",
+          "passed": true,
+          "detail": "590 displayed values in every filter view equal the independent recomputation"
+        },
+        {
+          "id": "D1.2",
+          "kind": "code",
+          "passed": true,
+          "detail": "8 files match the manifest (rows, sha256, sorted unique keys, run IDs)"
+        },
+        {
+          "id": "D1.3",
+          "kind": "code",
+          "passed": true,
+          "detail": "every snapshot cell equals the independent files (fleet, models, plan, work orders, OEE, monitoring)"
+        },
+        {
+          "id": "D1.4",
+          "kind": "code",
+          "passed": true,
+          "detail": "plan, work orders, OEE machines and fleet forecasts equal public.fact_alert / fact_oee / fact_prediction cell for cell"
+        },
+        {
+          "id": "D1.5",
+          "kind": "code_local",
+          "passed": true,
+          "detail": "3410 monitoring runs equal ops / ops7b_* fact_model_health cell for cell"
+        },
+        {
+          "id": "D1.6",
+          "kind": "code",
+          "passed": null,
+          "detail": "docs/DASHBOARDS.md not generated yet"
+        },
+        {
+          "id": "D1.7",
+          "kind": "code",
+          "passed": null,
+          "detail": "no Power BI exports yet (docs/figures/phase8/powerbi_exports/)"
+        }
+      ]
+    },
+    {
+      "id": "D2",
+      "name": "Reproducibility",
+      "passed": false,
+      "checks": [
+        {
+          "id": "D2.1",
+          "kind": "code_local",
+          "passed": true,
+          "detail": "two rebuilds are byte-identical and equal to the committed snapshots"
+        },
+        {
+          "id": "D2.2",
+          "kind": "code",
+          "passed": true,
+          "detail": "CI job 'dashboards' installs only app/requirements.txt and runs verify_phase8 --clean-env (run there)"
+        },
+        {
+          "id": "D2.3",
+          "kind": "code",
+          "passed": true,
+          "detail": "CI runs verify_phase8 on Linux; snapshot sources unchanged since export"
+        },
+        {
+          "id": "D2.4",
+          "kind": "manual",
+          "passed": null,
+          "detail": "missing evidence ['deployed_about.png']; checklist ticked: False"
+        }
+      ]
+    },
+    {
+      "id": "D3",
+      "name": "Robustness",
+      "passed": true,
+      "checks": [
+        {
+          "id": "D3.1",
+          "kind": "code",
+          "passed": true,
+          "detail": "43 page renders, 0 with exceptions"
+        },
+        {
+          "id": "D3.2",
+          "kind": "code",
+          "passed": true,
+          "detail": "missing, corrupt, unparsable snapshot and empty filters all show a message"
+        },
+        {
+          "id": "D3.3",
+          "kind": "code",
+          "passed": true,
+          "detail": "7/7 planted bugs caught: wrong OEE (pooled predictive +0.1 pt) -> D1.3; off-by-one shift (last Phase 7 run) -> D1.3; dropped engine (FD003 engine 1) -> D1.3; swapped interval bounds (FD001 engine 1) -> D1.3; wrong flagged status (first FD001 flagged engine) -> D1.3; service booked a day late (first planned engine) -> D1.3; stale snapshot (a source changed after export) -> D2.3"
+        }
+      ]
+    },
+    {
+      "id": "D4",
+      "name": "Honest presentation",
+      "passed": true,
+      "checks": [
+        {
+          "id": "D4.1",
+          "kind": "code",
+          "passed": true,
+          "detail": "'Simulated' on ['oee']"
+        },
+        {
+          "id": "D4.2",
+          "kind": "code",
+          "passed": true,
+          "detail": "nominal and observed coverage for FD001 and FD003; FD001 marked post hoc"
+        },
+        {
+          "id": "D4.3",
+          "kind": "code",
+          "passed": true,
+          "detail": "FD004 FAIL and Phase 7 'not met' visible in all 12 monitoring views"
+        },
+        {
+          "id": "D4.4",
+          "kind": "code",
+          "passed": true,
+          "detail": "every metric has its definition; every required text present"
+        },
+        {
+          "id": "D4.5",
+          "kind": "code",
+          "passed": true,
+          "detail": "LSTM (published) and 5 other models in one table, same engines, per dataset"
+        }
+      ]
+    },
+    {
+      "id": "D5",
+      "name": "Usability and accessibility",
+      "passed": false,
+      "checks": [
+        {
+          "id": "D5.1",
+          "kind": "code",
+          "passed": true,
+          "detail": "every page title is its question"
+        },
+        {
+          "id": "D5.2",
+          "kind": "code",
+          "passed": true,
+          "detail": "48 charts: Okabe-Ito only, colour always paired"
+        },
+        {
+          "id": "D5.3",
+          "kind": "code",
+          "passed": true,
+          "detail": "48 charts: every axis titled, units on quantitative axes"
+        },
+        {
+          "id": "D5.4",
+          "kind": "code",
+          "passed": true,
+          "detail": "cold-cache script time: fleet 0.45s, plan 0.41s, oee 0.40s, monitoring 0.41s, about 0.34s"
+        },
+        {
+          "id": "D5.5",
+          "kind": "manual",
+          "passed": null,
+          "detail": "missing evidence ['phone_fleet.png', 'phone_plan.png', 'phone_oee.png', 'phone_monitoring.png', 'phone_about.png']; checklist ticked: False"
+        },
+        {
+          "id": "D5.6",
+          "kind": "manual",
+          "passed": null,
+          "detail": "missing evidence ['powerbi_report.pdf']; checklist ticked: False"
+        }
+      ]
+    }
+  ]
+}

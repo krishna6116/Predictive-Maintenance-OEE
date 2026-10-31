@@ -64,8 +64,10 @@ jobs:
         run: python -m maintenance.store && python -m maintenance.store
       - name: Phase 6 verification (forecasts, alerts, optimal schedules, work orders, simulated OEE, database rows)
         run: python -m maintenance.verify_phase6
+      - name: Phase 8 snapshots vs PostgreSQL (public tables) and the raw results
+        run: python -m dashboards.verify_phase8 --no-app
       - name: Committed files are unchanged by the run
-        run: git diff --exit-code -- features/ pipeline/sensor_limits.json models/ maintenance/ docs/MODEL_METRICS.md docs/MODEL_METRICS_PHASE5.md docs/MODEL_METRICS_PHASE5B.md docs/MAINTENANCE_OEE.md
+        run: git diff --exit-code -- features/ pipeline/sensor_limits.json models/ maintenance/ docs/MODEL_METRICS.md docs/MODEL_METRICS_PHASE5.md docs/MODEL_METRICS_PHASE5B.md docs/MAINTENANCE_OEE.md dashboards/
 
   # Phase 7 on a clean Linux machine: the Prefect flow replays shifts in a fresh database (Prefect's test harness,
   # no server) with the committed flow predictions, and the independent verifier re-checks the committed replay.
@@ -101,3 +103,16 @@ jobs:
         run: python -m pipeline.verify_phase7b
       - name: Committed files are unchanged by the run
         run: git diff --exit-code -- pipeline/ results/ docs/MONITORING.md docs/MONITORING_7B.md
+
+  # Phase 8 on a clean machine with ONLY the app's pinned requirements (as Streamlit Community Cloud installs it):
+  # every page and filter through AppTest, every displayed number vs an independent recomputation, planted bugs.
+  dashboards:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.14"
+      - run: pip install -r app/requirements.txt  # nothing else: the app must run from a clean clone
+      - name: Phase 8 verification (scorecard; pending items listed, failures fail the job)
+        run: python -m dashboards.verify_phase8 --clean-env

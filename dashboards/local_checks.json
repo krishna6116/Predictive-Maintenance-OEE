@@ -1,0 +1,37 @@
+{
+  "note": "Evidence for checks that need the local database; written by python -m dashboards.verify_phase8 --local",
+  "data_checksum": "6467d24fa7dd4e586f0e37eaffc2914ccfadca104692fd51a6dd3149766ea079",
+  "sources": {
+    "maintenance/snapshot_decisions_phase6.csv": "ba96bdc09b82e75907c5ae76e7c1c321e4e0aad183325b6bf8a485a801380c09",
+    "maintenance/results_phase6.json": "7a086dcd899a485248ee8578649048613bda57588cde2891f1a369c75891a105",
+    "maintenance/work_orders_phase6.csv": "febaf6603c0b6cba28bb120608bc93fb8395b202edab9c6f7a32cc508b839174",
+    "maintenance/machines_phase6.csv": "ee9f3398f9e9045a447218d71a7228606bae4d9e81b97a7c3df9d781d8bb27d5",
+    "maintenance/forecasts_rolling_FD001.csv": "4f6e192642384d3b9356f08fd709329a6938f6f2d9eb33799e182d9cba1ddd1f",
+    "maintenance/forecasts_rolling_FD003.csv": "d3f970de62f336668d052f42fd8dbfac15439919c9018315a675c826042a7a9e",
+    "models/results_phase4.json": "d8c9157c4453668cafcb059991d3081878971cea8f92bf8239c9e8013434d7ca",
+    "models/results_phase5.json": "8eca5377b1f1d03395dfbbf664a56c4b12b28215db278681b9073f5fb94e6c5c",
+    "models/results_phase5b.json": "676ada490be7988daefb321057012fe7f4521846f3630366766d9f9dd4a72087",
+    "models/predictions_phase4.csv": "e707e5ec158a091e9e32857bbbcf92543446a5c3b08e71132abd2355ab146bf2",
+    "models/predictions_phase5.csv": "9dfda20f705925e2b3da86482321338707f2550a589f7302fcf56b9b1ed61be2",
+    "models/predictions_phase5b.csv": "90a977a355f1b81da96e6e47b92aa95a420af996ef934d24a665fb0c26584a6c",
+    "results/phase7/phase7_drift.csv": "8a0696974d854e3d8ec4959068d482495fed5c4e69a14dd8657c0ae32d505d65",
+    "results/phase7/phase7_health.csv": "41090745e5f028389349b4652e1cdf9018a7bee2b56f57c48dcc6bfdf41ca55a",
+    "results/phase7/results_phase7.json": "01a36d5cb30d688877486d255952b5eab63664e2a30af5d7568104d57b4cdde3",
+    "results/phase7b/fresh_synchronized/phase7_health.csv": "d193d27de9000b4281f35e7eef9ec46fdb31a87ac259cea7fe74b2ae615cb693",
+    "results/phase7b/fresh_staggered/phase7_health.csv": "7a676a554537ac13729fca1aa2867af4f951108f7f73e6a1c94e5e24c88aa345",
+    "results/phase7b/checks.json": "a700ca18d0b6ace3c169ce435204ae35a33d197e1d915d714c5b9f04abe44b19",
+    "pipeline/phase7b_criteria.json": "c0408d069bc8cbcfa809dd65677e31eff9ecb39a55fd1d893ba01bf6e7bb7339",
+    "dashboards/phase8_spec.json": "e57e0d4bf9689900d9197e8fab374c8b8c068768e6e2ada8e8e5c33f6a2f3189",
+    "models/calibration.py": "257929cf86f6d9b2d40aa3ddb0006ba0b39f88890ecf1c9b863d2248f8c798e5"
+  },
+  "checks": {
+    "D1.5": [
+      true,
+      "3410 monitoring runs equal ops / ops7b_* fact_model_health cell for cell"
+    ],
+    "D2.1": [
+      true,
+      "two rebuilds are byte-identical and equal to the committed snapshots"
+    ]
+  }
+}
