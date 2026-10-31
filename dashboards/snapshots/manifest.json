@@ -1,0 +1,116 @@
+{
+  "spec": "dashboards/phase8_spec.json",
+  "builder": "python -m dashboards.export_snapshots",
+  "phase6_run_id": "phase6-618b9fbc3b7b",
+  "files": {
+    "fleet.csv": {
+      "rows": 200,
+      "sha256": "80ffb6dd3d80eed9fa82fc46c482f480b66e8497d6f10df15188b6d66bb9100b",
+      "key": [
+        "dataset",
+        "engine_id"
+      ],
+      "run_ids_count": 1,
+      "run_ids": [
+        "phase6-618b9fbc3b7b"
+      ],
+      "run_ids_sha256": "c3a13ba4cb824cdb71fa607bfd2fac2c819f49eefa8edc211891b68cca0a22af"
+    },
+    "models.csv": {
+      "rows": 12,
+      "sha256": "ec9f3c4c726c50f0e7c35bcf1686aeb9e1c8af628b8bbb73b749910eb85cf617",
+      "key": [
+        "dataset",
+        "model"
+      ],
+      "run_ids_count": 0,
+      "run_ids": [],
+      "run_ids_sha256": null
+    },
+    "plan.csv": {
+      "rows": 43,
+      "sha256": "b64820960979e92f2c59cdb40f1d31e17445439380a12a8e41de3480c8ee2085",
+      "key": [
+        "dataset",
+        "engine_id"
+      ],
+      "run_ids_count": 1,
+      "run_ids": [
+        "phase6-618b9fbc3b7b"
+      ],
+      "run_ids_sha256": "c3a13ba4cb824cdb71fa607bfd2fac2c819f49eefa8edc211891b68cca0a22af"
+    },
+    "work_orders.csv": {
+      "rows": 198,
+      "sha256": "f3f75a12d152aeffbb306f12cb5d5e5f57a21d6726544c8bd11303396436ab19",
+      "key": [
+        "dataset",
+        "engine_id",
+        "decision_cycle"
+      ],
+      "run_ids_count": 1,
+      "run_ids": [
+        "phase6-618b9fbc3b7b"
+      ],
+      "run_ids_sha256": "c3a13ba4cb824cdb71fa607bfd2fac2c819f49eefa8edc211891b68cca0a22af"
+    },
+    "oee_machines.csv": {
+      "rows": 600,
+      "sha256": "e848857a14d188456f7c9712648bd91207787721fba25087ecbb50a204dd7514",
+      "key": [
+        "dataset",
+        "policy",
+        "machine_id"
+      ],
+      "run_ids_count": 1,
+      "run_ids": [
+        "phase6-618b9fbc3b7b"
+      ],
+      "run_ids_sha256": "c3a13ba4cb824cdb71fa607bfd2fac2c819f49eefa8edc211891b68cca0a22af"
+    },
+    "oee_policies.csv": {
+      "rows": 11,
+      "sha256": "a2af8e07d4bbb65831bd437add5acb73113be4ae8079f5c2a581525d743ab011",
+      "key": [
+        "scope",
+        "policy"
+      ],
+      "run_ids_count": 0,
+      "run_ids": [],
+      "run_ids_sha256": null
+    },
+    "monitoring_runs.csv": {
+      "rows": 3410,
+      "sha256": "cb109c8d8214be50e891583fb69da28bde291eb865b25ca9d89dba811e367f4e",
+      "key": [
+        "scenario",
+        "dataset",
+        "shift"
+      ],
+      "run_ids_count": 2302,
+      "run_ids": null,
+      "run_ids_sha256": "9fca16f513b61c6ec393e5b87d486d9d2e81a7060beb9c43a0eb5ea2ff3075b2"
+    }
+  },
+  "sources": {
+    "maintenance/snapshot_decisions_phase6.csv": "ba96bdc09b82e75907c5ae76e7c1c321e4e0aad183325b6bf8a485a801380c09",
+    "maintenance/results_phase6.json": "7a086dcd899a485248ee8578649048613bda57588cde2891f1a369c75891a105",
+    "maintenance/work_orders_phase6.csv": "febaf6603c0b6cba28bb120608bc93fb8395b202edab9c6f7a32cc508b839174",
+    "maintenance/machines_phase6.csv": "ee9f3398f9e9045a447218d71a7228606bae4d9e81b97a7c3df9d781d8bb27d5",
+    "maintenance/forecasts_rolling_FD001.csv": "4f6e192642384d3b9356f08fd709329a6938f6f2d9eb33799e182d9cba1ddd1f",
+    "maintenance/forecasts_rolling_FD003.csv": "d3f970de62f336668d052f42fd8dbfac15439919c9018315a675c826042a7a9e",
+    "models/results_phase4.json": "d8c9157c4453668cafcb059991d3081878971cea8f92bf8239c9e8013434d7ca",
+    "models/results_phase5.json": "8eca5377b1f1d03395dfbbf664a56c4b12b28215db278681b9073f5fb94e6c5c",
+    "models/results_phase5b.json": "676ada490be7988daefb321057012fe7f4521846f3630366766d9f9dd4a72087",
+    "models/predictions_phase4.csv": "e707e5ec158a091e9e32857bbbcf92543446a5c3b08e71132abd2355ab146bf2",
+    "models/predictions_phase5.csv": "9dfda20f705925e2b3da86482321338707f2550a589f7302fcf56b9b1ed61be2",
+    "models/predictions_phase5b.csv": "90a977a355f1b81da96e6e47b92aa95a420af996ef934d24a665fb0c26584a6c",
+    "results/phase7/phase7_drift.csv": "8a0696974d854e3d8ec4959068d482495fed5c4e69a14dd8657c0ae32d505d65",
+    "results/phase7/phase7_health.csv": "41090745e5f028389349b4652e1cdf9018a7bee2b56f57c48dcc6bfdf41ca55a",
+    "results/phase7/results_phase7.json": "01a36d5cb30d688877486d255952b5eab63664e2a30af5d7568104d57b4cdde3",
+    "results/phase7b/fresh_synchronized/phase7_health.csv": "d193d27de9000b4281f35e7eef9ec46fdb31a87ac259cea7fe74b2ae615cb693",
+    "results/phase7b/fresh_staggered/phase7_health.csv": "7a676a554537ac13729fca1aa2867af4f951108f7f73e6a1c94e5e24c88aa345",
+    "results/phase7b/checks.json": "a700ca18d0b6ace3c169ce435204ae35a33d197e1d915d714c5b9f04abe44b19"
+  },
+  "data_checksum": "de46bc536d9b7f3333af4b75ebde2585945e24f5a6cbb0c2b3e69ecbf701d31c"
+}
