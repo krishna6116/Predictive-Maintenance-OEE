@@ -27,8 +27,9 @@
       "fleet.csv": {
         "rows": "one per test engine, FD001 + FD003 (published LSTM, last observed cycle)",
         "key": ["dataset", "engine_id"],
-        "db_source": "public.fact_prediction, last cycle per engine (run_id from maintenance/results_phase6.json)",
-        "file_source": "maintenance/snapshot_decisions_phase6.csv (true RUL, flag, risk, outcome)",
+        "file_source": "maintenance/snapshot_decisions_phase6.csv: the published forecasts the Phase 6 plan acted on (point, MC mean/sd, k, bounds, true RUL, flag, risk, outcome)",
+        "db_source": "public.fact_alert context = 'snapshot' (rul_low_used and decision_cycle of every flagged engine) and public.fact_prediction at the last cycle (point forecast; rolling MC mean and bounds kept as rolling_* columns)",
+        "correction": "Amended after the first export, before any app code (see git log): the spec first named public.fact_prediction as the source, but that table holds Phase 6's rolling forecasts, whose MC passes are a fresh set of draws (maintenance/forecasts.py), so at the last cycle their MC mean/sd differ from the published forecasts the plan used (point forecasts are identical). No criterion changed.",
         "independent": "models/predictions_phase5.csv (FD001) and models/predictions_phase5b.csv (FD003): MC mean/sd, true RUL; bounds rebuilt from rule E k values in models/results_phase5b.json"
       },
       "models.csv": {
@@ -141,9 +142,10 @@
       "id": "about",
       "title": "How were these numbers made, and can I check them?",
       "numbers": [
-        {"id": "about.data_checksum", "label": "Snapshot data checksum", "source": "manifest.json data_checksum", "independent": "recomputed from the snapshot files", "tolerance": "exact"}
+        {"id": "about.data_checksum", "label": "Snapshot data checksum", "source": "manifest.json data_checksum", "independent": "recomputed from the snapshot files", "tolerance": "exact"},
+        {"id": "about.mc_noise", "label": "Monte Carlo noise: largest change in MC mean between two sets of 100 dropout passes at the same cycle, and engines whose flag differs", "source": "fleet.csv rul_mc_mean vs rolling_mc_mean, rul_low vs rolling_rul_low", "independent": "maintenance/snapshot_decisions_phase6.csv vs maintenance/forecasts_rolling_FD00x.csv at the last cycle", "tolerance": "abs 1e-9; count exact"}
       ],
-      "required_text": ["Simulated", "docs/", "data checksum", "github.com/krishna6116/Predictive-Maintenance-OEE"]
+      "required_text": ["Simulated", "docs/", "data checksum", "Monte Carlo", "github.com/krishna6116/Predictive-Maintenance-OEE"]
     }
   ],
 
