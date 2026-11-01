@@ -67,10 +67,10 @@ if C.has_rows(r, "runs"):
         strokeDash=alt.StrokeDash("dataset:N", title="Dataset", scale=alt.Scale(domain=dom, range=[DASH[d] for d in dom])),
         tooltip=[alt.Tooltip("dataset:N", title="Dataset"), alt.Tooltip("shift:Q", title="Shift"),
                  alt.Tooltip("share:Q", title="Runs flagged, last 10 (%)", format=".0f")])
-    ends = r.groupby("dataset").tail(1)
-    end_lab = alt.Chart(ends).mark_text(align="left", dx=5).encode(x="shift:Q", y="share:Q", text="dataset:N")
-    lim = alt.Chart().mark_rule(color=C.OKABE_ITO["black"], strokeDash=[2, 2]).encode(y=alt.datum(100 * limit))
+    # no line-end labels: the lines end at the same point and the labels collided at phone width (D5.5);
+    # the legend names each line by colour and dash
+    lim =alt.Chart().mark_rule(color=C.OKABE_ITO["black"], strokeDash=[2, 2]).encode(y=alt.datum(100 * limit))
     lim_lab = alt.Chart().mark_text(align="left", dx=4, dy=-6).encode(x=alt.value(0), y=alt.datum(100 * limit),
                                                                      text=alt.value(f"{C.pct(limit, 0)} limit"))
-    st.altair_chart(alt.layer(lines, end_lab, lim, lim_lab).properties(height=300), width="stretch")
+    st.altair_chart(alt.layer(lines, lim, lim_lab).properties(height=300), width="stretch")
     st.caption(f"Shift: {C.define('shift')} Clean-run flag rate: {C.define('clean_run_flag_rate')}")
