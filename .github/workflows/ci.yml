@@ -106,13 +106,19 @@ jobs:
 
   # Phase 8 on a clean machine with ONLY the app's pinned requirements (as Streamlit Community Cloud installs it):
   # every page and filter through AppTest, every displayed number vs an independent recomputation, planted bugs.
+  # Community Cloud picks Python in its deploy dialog (default 3.12), so every version the pins install on is tested;
+  # 3.11 is excluded because numpy 2.5.4 needs Python >= 3.12.
   dashboards:
     runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.12", "3.13", "3.14"]
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v6
         with:
-          python-version: "3.14"
+          python-version: ${{ matrix.python }}
       - run: pip install -r app/requirements.txt  # nothing else: the app must run from a clean clone
       - name: Phase 8 verification (scorecard; pending items listed, failures fail the job)
         run: python -m dashboards.verify_phase8 --clean-env
