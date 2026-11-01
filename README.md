@@ -54,6 +54,12 @@ flowchart LR
 | 7b. Monitoring re-tested: wear-adjusted drift rule pre-registered on validation, confirmed on unseen FD002/FD004, fault suite, closed loop | Done (FD004 failed one criterion) | [Phase 7b results](docs/MONITORING_7B.md) · [notebook](notebooks/07b_monitoring.ipynb) |
 | 8-9. Dashboards, write-up | Future work | |
 
+## Phase 8: Dashboards
+
+[Live Streamlit app](https://predictive-maintenance-oee.streamlit.app) · [Dashboard methods and scorecard](docs/DASHBOARDS.md)
+
+The public demo reads frozen snapshots; the Power BI report reads the local PostgreSQL model and snapshot files. Simulated plant OEE is 98.2% for predictive maintenance, 97.8% for fixed interval, and 95.2% for run to failure. Phase 8 remains in progress until its deployment and phone-width evidence checks are complete.
+
 ## Run locally
 
 Windows (PowerShell):

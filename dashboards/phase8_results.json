@@ -1,11 +1,11 @@
 {
-  "score": 2,
+  "score": 3,
   "out_of": 5,
   "dimensions": [
     {
       "id": "D1",
       "name": "Data correctness",
-      "passed": false,
+      "passed": true,
       "checks": [
         {
           "id": "D1.1",
@@ -40,14 +40,14 @@
         {
           "id": "D1.6",
           "kind": "code",
-          "passed": null,
-          "detail": "docs/DASHBOARDS.md not generated yet"
+          "passed": true,
+          "detail": "docs/DASHBOARDS.md equals its generator; README Phase 8 numbers present"
         },
         {
           "id": "D1.7",
           "kind": "code",
-          "passed": null,
-          "detail": "no Power BI exports yet (docs/figures/phase8/powerbi_exports/)"
+          "passed": true,
+          "detail": "39 Power BI values in 4 exported visuals equal the independent recomputation at displayed precision"
         }
       ]
     },
@@ -171,7 +171,7 @@
           "id": "D5.4",
           "kind": "code",
           "passed": true,
-          "detail": "cold-cache script time: fleet 0.45s, plan 0.41s, oee 0.40s, monitoring 0.41s, about 0.34s"
+          "detail": "cold-cache script time: fleet 0.50s, plan 0.47s, oee 0.34s, monitoring 0.35s, about 0.32s"
         },
         {
           "id": "D5.5",
@@ -182,8 +182,8 @@
         {
           "id": "D5.6",
           "kind": "manual",
-          "passed": null,
-          "detail": "missing evidence ['powerbi_report.pdf']; checklist ticked: False"
+          "passed": true,
+          "detail": "evidence ['powerbi_report.pdf'] committed and checklist ticked"
         }
       ]
     }
