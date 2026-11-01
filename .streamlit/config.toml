@@ -1,0 +1,4 @@
+# Charts draw labels and reference lines in Okabe-Ito black, so they need a light background:
+# without this the app follows the viewer's system theme and those marks vanish in dark mode (found in D5.5).
+[theme]
+base = "light"
