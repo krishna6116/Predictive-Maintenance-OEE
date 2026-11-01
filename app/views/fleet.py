@@ -44,8 +44,9 @@ for ds in datasets:
                  alt.Tooltip("rul_high:Q", title="Upper bound (cycles)", format=".1f"),
                  alt.Tooltip("true_rul_capped:Q", title="True RUL (cycles)"), alt.Tooltip("status:N", title="Status")])
     rule = alt.Chart().mark_rule(color=C.OKABE_ITO["black"], strokeDash=[4, 3]).encode(y=alt.datum(thr))
-    label = alt.Chart().mark_text(align="left", dx=4, dy=-6, color=C.OKABE_ITO["black"]).encode(
-        x=alt.value(0), y=alt.datum(thr), text=alt.value(f"Alert threshold: lower bound <= {thr} cycles"))
+    # right-aligned at the right edge, where the intervals sit far above the threshold (left edge crossed the bars, D5.5)
+    label = alt.Chart().mark_text(align="right", dx=-4, dy=-6, color=C.OKABE_ITO["black"]).encode(
+        x=alt.value({"expr": "width"}), y=alt.datum(thr), text=alt.value(f"Alert: lower bound <= {thr} cycles"))
     st.altair_chart(alt.layer(bars, dots, rule, label).properties(height=320), width="stretch")
 
     flagged = f[f.flagged][["engine_id", "cycle", "rul_point", "rul_low", "rul_high", "risk", "outcome"]]
