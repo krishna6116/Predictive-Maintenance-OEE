@@ -52,13 +52,14 @@ flowchart LR
 | 6. Maintenance alerts on the interval's lower bound, OR-Tools CP-SAT crew schedule, simulated plant and OEE, 3-policy comparison | Done | [Maintenance and OEE](docs/MAINTENANCE_OEE.md) · [notebook](notebooks/06_maintenance.ipynb) |
 | 7. Orchestration and monitoring: Prefect shift flow with retries, model health once labels exist, KS drift, pre-registered retraining flag | Done | [Monitoring](docs/MONITORING.md) · [notebook](notebooks/07_monitoring.ipynb) |
 | 7b. Monitoring re-tested: wear-adjusted drift rule pre-registered on validation, confirmed on unseen FD002/FD004, fault suite, closed loop | Done (FD004 failed one criterion) | [Phase 7b results](docs/MONITORING_7B.md) · [notebook](notebooks/07b_monitoring.ipynb) |
-| 8-9. Dashboards, write-up | Future work | |
+| 8. Dashboards: Streamlit app on frozen snapshots (deployed), Power BI on the PostgreSQL star schema, pre-registered scorecard with an independent verifier | Done | [Dashboards](docs/DASHBOARDS.md) · [live app](https://predictive-maintenance-oee.streamlit.app) |
+| 9. Write-up | Future work | |
 
 ## Phase 8: Dashboards
 
 [Live Streamlit app](https://predictive-maintenance-oee.streamlit.app) · [Dashboard methods and scorecard](docs/DASHBOARDS.md)
 
-The public demo reads frozen snapshots; the Power BI report reads the local PostgreSQL model and snapshot files. Simulated plant OEE is 98.2% for predictive maintenance, 97.8% for fixed interval, and 95.2% for run to failure. Phase 8 remains in progress until its deployment and phone-width evidence checks are complete.
+The public demo reads frozen snapshots; the Power BI report reads the local PostgreSQL model and snapshot files. Simulated plant OEE is 98.2% for predictive maintenance, 97.8% for fixed interval, and 95.2% for run to failure. Every check in the pre-registered Phase 8 scorecard passes, including the deployed app's data checksum, phone-width screenshots and the Power BI exports; the generated scorecard is in [docs/DASHBOARDS.md](docs/DASHBOARDS.md).
 
 ## Run locally
 
