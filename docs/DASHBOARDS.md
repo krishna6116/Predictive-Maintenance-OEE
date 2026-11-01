@@ -74,7 +74,7 @@ DIVIDE (
 
 Fixed before any dashboard code (`dashboards/phase8_scorecard.json`). A dimension passes only if all its checks pass; pending means the evidence has not been produced yet and counts as not passed.
 
-**Score: 3 / 5**
+**Score: 5 / 5**
 
 | Check | Kind | What is checked | Status |
 | --- | --- | --- | --- |
@@ -86,11 +86,11 @@ Fixed before any dashboard code (`dashboards/phase8_scorecard.json`). A dimensio
 | D1.5 | code_local | Snapshots of ops and ops7b_* tables equal PostgreSQL cell for cell (local database; CI has no Phase 7 replay of all shifts) | pass |
 | D1.6 | code | Every number in docs/DASHBOARDS.md and every Phase 8 number in README.md equals the independent value | pass |
 | D1.7 | code | Power BI exported values (docs/figures/phase8/powerbi_exports/*.csv) equal the independent values at displayed precision | pass |
-| **D2 Reproducibility** | | | **not yet** |
+| **D2 Reproducibility** | | | **pass** |
 | D2.1 | code_local | python -m dashboards.export_snapshots run twice gives byte-identical files (same sha256) equal to the committed ones | pass |
 | D2.2 | code | CI job installs ONLY app/requirements.txt (exact pins) into a clean Python and runs the AppTest suite from a fresh checkout | pass |
 | D2.3 | code | CI runs dashboards.verify_phase8 on Linux and it passes; the committed manifest's source sha256 values equal the committed source files (snapshot not stale) | pass |
-| D2.4 | manual | The deployed Streamlit Community Cloud app shows a data checksum equal to the repo manifest's data_checksum (screenshot docs/figures/phase8/deployed_about.png) | pending |
+| D2.4 | manual | The deployed Streamlit Community Cloud app shows a data checksum equal to the repo manifest's data_checksum (screenshot docs/figures/phase8/deployed_about.png) | pass |
 | **D3 Robustness** | | | **pass** |
 | D3.1 | code | AppTest loads every page with every filter combination listed in the spec with no exception | pass |
 | D3.2 | code | A missing snapshot file, a corrupt one (bad sha256 or unparsable) and a filter that leaves no rows each show a clear st.error/st.info message and no exception | pass |
@@ -101,12 +101,12 @@ Fixed before any dashboard code (`dashboards/phase8_scorecard.json`). A dimensio
 | D4.3 | code | The monitoring page shows the FD004 C1 failure ('FAIL') and the Phase 7 false-alarm target miss ('not met'), with their rates | pass |
 | D4.4 | code | Every st.metric has non-empty help text (its definition), and every required_text in the spec appears on its page | pass |
 | D4.5 | code | The published model (LSTM) and all baselines appear in one table on the same test engines per dataset | pass |
-| **D5 Usability and accessibility** | | | **not yet** |
+| **D5 Usability and accessibility** | | | **pass** |
 | D5.1 | code | Each page's title is the question stated in the spec | pass |
 | D5.2 | code | Every chart uses only Okabe-Ito colours, and every colour encoding is paired with a second channel (shape, stroke dash, text label or axis position) | pass |
 | D5.3 | code | Every chart axis has a title, and every quantitative axis title names its unit in parentheses | pass |
 | D5.4 | code | Each page script runs in under 5 s in AppTest on the CI runner (script time; browser rendering is checked manually in D5.5) | pass |
-| D5.5 | manual | Each page at 375 px phone width has no horizontal page scroll and readable charts (screenshots docs/figures/phase8/phone_<page>.png), and loads visibly in under 5 s locally | pending |
+| D5.5 | manual | Each page at 375 px phone width has no horizontal page scroll and readable charts (screenshots docs/figures/phase8/phone_<page>.png), and loads visibly in under 5 s locally | pass |
 | D5.6 | manual | The Power BI report follows the same rules: question titles, Okabe-Ito colours with a second channel, axis titles with units, 'Simulated' on OEE pages (PDF docs/figures/phase8/powerbi_report.pdf and checklist) | pass |
 
 ## Reproduce

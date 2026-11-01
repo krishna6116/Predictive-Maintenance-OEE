@@ -4,10 +4,10 @@ The scorecard (`dashboards/phase8_scorecard.json`) has three checks that code ca
 its evidence file is committed under `docs/figures/phase8/` AND its line below is ticked (`- [x]`).
 `python -m dashboards.verify_phase8` reads this file and the evidence files.
 
-- [ ] **D2.4** Deployed app's data checksum equals the repository's.
+- [x] **D2.4** Deployed app's data checksum equals the repository's.
   Evidence: `deployed_about.png`, a screenshot of the deployed app's About page showing the full checksum, which must equal
   `data_checksum` in `dashboards/snapshots/manifest.json`.
-- [ ] **D5.5** Phone width: each page at 375 px has no horizontal page scroll, readable charts, and appears in under 5 s.
+- [x] **D5.5** Phone width: each page at 375 px has no horizontal page scroll, readable charts, and appears in under 5 s.
   Evidence: `phone_fleet.png`, `phone_plan.png`, `phone_oee.png`, `phone_monitoring.png`, `phone_about.png`
   (browser developer tools, device toolbar, 375 px wide).
 - [x] **D5.6** Power BI report follows the same rules: each page title is its question; Okabe-Ito colours, with meaning
