@@ -10,7 +10,7 @@ its evidence file is committed under `docs/figures/phase8/` AND its line below i
 - [ ] **D5.5** Phone width: each page at 375 px has no horizontal page scroll, readable charts, and appears in under 5 s.
   Evidence: `phone_fleet.png`, `phone_plan.png`, `phone_oee.png`, `phone_monitoring.png`, `phone_about.png`
   (browser developer tools, device toolbar, 375 px wide).
-- [ ] **D5.6** Power BI report follows the same rules: each page title is its question; Okabe-Ito colours, with meaning
+- [x] **D5.6** Power BI report follows the same rules: each page title is its question; Okabe-Ito colours, with meaning
   never carried by colour alone (data labels or a table next to the chart); axis titles with units; "Simulated" on the OEE
   page; FD004's C1 failure and the Phase 7 target miss visible on the monitoring page.
   Evidence: `powerbi_report.pdf` (File > Export > Export to PDF) and one PNG per page (`powerbi_<page>.png`).
