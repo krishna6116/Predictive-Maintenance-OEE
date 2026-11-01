@@ -48,7 +48,9 @@ for ds in datasets:
         order=alt.Order("risk:N"),
         tooltip=[alt.Tooltip("scheduled_day:O", title="Plan day"), alt.Tooltip("risk:N", title="Risk"),
                  alt.Tooltip("engines:Q", title="Engines")])
-    text = alt.Chart(per_day).mark_text(dy=10, color=C.OKABE_ITO["black"]).encode(
+    # vertical labels inside each segment: horizontal names overlap on the narrow bars at phone width (D5.5)
+    text = alt.Chart(per_day).mark_text(angle=270, align="right", baseline="middle", dx=-4, fontSize=10,
+                                        color=C.OKABE_ITO["black"]).encode(
         x="scheduled_day:O", y=alt.Y("engines:Q", stack="zero"), text=alt.Text("risk:N"), order=alt.Order("risk:N"))
     limit = alt.Chart().mark_rule(color=C.OKABE_ITO["black"], strokeDash=[4, 3]).encode(y=alt.datum(crews))
     lab = alt.Chart().mark_text(align="left", dx=4, dy=-6).encode(x=alt.value(0), y=alt.datum(crews),
