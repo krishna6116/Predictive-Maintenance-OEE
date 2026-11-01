@@ -1,0 +1,4 @@
+﻿Policy,OEE,Unplanned failures,Planned services
+Fixed interval,97.8%,21,179
+Predictive,98.2%,8,192
+Run to failure,95.2%,200,0
