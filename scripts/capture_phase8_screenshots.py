@@ -9,6 +9,10 @@ D5.5: each page in a 375 px wide phone emulation (iPhone SE, 2x pixels), with th
 D2.4: About page at 1280 px with the sidebar closed; the 64-hex checksum is read from the page text and compared
       with dashboards/snapshots/manifest.json.
 Everything measured is written to docs/figures/phase8/capture_log.json next to the images.
+
+--readme: instead, three desktop screenshots (1280 px, light theme) for the README in docs/figures/readme/:
+      Fleet health, Maintenance plan and OEE policies, each cropped below the page's first chart and reduced to a
+      256-colour palette to stay small.
 """
 import json
 import re
@@ -21,7 +25,8 @@ from playwright.sync_api import sync_playwright
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "docs" / "figures" / "phase8"
-URL = (sys.argv[1] if len(sys.argv) > 1 else (ROOT / "dashboards" / "app_url.txt").read_text().strip()).rstrip("/")
+ARGS = [a for a in sys.argv[1:] if not a.startswith("--")]
+URL = (ARGS[0] if ARGS else (ROOT / "dashboards" / "app_url.txt").read_text().strip()).rstrip("/")
 PAGES = {"fleet": "", "plan": "plan", "oee": "oee", "monitoring": "monitoring", "about": "about"}
 PHONE_WIDTH = 375
 
@@ -112,5 +117,31 @@ def main() -> int:
     return 0 if ok else 1
 
 
+def readme() -> int:
+    from PIL import Image
+
+    out = ROOT / "docs" / "figures" / "readme"
+    out.mkdir(parents=True, exist_ok=True)
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        page = browser.new_page(viewport={"width": 1280, "height": 900}, color_scheme="light")
+        wake(page)
+        for name in ("fleet", "plan", "oee"):
+            load(page, PAGES[name])
+            chart = page.locator('[data-testid="stVegaLiteChart"], .vega-embed').first
+            chart.wait_for(state="visible", timeout=60_000)
+            m = measure(page)
+            full_page_shot(page, out / f"app_{name}.png", 1280, m["content_height"])
+            bottom = chart.bounding_box()["y"] + chart.bounding_box()["height"] + 6
+            page.set_viewport_size({"width": 1280, "height": 900})
+            img = Image.open(out / f"app_{name}.png").convert("RGB")
+            img = img.crop((0, 0, img.width, min(img.height, int(bottom))))
+            img.quantize(colors=256, method=Image.Quantize.MEDIANCUT).save(out / f"app_{name}.png", optimize=True)
+            kb = (out / f"app_{name}.png").stat().st_size // 1024
+            print(f"app_{name}.png  {img.width}x{img.height}  {kb} KB  title: {page.locator('h1').first.inner_text()}")
+        browser.close()
+    return 0
+
+
 if __name__ == "__main__":
-    sys.exit(main())
+    sys.exit(readme() if "--readme" in sys.argv else main())
