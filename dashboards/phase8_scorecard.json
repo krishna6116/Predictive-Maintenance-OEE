@@ -1,0 +1,75 @@
+{
+  "phase": "8",
+  "committed_before_code": true,
+  "scoring": "Each check is pass/fail. A dimension scores 1 only if every one of its checks passes. Phase 8 score = number of passing dimensions (0-5); 5 only if all checks pass. A manual check passes only with its evidence file committed. Criteria are never loosened after results are seen; a failure is fixed at its cause or reported as a failure (as in Phase 7/7b).",
+  "check_kinds": {
+    "code": "checked by python -m dashboards.verify_phase8 (and its tests); runs in CI on Linux",
+    "code_local": "needs the local database or the deployed app; checked by verify_phase8 --local and recorded with its output in dashboards/local_checks.json, committed",
+    "manual": "checked against docs/PHASE8_CHECKLIST.md with the named screenshot or file committed under docs/figures/phase8/"
+  },
+  "tolerances": {
+    "counts_ids_strings_booleans": "exact",
+    "floats_copied_from_a_source": "exact (round-trip CSV)",
+    "floats_recomputed_independently": "absolute 1e-9 (ratios 1e-12); different summation order is the only allowed difference",
+    "displayed_values": "the rounded string on the page equals the independently recomputed value rounded the same way",
+    "powerbi_exports": "equal to the independent value at the precision shown in the report"
+  },
+  "dimensions": [
+    {
+      "id": "D1",
+      "name": "Data correctness",
+      "checks": [
+        {"id": "D1.1", "kind": "code", "check": "Every number listed in phase8_spec.json pages[].numbers, as rendered by the Streamlit app (AppTest), equals the independent recomputation from the raw results files within the stated tolerance"},
+        {"id": "D1.2", "kind": "code", "check": "Every snapshot file matches the manifest: row count, sha256, key unique and sorted, run IDs"},
+        {"id": "D1.3", "kind": "code", "check": "Snapshot values equal the independent files cell for cell (fleet, models, plan, work orders, OEE machines, OEE policies, monitoring)"},
+        {"id": "D1.4", "kind": "code", "check": "Snapshots of public.* tables equal PostgreSQL cell for cell (CI verify job, after maintenance.store)"},
+        {"id": "D1.5", "kind": "code_local", "check": "Snapshots of ops and ops7b_* tables equal PostgreSQL cell for cell (local database; CI has no Phase 7 replay of all shifts)"},
+        {"id": "D1.6", "kind": "code", "check": "Every number in docs/DASHBOARDS.md and every Phase 8 number in README.md equals the independent value"},
+        {"id": "D1.7", "kind": "code", "check": "Power BI exported values (docs/figures/phase8/powerbi_exports/*.csv) equal the independent values at displayed precision"}
+      ]
+    },
+    {
+      "id": "D2",
+      "name": "Reproducibility",
+      "checks": [
+        {"id": "D2.1", "kind": "code_local", "check": "python -m dashboards.export_snapshots run twice gives byte-identical files (same sha256) equal to the committed ones"},
+        {"id": "D2.2", "kind": "code", "check": "CI job installs ONLY app/requirements.txt (exact pins) into a clean Python and runs the AppTest suite from a fresh checkout"},
+        {"id": "D2.3", "kind": "code", "check": "CI runs dashboards.verify_phase8 on Linux and it passes; the committed manifest's source sha256 values equal the committed source files (snapshot not stale)"},
+        {"id": "D2.4", "kind": "manual", "check": "The deployed Streamlit Community Cloud app shows a data checksum equal to the repo manifest's data_checksum (screenshot docs/figures/phase8/deployed_about.png)"}
+      ]
+    },
+    {
+      "id": "D3",
+      "name": "Robustness",
+      "checks": [
+        {"id": "D3.1", "kind": "code", "check": "AppTest loads every page with every filter combination listed in the spec with no exception"},
+        {"id": "D3.2", "kind": "code", "check": "A missing snapshot file, a corrupt one (bad sha256 or unparsable) and a filter that leaves no rows each show a clear st.error/st.info message and no exception"},
+        {"id": "D3.3", "kind": "code", "check": "The verifier catches at least 5 planted bugs, each in a separate test: wrong OEE, off-by-one shift, dropped engine, stale snapshot (source changed), swapped interval bounds; plus wrong flagged count"}
+      ]
+    },
+    {
+      "id": "D4",
+      "name": "Honest presentation",
+      "checks": [
+        {"id": "D4.1", "kind": "code", "check": "Every page that shows OEE or simulated plant values contains the word 'Simulated' in its rendered text"},
+        {"id": "D4.2", "kind": "code", "check": "The fleet page shows the interval with its nominal (90%) and observed coverage, and marks FD001's coverage as post hoc"},
+        {"id": "D4.3", "kind": "code", "check": "The monitoring page shows the FD004 C1 failure ('FAIL') and the Phase 7 false-alarm target miss ('not met'), with their rates"},
+        {"id": "D4.4", "kind": "code", "check": "Every st.metric has non-empty help text (its definition), and every required_text in the spec appears on its page"},
+        {"id": "D4.5", "kind": "code", "check": "The published model (LSTM) and all baselines appear in one table on the same test engines per dataset"}
+      ]
+    },
+    {
+      "id": "D5",
+      "name": "Usability and accessibility",
+      "checks": [
+        {"id": "D5.1", "kind": "code", "check": "Each page's title is the question stated in the spec"},
+        {"id": "D5.2", "kind": "code", "check": "Every chart uses only Okabe-Ito colours, and every colour encoding is paired with a second channel (shape, stroke dash, text label or axis position)"},
+        {"id": "D5.3", "kind": "code", "check": "Every chart axis has a title, and every quantitative axis title names its unit in parentheses"},
+        {"id": "D5.4", "kind": "code", "check": "Each page script runs in under 5 s in AppTest on the CI runner (script time; browser rendering is checked manually in D5.5)"},
+        {"id": "D5.5", "kind": "manual", "check": "Each page at 375 px phone width has no horizontal page scroll and readable charts (screenshots docs/figures/phase8/phone_<page>.png), and loads visibly in under 5 s locally"},
+        {"id": "D5.6", "kind": "manual", "check": "The Power BI report follows the same rules: question titles, Okabe-Ito colours with a second channel, axis titles with units, 'Simulated' on OEE pages (PDF docs/figures/phase8/powerbi_report.pdf and checklist)"}
+      ]
+    }
+  ],
+  "result": null
+}

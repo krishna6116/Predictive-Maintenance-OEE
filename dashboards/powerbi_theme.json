@@ -1,0 +1,10 @@
+{
+  "name": "Okabe-Ito (Phase 8)",
+  "dataColors": ["#0072B2", "#E69F00", "#009E73", "#D55E00", "#56B4E9", "#CC79A7", "#F0E442", "#000000"],
+  "good": "#009E73",
+  "neutral": "#E69F00",
+  "bad": "#D55E00",
+  "foreground": "#000000",
+  "background": "#FFFFFF",
+  "tableAccent": "#0072B2"
+}

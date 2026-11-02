@@ -1,0 +1,54 @@
+{
+  "app_url": "https://predictive-maintenance-oee.streamlit.app",
+  "captured_utc": "2026-11-01T18:18:41Z",
+  "manifest_data_checksum": "6467d24fa7dd4e586f0e37eaffc2914ccfadca104692fd51a6dd3149766ea079",
+  "phone": {
+    "fleet": {
+      "title_visible_s": 1.62,
+      "scroll_width": 320,
+      "content_height": 2605,
+      "background": "rgb(255, 255, 255)",
+      "no_horizontal_scroll": true,
+      "under_5_s": true
+    },
+    "plan": {
+      "title_visible_s": 1.07,
+      "scroll_width": 375,
+      "content_height": 2648,
+      "background": "rgb(255, 255, 255)",
+      "no_horizontal_scroll": true,
+      "under_5_s": true
+    },
+    "oee": {
+      "title_visible_s": 0.99,
+      "scroll_width": 375,
+      "content_height": 2281,
+      "background": "rgb(255, 255, 255)",
+      "no_horizontal_scroll": true,
+      "under_5_s": true
+    },
+    "monitoring": {
+      "title_visible_s": 0.95,
+      "scroll_width": 375,
+      "content_height": 1980,
+      "background": "rgb(255, 255, 255)",
+      "no_horizontal_scroll": true,
+      "under_5_s": true
+    },
+    "about": {
+      "title_visible_s": 0.97,
+      "scroll_width": 375,
+      "content_height": 2817,
+      "background": "rgb(255, 255, 255)",
+      "no_horizontal_scroll": true,
+      "under_5_s": true
+    }
+  },
+  "about_desktop": {
+    "checksums_on_page": [
+      "6467d24fa7dd4e586f0e37eaffc2914ccfadca104692fd51a6dd3149766ea079"
+    ],
+    "equals_manifest": true,
+    "sidebar_closed": true
+  }
+}

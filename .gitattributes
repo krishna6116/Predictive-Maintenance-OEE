@@ -1,2 +1,4 @@
 # Notebooks are walkthroughs generated from the scripts; keep the language bar on the Python code
 *.ipynb linguist-documentation
+# Dashboard snapshots are fingerprinted (sha256): never convert their line endings
+dashboards/snapshots/** -text

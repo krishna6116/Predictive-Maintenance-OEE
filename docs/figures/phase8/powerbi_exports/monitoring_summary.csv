@@ -1,0 +1,7 @@
+﻿Scenario,Dataset,Runs,Flagged runs,Flag rate,C1 result
+phase7_v1,FD001,484,15,3.1%,
+phase7_v1,FD003,484,45,9.3%,
+phase7b_v2_staggered,FD002,667,6,0.9%,PASS
+phase7b_v2_staggered,FD004,667,93,13.9%,FAIL
+phase7b_v2_synchronized,FD002,554,0,0.0%,PASS
+phase7b_v2_synchronized,FD004,554,108,19.5%,FAIL
