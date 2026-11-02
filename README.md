@@ -4,7 +4,9 @@ Predicts turbofan engine failures from sensor data, schedules maintenance under 
 
 [![CI](https://github.com/krishna6116/Predictive-Maintenance-OEE/actions/workflows/ci.yml/badge.svg)](https://github.com/krishna6116/Predictive-Maintenance-OEE/actions/workflows/ci.yml)
 
-**Status:** Phases 0-7b done (data pipeline, models, maintenance scheduling, orchestration and monitoring). Phases 8-9 (dashboards, write-up) are future work.
+**Status:** Phases 0-8 done (data pipeline, models, maintenance scheduling, orchestration and monitoring, and dashboards: a deployed Streamlit app and a Power BI report). Phase 9 (write-up) is next.
+
+**Live app:** https://predictive-maintenance-oee.streamlit.app (free hosting; if it shows a sleep page, click the wake-up button and wait ~30–60 s)
 
 **Tech stack:** Python · PostgreSQL · pandas · scikit-learn · XGBoost · PyTorch (LSTM, 1D-CNN) · OR-Tools CP-SAT · Prefect · pytest · GitHub Actions
 
@@ -19,6 +21,22 @@ Predicts turbofan engine failures from sensor data, schedules maintenance under 
 OEE and failures come from a simulated plant driven by NASA's engine data, not from a real plant. Every number above is recomputed by independent verifier code on each push.
 
 ![Simulated OEE and failures for the three maintenance policies](docs/figures/phase6_policies.png)
+
+## See it in 30 seconds
+
+Three pages of the [live app](https://predictive-maintenance-oee.streamlit.app), each answering one question.
+
+**Fleet health:** which engines are closest to failure, and how sure is the model?
+
+![Fleet health page: predicted remaining life with 90% intervals for each test engine](docs/figures/readme/app_fleet.png)
+
+**Maintenance plan:** which engines should the crews service in the next 7 days?
+
+![Maintenance plan page: flagged engines booked onto crews by day, within the crew limit](docs/figures/readme/app_plan.png)
+
+**OEE policies:** which maintenance policy gives the highest OEE? (Simulated plant)
+
+![OEE policies page: simulated OEE for run to failure, fixed interval and predictive maintenance](docs/figures/readme/app_oee.png)
 
 ## How it works
 
