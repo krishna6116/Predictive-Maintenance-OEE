@@ -1,0 +1,28 @@
+# Optional: one visit to the public demo every 6 hours so Streamlit Community Cloud does not put it to sleep.
+# Separate from ci.yml; delete this file to stop it. Light by design (one page visit per run, fair use).
+name: keep-awake
+
+on:
+  schedule:
+    - cron: "17 */6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: keep-awake
+  cancel-in-progress: false
+
+jobs:
+  visit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.14"
+      - run: pip install playwright==1.55.0 && python -m playwright install --with-deps chromium
+      - name: Visit the live app (wake it if asleep)
+        run: python scripts/keep_awake.py
