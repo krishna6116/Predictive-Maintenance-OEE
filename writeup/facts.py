@@ -21,6 +21,7 @@ SOURCES = [
     "results/phase7b/checks.json",
     "dashboards/snapshots/facts.json",
     "dashboards/phase8_results.json",
+    "pipeline/monitoring_rule.json",
 ]
 
 
@@ -50,8 +51,17 @@ def facts() -> dict[str, Fact]:
                       ("Ridge, all 168 features", "ridge"), ("Age only (cycle count)", "age"), ("Fleet average", "fleet")):
         put(f"rmse_{name}_fd003", m5b[key]["rmse"], "cycles", SOURCES[2], f"models.{key}.rmse")
     put("rmse_lstm_fd001", p5["models"]["LSTM"]["rmse"], "cycles", SOURCES[1], "models.LSTM.rmse")
-    put("rmse_xgb_fd001", p4["models"]["XGBoost, all 168 features"]["rmse"], "cycles", SOURCES[0],
-        "models.XGBoost, all 168 features.rmse")
+    put("rmse_lstm_fd001_lo", p5["models"]["LSTM"]["rmse_ci95"][0], "cycles", SOURCES[1], "models.LSTM.rmse_ci95[0]")
+    put("rmse_lstm_fd001_hi", p5["models"]["LSTM"]["rmse_ci95"][1], "cycles", SOURCES[1], "models.LSTM.rmse_ci95[1]")
+    x4 = p4["models"]["XGBoost, all 168 features"]
+    put("rmse_xgb_fd001", x4["rmse"], "cycles", SOURCES[0], "models.XGBoost, all 168 features.rmse")
+    put("rmse_xgb_fd001_lo", x4["rmse_ci95"][0], "cycles", SOURCES[0], "models.XGBoost, all 168 features.rmse_ci95[0]")
+    put("rmse_xgb_fd001_hi", x4["rmse_ci95"][1], "cycles", SOURCES[0], "models.XGBoost, all 168 features.rmse_ci95[1]")
+    put("rmse_fleet_fd001", p4["models"]["Fleet average"]["rmse"], "cycles", SOURCES[0], "models.Fleet average.rmse")
+    put("rmse_age_fd001", p4["models"]["Age only (cycle count)"]["rmse"], "cycles", SOURCES[0], "models.Age only (cycle count).rmse")
+    put("p5_raw_val_coverage", p5["mc_dropout"]["raw"]["val_coverage"], "share", SOURCES[1], "mc_dropout.raw.val_coverage")
+    put("p5_calibrated_test_coverage", p5["mc_dropout"]["calibrated"]["test_coverage"], "share", SOURCES[1],
+        "mc_dropout.calibrated.test_coverage")
     for key, name in (("LSTM", "lstm"), ("XGBoost, all 168 features", "xgb")):
         pooled = p5b["pooled_fd001_fd003"][key]
         put(f"pooled_rmse_{name}", pooled["rmse"], "cycles", SOURCES[2], f"pooled_fd001_fd003.{key}.rmse")
@@ -110,6 +120,9 @@ def facts() -> dict[str, Fact]:
     put("p7_shifts", p7["shifts"], "shifts", SOURCES[6], "shifts")
     put("p7_false_alarm", p7["drift_false_alarm_rate_test"], "share", SOURCES[6], "drift_false_alarm_rate_test")
     put("p7_target", snap["p7_drift_target"]["value"], "share", SOURCES[8], "p7_drift_target.value")
+    rule = _load(SOURCES[10])
+    put("p7_alpha", rule["drift"]["alpha"], "significance level", SOURCES[10], "drift.alpha")
+    put("p7_rmse_multiplier", rule["health"]["rmse_multiplier"], "x validation RMSE", SOURCES[10], "health.rmse_multiplier")
     put("c1_limit", snap["c1_limit"]["value"], "share", SOURCES[8], "c1_limit.value")
     for ds in ("FD002", "FD004"):
         for fleet in ("synchronized", "staggered"):
