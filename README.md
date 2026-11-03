@@ -178,7 +178,7 @@ Every push runs these GitHub Actions jobs ([ci.yml](.github/workflows/ci.yml)):
 
 ## How this was built
 
-Built phase by phase from a study guide, with Claude (Anthropic's AI assistant) as the coding assistant. The author chose the project, the phase plan and the success criteria for each phase, approved every pre-registration and publication decision, built the Power BI report, deployed the app and produced the manual evidence. The assistant wrote most of the code, tests and documentation under that direction. Every published claim is re-checked by independent verifier code in CI, so it does not depend on trusting either of us.
+I built this phase by phase from a study guide, with Claude (Anthropic's AI assistant) as my coding assistant. I chose the project, the phase plan and the success criteria for each phase, approved every pre-registration and publication decision, built the Power BI report, deployed the app and produced the manual evidence. Claude wrote most of the code, tests and documentation under my direction. Every published claim is re-checked by independent verifier code in CI, so it does not depend on trusting either of us.
 
 ## Author
 
