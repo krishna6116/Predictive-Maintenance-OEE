@@ -40,7 +40,70 @@ def render_all() -> dict[str, str]:
     F = {k: f.value for k, f in facts().items()}
     return {"README.md": readme(F), "docs/RESULTS.md": results(F), "docs/CASE_STUDY.md": case_study(F),
             "docs/ARCHITECTURE.md": architecture(F), "docs/DECISIONS.md": decisions(F), "docs/GLOSSARY.md": glossary(),
-            "docs/RELEASE_NOTES.md": release_notes(F), "docs/README.md": docs_index()}
+            "docs/RELEASE_NOTES.md": release_notes(F), "docs/README.md": docs_index(), **notebooks(F)}
+
+
+def notebook_summaries(F) -> dict[str, tuple[str, str, str]]:
+    """notebook -> (question, answer with numbers from the facts, doc link)."""
+    return {
+        "01_eda": ("How do the engines wear out, and which sensors carry the signal?",
+                   f"Most sensors stay flat for most of a life and drift only near failure, so remaining life is capped at "
+                   f"{RUL_CAP} cycles for training and sensors with no signal are dropped.", "../docs/EDA_FINDINGS.md"),
+        "03_features": ("Can features built only from past readings predict remaining life without leaking the future?",
+                        f"Yes: on these features XGBoost reaches {cyc(F['rmse_xgb_fd001'])} cycles RMSE on FD001 (Phase 4), "
+                        "with every split made by engine.", "../docs/FEATURES.md"),
+        "04_baselines": ("How well do simple models predict remaining life?",
+                         f"XGBoost reaches {cyc(F['rmse_xgb_fd001'])} cycles RMSE (95% interval {F['rmse_xgb_fd001_lo']:.1f}-"
+                         f"{F['rmse_xgb_fd001_hi']:.1f}) against {F['rmse_age_fd001']:.1f} for an age-only rule and "
+                         f"{F['rmse_fleet_fd001']:.1f} for the fleet average.", "../docs/MODEL_METRICS.md"),
+        "05_deep": ("Do sequence models (LSTM, CNN) beat XGBoost?",
+                    f"On FD001 the LSTM reaches {cyc(F['rmse_lstm_fd001'])} cycles RMSE against {cyc(F['rmse_xgb_fd001'])}, "
+                    "but the paired, Holm-corrected gap is not significant, so XGBoost stayed published until Phase 5b.",
+                    "../docs/MODEL_METRICS_PHASE5.md"),
+        "05b_fd003": ("Does the LSTM's advantage hold on a fresh dataset?",
+                      f"Yes: on FD003 it reaches {cyc(F['rmse_lstm_fd003'])} against {cyc(F['rmse_xgb_fd003'])}; pooled, it is "
+                      f"better by {cyc(abs(F['h1_diff']))} cycles RMSE (Holm p {F['h1_p_holm']:.3f}), so it became the "
+                      f"published model; its interval covers {pct(F['coverage_fd003'], 0)} of FD003 engines.",
+                      "../docs/MODEL_METRICS_PHASE5B.md"),
+        "06_maintenance": ("Which maintenance policy gives the highest OEE on a simulated plant?",
+                           f"Predictive: simulated OEE {pct(F['oee_pred'])} vs {pct(F['oee_fixed'])} fixed interval vs "
+                           f"{pct(F['oee_rtf'])} run to failure, with {n(F['failures_pred'])} / {n(F['failures_fixed'])} / "
+                           f"{n(F['failures_rtf'])} simulated unplanned failures.", "../docs/MAINTENANCE_OEE.md"),
+        "07_monitoring": ("Can the pipeline run itself every shift and say when to stop trusting the model?",
+                          f"It ran {n(F['p7_runs'])} runs over {n(F['p7_shifts'])} shifts with retries and resume, but its "
+                          f"drift test raised false alarms on {pct(F['p7_false_alarm'])} of clean runs against a "
+                          f"{pct(F['p7_target'], 0)} target (not met, reported).", "../docs/MONITORING.md"),
+        "07b_monitoring": ("Does a wear-adjusted drift rule fix that on data nothing has seen?",
+                           f"On FD002 yes ({pct(F['c1_fd002_synchronized'])} / {pct(F['c1_fd002_staggered'])} clean runs "
+                           f"flagged); on FD004 no ({pct(F['c1_fd004_synchronized'])} / {pct(F['c1_fd004_staggered'])} "
+                           f"against a {pct(F['c1_limit'], 0)} limit), reported as a failure.", "../docs/MONITORING_7B.md"),
+    }
+
+
+def notebooks(F) -> dict[str, str]:
+    """Each notebook: a tagged summary cell first and the 'Why we did these tasks' cell last. Markdown only, so no
+    output changes and nothing is re-executed; applying it twice gives the same file."""
+    import json
+
+    def text(c) -> str:
+        return "".join(c["source"]) if isinstance(c["source"], list) else c["source"]
+
+    out = {}
+    for stem, (q, a, doc) in notebook_summaries(F).items():
+        path = f"notebooks/{stem}.ipynb"
+        # plain JSON, not nbformat: nbformat assigns random ids to cells without one, which breaks byte-identical output
+        nb = json.loads((ROOT / path).read_text(encoding="utf-8"))
+        cells = [c for c in nb["cells"] if "phase9-summary" not in c.get("metadata", {}).get("tags", [])]
+        why = [c for c in cells if c["cell_type"] == "markdown" and "Why we did these tasks" in text(c)]
+        if len(why) != 1:
+            raise SystemExit(f"{path}: expected one 'Why we did these tasks' cell, found {len(why)}")
+        lines = [f"**Question:** {q}  \n", f"**Answer:** {a}  \n", f"**Read more:** [{Path(doc).name}]({doc})"]
+        summary = {"cell_type": "markdown", "metadata": {"tags": ["phase9-summary"]}, "source": lines}
+        if any("id" in c for c in cells):
+            summary = {"cell_type": "markdown", "id": "phase9-summary", "metadata": summary["metadata"], "source": lines}
+        nb["cells"] = [summary] + [c for c in cells if c is not why[0]] + [why[0]]
+        out[path] = json.dumps(nb, indent=1, ensure_ascii=False) + "\n"
+    return out
 
 
 GENERATED = "<!-- Generated by `python -m writeup.report_phase9` from the results files; do not edit by hand. -->"
