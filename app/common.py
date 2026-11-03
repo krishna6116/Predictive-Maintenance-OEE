@@ -16,9 +16,12 @@ import streamlit as st
 ROOT = Path(__file__).resolve().parents[1]
 REPO = "https://github.com/krishna6116/Predictive-Maintenance-OEE"
 DOCS = f"{REPO}/blob/main/docs"
+LINKEDIN = "https://www.linkedin.com/in/krishnakumar-balasundaram-3a92b6422"
+AUTHOR = "Krishnakumar Balasundaram"
 
 # Page titles are the questions in dashboards/phase8_spec.json (checked by the tests)
 TITLES = {
+    "home": "What did this project build, and what did it find?",
     "fleet": "Which engines are closest to failure, and how sure is the model?",
     "plan": "Which engines should the crews service in the next 7 days?",
     "oee": "Which maintenance policy gives the highest OEE? (Simulated plant)",
@@ -92,9 +95,36 @@ def define(term: str) -> str:
     return fact("definitions")[term]
 
 
+# One-sentence business question per page (operations language), and what the page shows and why it matters
+BUSINESS = {
+    "home": "Can forecasting each machine's remaining life cut unplanned downtime without wasting parts?",
+    "fleet": "Which assets need attention first, and how much can we trust the warning?",
+    "plan": "With limited crews, which jobs go on which day so nothing fails while waiting?",
+    "oee": "Does predictive maintenance pay off against a fixed calendar or running to failure?",
+    "monitoring": "When should we stop trusting the forecasts and retrain the model?",
+    "about": "Why should anyone believe these numbers?",
+}
+WHY = {
+    "home": "The headline results of a predictive-maintenance pipeline built on NASA engine data, and where to find each "
+            "part. It matters because every figure here is re-computed by independent code, and the misses are shown too.",
+    "fleet": "Each test engine's forecast remaining life with its uncertainty interval, and which engines are flagged. A planner acts "
+             "on the pessimistic edge of the interval, so a confident wrong forecast does not cause a failure.",
+    "plan": "The crew schedule the optimizer chose for flagged engines under the crew limit. It shows the trade-off a "
+            "maintenance planner makes every day, and which engines miss out when capacity runs short.",
+    "oee": "Three maintenance policies replayed on the same simulated machines. It turns forecast accuracy into the "
+           "operations language of OEE, downtime and failures, labelled as simulated because no real plant was measured.",
+    "monitoring": "How the shift-by-shift flow judges its own forecasts, including where its rules failed their targets. "
+                  "A model in production needs an honest alarm for when it stops working.",
+    "about": "Where every number comes from, how it is checked, and the checksum that ties this app to the repository.",
+}
+
+
 def header(page: str, intro: str) -> None:
     st.title(TITLES[page])
     st.caption(intro)
+    st.markdown(f"**Business question:** {BUSINESS[page]}")
+    with st.expander("What this shows / why it matters"):
+        st.write(WHY[page])
 
 
 def simulated_notice() -> None:
