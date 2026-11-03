@@ -241,7 +241,7 @@ def readme(F) -> str:
         "```", "",
         "## Run locally", "",
         "Python 3.14 (the version CI uses). `requirements-lock.txt` pins every package to the versions behind the "
-        "published results; the first line installs the smaller CPU-only PyTorch build.", "",
+        "published results; the first pip line installs the smaller CPU-only PyTorch build. `git config core.hooksPath .githooks` turns on a pre-commit hook that blocks a commit when a generated file (README, docs, notebook summaries) is stale; fix it with `python -m writeup.report_phase9`.", "",
         "Windows (PowerShell):", "",
         "```powershell",
         *RUN_WINDOWS,
@@ -321,6 +321,7 @@ RUN_WINDOWS = [
     r".\.venv\Scripts\Activate.ps1",
     "pip install torch==2.14.1 --index-url https://download.pytorch.org/whl/cpu",
     "pip install -r requirements-lock.txt",
+    "git config core.hooksPath .githooks",
     "pytest -q",
 ]
 
@@ -329,6 +330,7 @@ RUN_BASH = [
     "source .venv/bin/activate",
     "pip install torch==2.14.1 --index-url https://download.pytorch.org/whl/cpu",
     "pip install -r requirements-lock.txt",
+    "git config core.hooksPath .githooks",
     "pytest -q",
 ]
 

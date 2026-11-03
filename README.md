@@ -123,7 +123,7 @@ writeup/        Phase 9: facts, renderer, verifier and scorecard
 
 ## Run locally
 
-Python 3.14 (the version CI uses). `requirements-lock.txt` pins every package to the versions behind the published results; the first line installs the smaller CPU-only PyTorch build.
+Python 3.14 (the version CI uses). `requirements-lock.txt` pins every package to the versions behind the published results; the first pip line installs the smaller CPU-only PyTorch build. `git config core.hooksPath .githooks` turns on a pre-commit hook that blocks a commit when a generated file (README, docs, notebook summaries) is stale; fix it with `python -m writeup.report_phase9`.
 
 Windows (PowerShell):
 
@@ -132,6 +132,7 @@ python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 pip install torch==2.14.1 --index-url https://download.pytorch.org/whl/cpu
 pip install -r requirements-lock.txt
+git config core.hooksPath .githooks
 pytest -q
 ```
 
@@ -142,6 +143,7 @@ python -m venv .venv
 source .venv/bin/activate
 pip install torch==2.14.1 --index-url https://download.pytorch.org/whl/cpu
 pip install -r requirements-lock.txt
+git config core.hooksPath .githooks
 pytest -q
 ```
 

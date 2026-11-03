@@ -2,3 +2,5 @@
 *.ipynb linguist-documentation
 # Dashboard snapshots are fingerprinted (sha256): never convert their line endings
 dashboards/snapshots/** -text
+# Git hooks are shell scripts: keep LF line endings on every platform
+.githooks/* text eol=lf
