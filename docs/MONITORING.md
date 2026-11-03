@@ -10,7 +10,7 @@ One Prefect flow run per shift (`pipeline/flow.py`), for each of FD001, FD003: i
 
 - **Model:** the published seed-0 LSTM with rule-E intervals. Before predicting, the flow proves the model reproduces the published last-cycle predictions and all 100 MC-dropout passes exactly (`maintenance.forecasts.published_model`). Predictions run in fixed batches of 100 windows, which makes them bit-identical to the published ones.
 - **Decisions:** Phase 6's alert rule and CP-SAT planning step (`maintenance.simulate.plan_day`), at the start of each day (every 2 shifts). The database allows one flow work order per engine.
-- **Commands:** `prefect server start` (dashboard http://127.0.0.1:4200), `prefect config set PREFECT_API_URL=http://127.0.0.1:4200/api`, then `python -m pipeline.flow --once`, `--serve` (a shift every 600 s; `--interval` overrides), `--replay-all`, `--reset` (the replay schema only).
+- **Commands:** `prefect server start` (dashboard `http://127.0.0.1:4200`), `prefect config set PREFECT_API_URL=http://127.0.0.1:4200/api`, then `python -m pipeline.flow --once`, `--serve` (a shift every 600 s; `--interval` overrides), `--replay-all`, `--reset` (the replay schema only).
 
 ## Rules fixed before the test replay (validation engines only)
 

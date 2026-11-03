@@ -42,7 +42,7 @@ def render() -> str:
            "Predictions run in fixed batches of 100 windows, which makes them bit-identical to the published ones.",
            "- **Decisions:** Phase 6's alert rule and CP-SAT planning step (`maintenance.simulate.plan_day`), at the start of each "
            "day (every 2 shifts). The database allows one flow work order per engine.",
-           "- **Commands:** `prefect server start` (dashboard http://127.0.0.1:4200), `prefect config set "
+           "- **Commands:** `prefect server start` (dashboard `http://127.0.0.1:4200`), `prefect config set "
            "PREFECT_API_URL=http://127.0.0.1:4200/api`, then `python -m pipeline.flow --once`, `--serve` (a shift every "
            f"{C.SERVE_INTERVAL_SECONDS} s; `--interval` overrides), `--replay-all`, `--reset` (the replay schema only).", "",
            "## Rules fixed before the test replay (validation engines only)", "",
