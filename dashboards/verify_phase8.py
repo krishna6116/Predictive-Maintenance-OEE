@@ -215,11 +215,11 @@ def expected_metrics(T, page: str, view: dict) -> dict:
     out = {}
     if page == "home":
         pub = "LSTM" if T["published_model"] == "LSTM" else "XGBoost (168 features)"
-        out[f"Forecast error on unseen engines, {T['published_model']} (FD003 RMSE, cycles)"] = f"{T['models'][('FD003', pub)]['rmse']:.2f}"
-        out["Forecast error on unseen engines, XGBoost (FD003 RMSE, cycles)"] = f"{T['models'][('FD003', 'XGBoost (168 features)')]['rmse']:.2f}"
+        out[f"{T['published_model']} forecast error on unseen engines (FD003 RMSE, cycles)"] = f"{T['models'][('FD003', pub)]['rmse']:.2f}"
+        out["XGBoost forecast error on unseen engines (FD003 RMSE, cycles)"] = f"{T['models'][('FD003', 'XGBoost (168 features)')]['rmse']:.2f}"
         order = ("Predictive", "Fixed interval", "Run to failure")
-        out["OEE: predictive / fixed interval / run to failure (pooled, simulated)"] = " / ".join(pct(T["oee"][("Pooled", p)]["oee"]) for p in order)
-        out["Unplanned failures: predictive / fixed interval / run to failure (pooled, simulated)"] = " / ".join(
+        out["Simulated OEE: predictive / fixed / run to failure"] = " / ".join(pct(T["oee"][("Pooled", p)]["oee"]) for p in order)
+        out["Simulated unplanned failures: predictive / fixed / run to failure"] = " / ".join(
             str(T["oee"][("Pooled", p)]["unplanned_failures"]) for p in order)
     elif page == "fleet":
         dss = ["FD001", "FD003"] if view["dataset"] == "Both" else [view["dataset"]]

@@ -27,11 +27,13 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "docs" / "figures" / "phase8"
 ARGS = [a for a in sys.argv[1:] if not a.startswith("--")]
 URL = (ARGS[0] if ARGS else (ROOT / "dashboards" / "app_url.txt").read_text().strip()).rstrip("/")
-PAGES = {"fleet": "", "plan": "plan", "oee": "oee", "monitoring": "monitoring", "about": "about"}
+PAGES = {"home": "", "fleet": "fleet", "plan": "plan", "oee": "oee", "monitoring": "monitoring", "about": "about"}
 PHONE_WIDTH = 375
 
 
 def app_url(path: str) -> str:
+    if "localhost" in URL or "127.0.0.1" in URL:
+        return f"{URL}/{path}"  # a local `streamlit run`
     return f"{URL}/~/+/{path}"  # the app itself, without Community Cloud's outer frame
 
 
@@ -120,19 +122,22 @@ def main() -> int:
 def readme() -> int:
     from PIL import Image
 
-    out = ROOT / "docs" / "figures" / "readme"
-    out.mkdir(parents=True, exist_ok=True)
     with sync_playwright() as p:
         browser = p.chromium.launch()
         page = browser.new_page(viewport={"width": 1280, "height": 900}, color_scheme="light")
         wake(page)
-        for name in ("fleet", "plan", "oee"):
+        for name in ("home", "fleet", "plan", "oee"):
+            # Home (the README hero) has no chart: crop below its last link button; it goes to the Phase 9 figures
+            out = ROOT / "docs" / "figures" / ("phase9" if name == "home" else "readme")
+            out.mkdir(parents=True, exist_ok=True)
             load(page, PAGES[name])
-            chart = page.locator('[data-testid="stVegaLiteChart"], .vega-embed').first
-            chart.wait_for(state="visible", timeout=60_000)
+            anchor = (page.locator('[data-testid="stLinkButton"]').last if name == "home"
+                      else page.locator('[data-testid="stVegaLiteChart"], .vega-embed').first)
+            anchor.wait_for(state="visible", timeout=60_000)
             m = measure(page)
             full_page_shot(page, out / f"app_{name}.png", 1280, m["content_height"])
-            bottom = chart.bounding_box()["y"] + chart.bounding_box()["height"] + 6
+            box = anchor.bounding_box()
+            bottom = box["y"] + box["height"] + (24 if name == "home" else 6)
             page.set_viewport_size({"width": 1280, "height": 900})
             img = Image.open(out / f"app_{name}.png").convert("RGB")
             img = img.crop((0, 0, img.width, min(img.height, int(bottom))))

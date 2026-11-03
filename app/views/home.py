@@ -19,16 +19,17 @@ pooled = pol[(pol.scope == "Pooled") & (pol.kind == "policy")].set_index("policy
 ORDER = ["Predictive", "Fixed interval", "Run to failure"]
 
 st.subheader("Headline results")
-c = st.columns(4)
-c[0].metric(f"Forecast error on unseen engines, {pub} (FD003 RMSE, cycles)", C.num(fd3.loc[pub, "rmse"]),
-            help=f"{C.define('RMSE')} The published model on NASA FD003, a dataset no model choice was made on.")
-c[1].metric("Forecast error on unseen engines, XGBoost (FD003 RMSE, cycles)", C.num(fd3.loc["XGBoost (168 features)", "rmse"]),
-            help=f"{C.define('RMSE')} The strongest non-deep baseline on the same engines.")
-c[2].metric("OEE: predictive / fixed interval / run to failure (pooled, simulated)",
-            " / ".join(C.pct(pooled.loc[p, "oee"]) for p in ORDER), help=C.define("OEE"))
-c[3].metric("Unplanned failures: predictive / fixed interval / run to failure (pooled, simulated)",
-            " / ".join(str(int(pooled.loc[p, "unplanned_failures"])) for p in ORDER),
-            help="Simulated machines whose engine failed before it was serviced, out of the same machines under each policy.")
+r1 = st.columns(2)
+r1[0].metric(f"{pub} forecast error on unseen engines (FD003 RMSE, cycles)", C.num(fd3.loc[pub, "rmse"]),
+             help=f"{C.define('RMSE')} The published model on NASA FD003, a dataset no model choice was made on.")
+r1[1].metric("XGBoost forecast error on unseen engines (FD003 RMSE, cycles)", C.num(fd3.loc["XGBoost (168 features)", "rmse"]),
+             help=f"{C.define('RMSE')} The strongest non-deep baseline on the same engines.")
+r2 = st.columns(2)
+r2[0].metric("Simulated OEE: predictive / fixed / run to failure", " / ".join(C.pct(pooled.loc[p, "oee"]) for p in ORDER),
+             help=f"{C.define('OEE')} Pooled over the {int(pooled.loc['Predictive', 'machines'])} simulated machines.")
+r2[1].metric("Simulated unplanned failures: predictive / fixed / run to failure",
+             " / ".join(str(int(pooled.loc[p, "unplanned_failures"])) for p in ORDER),
+             help="Simulated machines whose engine failed before it was serviced, out of the same machines under each policy.")
 C.simulated_notice()
 
 st.subheader("How to read this app (one minute)")

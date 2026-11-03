@@ -97,7 +97,7 @@ def define(term: str) -> str:
 
 # One-sentence business question per page (operations language), and what the page shows and why it matters
 BUSINESS = {
-    "home": "Can forecasting each machine's remaining life cut unplanned downtime without wasting parts?",
+    "home": "Can forecasting each machine's remaining life cut unplanned downtime (here, on a simulated plant) without wasting parts?",
     "fleet": "Which assets need attention first, and how much can we trust the warning?",
     "plan": "With limited crews, which jobs go on which day so nothing fails while waiting?",
     "oee": "Does predictive maintenance pay off against a fixed calendar or running to failure?",
