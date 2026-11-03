@@ -1,0 +1,122 @@
+{
+  "phase": "9",
+  "title": "Write-up: README, docs, release (recruiter-first, every number generated from results files)",
+  "committed_before_writing": true,
+  "audience": "recruiters and hiring managers for data analyst, operations analytics, quality analytics, supply chain and product roles in manufacturing and healthcare; technical interviewers who open the code",
+  "time_budgets": {"repo": "30 seconds", "live_app": "2 minutes", "docs": "10 minutes", "readme_reading": "under 3 minutes"},
+  "generated_docs": {
+    "renderer": "python -m writeup.report_phase9 (templates + facts from writeup/facts.py); re-running must give byte-identical files",
+    "files": ["README.md", "docs/README.md", "docs/CASE_STUDY.md", "docs/RESULTS.md", "docs/ARCHITECTURE.md", "docs/DECISIONS.md", "docs/GLOSSARY.md", "docs/RELEASE_NOTES.md"]
+  },
+  "readme_sections_in_order": [
+    "title and one-sentence pitch in plain business language",
+    "badges: CI, Python version, license, live app",
+    "TL;DR (3-5 bullets): problem, what was built end to end, headline results, live app link",
+    "hero image of the Streamlit app (docs/figures/phase9/, each image < 1 MB)",
+    "## Results at a glance (adds near-failure error and interval coverage; OEE/failure rows say simulated)",
+    "## Business impact (simulated): counts and hours from Phase 6 results; no money unless from a labelled assumption in maintenance/config.py",
+    "## How it works (Mermaid, including Phase 8 dashboards and Power BI)",
+    "## What makes this trustworthy",
+    "## Skills demonstrated (table mapped to job functions, each row linking to the proving file)",
+    "## Progress (all phases Done, Phase 9 included)",
+    "## Repository map",
+    "## Run locally (Windows + macOS/Linux), ## Data, ## Continuous verification (all CI jobs, current)",
+    "## Limitations and what I would do next",
+    "## How this was built (AI-assistance disclosure: what the author decided vs what the assistant wrote)",
+    "## Author",
+    "## License"
+  ],
+  "author": {
+    "name": "Krishnakumar Balasundaram",
+    "program": "MS Business Analytics, UMass Amherst (Isenberg)",
+    "linkedin": "https://www.linkedin.com/in/krishnakumar-balasundaram-3a92b6422",
+    "github": "https://github.com/Krishna6116",
+    "forbidden_in_repo": ["phone numbers", "email addresses of the author"]
+  },
+  "headline_results": [
+    "published model (LSTM) test RMSE on FD003 vs XGBoost",
+    "pooled LSTM - XGBoost RMSE gap with 95% interval and Holm p",
+    "pooled near-failure MAE, LSTM vs XGBoost",
+    "interval coverage of the published 90% interval (FD003 confirmation; FD001 post hoc)",
+    "simulated OEE: predictive / fixed interval / run to failure",
+    "simulated unplanned failures: predictive / fixed interval / run to failure",
+    "simulated predictive - fixed OEE gap with 95% interval",
+    "Phase 7 drift false-alarm rate vs its 5% target (miss)",
+    "Phase 7b FD004 clean-run flag rates vs the C1 limit (miss)"
+  ],
+  "number_rules": {
+    "tokens": "a number is any match of -?\\d[\\d,]*(\\.\\d+)?%? in prose and table cells",
+    "structural": [
+      "dataset names FD001-FD004 and N-CMAPSS / C-MAPSS",
+      "phase labels: 'Phase N', 'Phase Nb', 'N.' and 'Nb.' at the start of a progress-table cell, and phase ranges like 0-9",
+      "version strings: v1.0.0, Python 3.12/3.13/3.14, package versions",
+      "years and ISO dates",
+      "anything inside fenced code blocks, inline code spans, URLs, link targets, image paths, HTML attributes and Mermaid diagrams",
+      "list ordinals and section numbers",
+      "the README's time budgets (30 seconds, 2 minutes, 3 minutes, 10 minutes)"
+    ],
+    "allowed_values": "every numeric leaf of the results files listed in writeup/facts.py SOURCES and every value of dashboards/snapshots/facts.json, re-read directly by the verifier; derived values only from the formulas in derived below",
+    "derived": {
+      "fixed_vs_predictive_wasted_life_ratio": "wasted cycles, fixed interval / wasted cycles, predictive (Phase 6 pooled)",
+      "failures_avoided_vs_fixed": "unplanned failures, fixed interval - predictive (Phase 6 pooled)",
+      "failures_avoided_vs_rtf": "unplanned failures, run to failure - predictive (Phase 6 pooled)",
+      "percent_forms": "a share x shown as 100x with the % sign",
+      "absolute_gaps": "the absolute value of a signed gap when the text says which side is better"
+    },
+    "match": "a displayed token matches a value if it equals the value rounded to the token's number of decimals (percent tokens compare 100 x value)"
+  },
+  "stale_patterns": [
+    "future work",
+    "so far",
+    "\\bTODO\\b",
+    "\\bTBD\\b",
+    "coming soon",
+    "work in progress",
+    "not deployed yet",
+    "phase \\d+b?[^.\\n|]*\\b(is next|in progress|not started|future)\\b"
+  ],
+  "simulated": {
+    "terms": ["\\bOEE\\b", "downtime", "unplanned failures?", "failures avoided", "\\$\\s?\\d", "\\d[\\d,.]*\\s?(hours|hrs)\\b", "wasted life|life wasted|useful life thrown away|cycles of (useful )?life", "crew utili[sz]ation"],
+    "exempt": "Markdown heading lines (the repository name contains OEE); the section under a heading still has to comply"
+  },
+  "honesty": {
+    "misses": [
+      "Phase 7 drift false-alarm rate on clean test runs with the 5% target, stated as not met",
+      "Phase 7b criterion C1 on FD004 with both fleet rates and the 5% limit, stated as failed"
+    ],
+    "limitations": {
+      "simulated plant": "the OEE layer is a simulated plant, not measured production data",
+      "FD004": "monitoring failed its pre-registered false-alarm criterion on FD004",
+      "N-CMAPSS": "a fault-mode-aware drift reference needs unseen data such as N-CMAPSS to confirm",
+      "censor": "once maintenance acts, failure labels are censored, so labels-only monitoring is biased",
+      "cost": "no real cost data: impact is in counts and hours, not money"
+    }
+  },
+  "links": {
+    "extracted": "Markdown links and images, and bare http(s) URLs outside code; reference-style links resolved",
+    "exceptions": [
+      {"match": "linkedin.com", "reason": "LinkedIn answers automated clients with HTTP 999 (anti-bot), so a status check cannot pass for any LinkedIn URL", "rule": "the URL must equal author.linkedin exactly"}
+    ]
+  },
+  "app": {
+    "home_page": "app/views/home.py, first in navigation: pitch, KPI tiles from dashboards/snapshots/facts.json, a 60-second guide to the pages, links to the repo, the case study and LinkedIn",
+    "every_page": "one-sentence business question as subtitle, 'Simulated' badge where plant/OEE data appears, consistent number formats, a 'What this shows / why it matters' expander",
+    "sidebar_footer": "author, links, NASA C-MAPSS credit, short snapshot checksum",
+    "verified_by": "the Phase 8 verifier (every Home number recomputed independently); the Phase 8 scorecard must still pass",
+    "deploy": "Streamlit Community Cloud from main, URL unchanged"
+  },
+  "release": {
+    "tag": "v1.0.0",
+    "description": "Predictive maintenance on NASA turbofan data: LSTM remaining-life forecasts, CP-SAT crew scheduling, simulated OEE, Prefect monitoring, Streamlit + Power BI",
+    "homepage": "https://predictive-maintenance-oee.streamlit.app",
+    "topics": ["predictive-maintenance", "oee", "remaining-useful-life", "nasa-cmapss", "pytorch", "lstm", "xgboost", "or-tools", "prefect", "postgresql", "streamlit", "power-bi", "mlops", "supply-chain-analytics", "operations-research"],
+    "notes": "docs/RELEASE_NOTES.md rendered from the facts: headline results, live app link, docs links",
+    "social_preview": "docs/figures/phase9/social_preview.png, 1280x640 (uploaded manually in repository settings)"
+  },
+  "career_materials": {
+    "location": "C:\\Users\\krish\\Documents\\Job-Applications\\Predictive-Maintenance-OEE\\ (outside the repository, never committed)",
+    "files": ["Resume_Bullets.md", "LinkedIn_Project.md", "Interview_Guide.md", "Portfolio_Card.md"],
+    "rule": "every number from writeup.facts output; OEE numbers marked simulated"
+  },
+  "never_claim": "the repository never states a total score such as '10/10'; the generated scorecard speaks for itself"
+}

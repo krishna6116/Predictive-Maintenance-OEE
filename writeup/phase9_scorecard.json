@@ -1,0 +1,40 @@
+{
+  "phase": "9",
+  "committed_before_writing": true,
+  "scoring": "10 checks, each pass/fail. Phase 9 passes only if all 10 pass. A check that needs the network, CI or a manual step passes only with its evidence recorded (writeup/phase9_evidence.json for network checks, docs/PHASE9_CHECKLIST.md ticked for manual items). Criteria are never loosened after results are seen; if a check itself is found to be wrong, it is changed in a separate commit labelled 'post hoc' and reported.",
+  "check_kinds": {
+    "code": "checked by python -m writeup.verify_phase9 with independent code; runs in CI on Linux",
+    "ci": "checked by a CI job that executes the documented commands in a clean runner",
+    "network": "checked by python -m writeup.verify_phase9 --network (HTTP or browser); the result is written to writeup/phase9_evidence.json and committed; in CI the network step is non-blocking",
+    "manual": "checked against docs/PHASE9_CHECKLIST.md: the line must be ticked and its evidence must be verifiable"
+  },
+  "scope": {
+    "results_docs": ["README.md", "docs/CASE_STUDY.md", "docs/RESULTS.md", "app/views/home.py (rendered text)"],
+    "all_markdown": "every tracked *.md file in the repository",
+    "status_docs": ["README.md", "docs/README.md", "docs/CASE_STUDY.md", "docs/RESULTS.md", "docs/ARCHITECTURE.md", "docs/DECISIONS.md", "docs/GLOSSARY.md", "CLAUDE.md"],
+    "history_exempt": "docs/LEARNING_LOG.md is a dated diary: past-tense statements about earlier states are not stale text"
+  },
+  "checks": [
+    {"id": "W1", "name": "Numbers", "kind": "code",
+     "check": "README.md, docs/CASE_STUDY.md, docs/RESULTS.md and docs/README.md are byte-identical to the output of python -m writeup.report_phase9, and every numeric token in the results_docs scope (README, CASE_STUDY, RESULTS, and the Home page text rendered by AppTest) is either structural (see writeup/phase9_spec.json number_rules.structural) or equals a value the verifier recomputes from the results files directly (not via writeup.facts), at the precision displayed. Zero unexplained numbers."},
+    {"id": "W2", "name": "No stale text", "kind": "code",
+     "check": "No match of the stale patterns in writeup/phase9_spec.json (case-insensitive) in status_docs; every phase 0-9 is marked Done in the README progress table, in docs/README.md and in CLAUDE.md, and no doc marks a phase as anything else."},
+    {"id": "W3", "name": "Links", "kind": "network",
+     "check": "Code part (blocking): every relative link and image in all_markdown resolves to a tracked file (anchors stripped). Network part: every external http(s) link in all_markdown returns HTTP 200 after redirects (cookies kept), except the exceptions listed in writeup/phase9_spec.json links.exceptions, each with its stated reason and its own rule."},
+    {"id": "W4", "name": "30-second test", "kind": "code",
+     "check": "The README text before its first '## ' heading contains: a one-line problem statement (the first paragraph after the title, at most 200 characters, no unexplained acronym), the live app URL, the three headline results (published-model RMSE on FD003 with XGBoost for comparison, simulated OEE for the three policies, unplanned failures for the three policies), a tech-stack line, and at least one image."},
+    {"id": "W5", "name": "Simulated labelling", "kind": "code",
+     "check": "In the results_docs scope, every paragraph (blank-line separated block) and every table row that mentions a plant term (writeup/phase9_spec.json simulated.terms) also contains the word 'simulated' (case-insensitive). For tables, the row itself must contain it."},
+    {"id": "W6", "name": "Honesty", "kind": "code",
+     "check": "README.md and docs/CASE_STUDY.md each state both misses with their numbers (Phase 7 drift false alarms vs the 5% target; Phase 7b FD004 failing criterion C1 with its two rates and the 5% limit) and each has a section whose heading contains 'Limitations' that names every item in writeup/phase9_spec.json honesty.limitations."},
+    {"id": "W7", "name": "Reproducibility", "kind": "ci",
+     "check": "The README 'Run locally' bash block is executed verbatim by the CI job 'writeup-repro' in a fresh runner and succeeds; the job's command text equals the README block (checked by code); the README states the Python version used by CI and names requirements-lock.txt."},
+    {"id": "W8", "name": "Live app", "kind": "network",
+     "check": "The deployed app (URL in dashboards/app_url.txt) loads in a browser (HTTP 200 after Community Cloud's redirects), its Home page title equals app/views/home.py's title (so it runs the Phase 9 code from main), its About page checksum equals dashboards/snapshots/manifest.json data_checksum, and the Home page renders under AppTest with no exception."},
+    {"id": "W9", "name": "Docs index", "kind": "code",
+     "check": "docs/README.md links every tracked file directly in docs/ (except itself) and every tracked file in notebooks/, each on a line with a description of at least 5 words after the link."},
+    {"id": "W10", "name": "Release", "kind": "manual",
+     "check": "Tag v1.0.0 exists on GitHub and points to a commit on main; a GitHub release v1.0.0 exists whose body equals docs/RELEASE_NOTES.md as rendered by python -m writeup.report_phase9; CI concluded success on the tagged commit; the repository description, homepage and topics equal writeup/phase9_spec.json release (read from the public GitHub API); the manual items in docs/PHASE9_CHECKLIST.md are ticked."}
+  ],
+  "result": null
+}
