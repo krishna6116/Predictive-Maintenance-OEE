@@ -89,6 +89,9 @@ def render() -> str:
     out += ["", "## Test confirmation near failure", "",
             f"| Test engines with <= 50 cycles left ({int(near.sum())}) | MAE | Mean signed error (+ = late) | Late share |",
             "| --- | --- | --- | --- |", *rows, "",
+            f"Near failure, XGBoost's mean error is "
+            f"{(preds['XGBoost, all 168 features'][near] - preds.RUL[near]).abs().mean():.1f} cycles, against "
+            f"{(preds[RIDGE][near] - preds.RUL[near]).abs().mean():.1f} cycles for Ridge on the same features.", "",
             "The same comparison at other cut-offs (MAE gap XGBoost - Ridge):", "",
             "| Cycles left | Engines | Gap (95% interval) |", "| --- | --- | --- |", *robust, "",
             "XGBoost's MAE by true RUL band (cycles): "

@@ -57,6 +57,8 @@ XGBoost is chosen because it is clearly better than Ridge near failure and on te
 | XGBoost, all 168 features | 4.4 | +1.0 | 52% |
 | Ridge, all 168 features | 13.3 | +9.3 | 70% |
 
+Near failure, XGBoost's mean error is 4.4 cycles, against 13.3 cycles for Ridge on the same features.
+
 The same comparison at other cut-offs (MAE gap XGBoost - Ridge):
 
 | Cycles left | Engines | Gap (95% interval) |

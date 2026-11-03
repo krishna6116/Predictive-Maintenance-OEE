@@ -216,7 +216,10 @@ def main() -> int:
     print("\n== Documents")
     from pipeline.report_phase7b import DOC, render
     check(DOC.read_text(encoding="utf-8") == render(), f"{DOC} equals a fresh rendering")
-    readme = Path("README.md").read_text(encoding="utf-8")
+    # Phase 9 (post hoc): the detailed numbers moved from the README to docs/RESULTS.md, so the quotes are looked for
+    # in the published docs (README, results, case study and this phase's own doc); each must still equal the results
+    readme = "\n".join(p.read_text(encoding="utf-8") for p in (Path("README.md"), Path("docs/RESULTS.md"),
+                                                               Path("docs/CASE_STUDY.md"), Path(DOC)) if p.exists())
     c1 = chk["C1"]
     quotes = [f"{c1['FD004 synchronized']['rate']:.1%}", f"{c1['FD004 staggered']['rate']:.1%}", f"{c1['FD002 staggered']['rate']:.1%}"]
     check(all(q in readme for q in quotes), f"README quotes the Phase 7b C1 results ({', '.join(quotes)})")

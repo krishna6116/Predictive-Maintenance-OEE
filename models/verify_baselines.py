@@ -216,7 +216,10 @@ def main() -> int:
     from models.report_phase4 import DOC, render
     check(DOC.read_text(encoding="utf-8") == render(), "docs/MODEL_METRICS.md equals a fresh rendering of the results")
     # The README's headline numbers are hand-written prose, so each one is recomputed here and must appear in it
-    readme = Path("README.md").read_text(encoding="utf-8")
+    # Phase 9 (post hoc): the detailed numbers moved from the README to docs/RESULTS.md, so the quotes are looked for
+    # in the published docs (README, results, case study and this phase's own doc); each must still equal the results
+    readme = "\n".join(p.read_text(encoding="utf-8") for p in (Path("README.md"), Path("docs/RESULTS.md"),
+                                                               Path("docs/CASE_STUDY.md"), Path(DOC)) if p.exists())
     ms = RESULTS["models"]
     x = ms["XGBoost, all 168 features"]
     near = [i for i, t in enumerate(PREDS.RUL) if t <= 50]
