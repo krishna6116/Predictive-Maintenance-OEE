@@ -122,3 +122,39 @@ jobs:
       - run: pip install -r app/requirements.txt  # nothing else: the app must run from a clean clone
       - name: Phase 8 verification (scorecard; pending items listed, failures fail the job)
         run: python -m dashboards.verify_phase8 --clean-env
+
+  # Phase 9 write-up: generated docs unchanged, the 10-check scorecard's code checks, and the planted-bug self-test.
+  # External links are checked too, but in a non-blocking step so a flaky website cannot break CI.
+  writeup:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.14"
+      - run: pip install torch==2.14.1 --index-url https://download.pytorch.org/whl/cpu
+      - run: pip install -r requirements-lock.txt
+      - name: Generated write-up is current (README, docs, notebook summaries)
+        run: python -m writeup.report_phase9 --check
+      - name: Phase 9 verification (code checks; network checks reported from the committed evidence)
+        run: python -m writeup.verify_phase9
+      - name: Phase 9 planted bugs are each caught
+        run: python -m writeup.verify_phase9 --planted
+      - name: External links (non-blocking)
+        continue-on-error: true
+        run: python -m writeup.verify_phase9 --links
+
+  # The README's "Run locally" (macOS / Linux) commands, verbatim, on a fresh machine (Phase 9 check W7)
+  writeup-repro:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.14"
+      - run: |
+          python -m venv .venv
+          source .venv/bin/activate
+          pip install torch==2.14.1 --index-url https://download.pytorch.org/whl/cpu
+          pip install -r requirements-lock.txt
+          pytest -q

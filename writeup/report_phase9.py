@@ -53,7 +53,7 @@ def notebook_summaries(F) -> dict[str, tuple[str, str, str]]:
                         f"Yes: on these features XGBoost reaches {cyc(F['rmse_xgb_fd001'])} cycles RMSE on FD001 (Phase 4), "
                         "with every split made by engine.", "../docs/FEATURES.md"),
         "04_baselines": ("How well do simple models predict remaining life?",
-                         f"XGBoost reaches {cyc(F['rmse_xgb_fd001'])} cycles RMSE (95% interval {F['rmse_xgb_fd001_lo']:.1f}-"
+                         f"XGBoost reaches {cyc(F['rmse_xgb_fd001'])} cycles RMSE (bootstrap interval {F['rmse_xgb_fd001_lo']:.1f}-"
                          f"{F['rmse_xgb_fd001_hi']:.1f}) against {F['rmse_age_fd001']:.1f} for an age-only rule and "
                          f"{F['rmse_fleet_fd001']:.1f} for the fleet average.", "../docs/MODEL_METRICS.md"),
         "05_deep": ("Do sequence models (LSTM, CNN) beat XGBoost?",
@@ -153,7 +153,7 @@ def readme(F) -> str:
         f"{pct(F['oee_fixed'])} fixed interval vs {pct(F['oee_rtf'])} run to failure; unplanned failures "
         f"{n(F['failures_pred'])} / {n(F['failures_fixed'])} / {n(F['failures_rtf'])} (simulated).",
         f"- **Live app:** {APP} (free hosting; if it shows a sleep page, click the wake-up button and wait about a minute)", "",
-        "**Tech stack:** Python · PostgreSQL · pandas · scikit-learn · XGBoost · PyTorch (LSTM, 1D-CNN) · OR-Tools "
+        "**Tech stack:** Python · PostgreSQL · pandas · scikit-learn · XGBoost · PyTorch (LSTM, CNN) · OR-Tools "
         "CP-SAT · Prefect · Streamlit · Power BI · pytest · GitHub Actions", "",
         "![The live app's Home page: headline results and a guide to each page](docs/figures/phase9/app_home.png)", "",
         "## Results at a glance", "",
@@ -165,7 +165,7 @@ def readme(F) -> str:
         f"| Published {pct(F['interval_nominal'], 0)} interval: share of FD003 engines whose true remaining life falls "
         f"inside | **{pct(F['coverage_fd003'], 0)}** | {pct(F['coverage_fd003_near'], 0)} of engines near failure |",
         f"| Simulated OEE: predictive / fixed interval / run to failure | **{pct(F['oee_pred'])}** / {pct(F['oee_fixed'])} "
-        f"/ {pct(F['oee_rtf'])} | predictive minus fixed {pts(F['gap_fixed'])} percentage points (95% interval "
+        f"/ {pct(F['oee_rtf'])} | predictive minus fixed {pts(F['gap_fixed'])} percentage points (bootstrap interval "
         f"{pts(F['gap_fixed_lo'])} to {pts(F['gap_fixed_hi'])}, simulated) |",
         f"| Simulated unplanned failures: predictive / fixed interval / run to failure | **{n(F['failures_pred'])}** / "
         f"{n(F['failures_fixed'])} / {n(F['failures_rtf'])} | every simulated machine fails under run to failure |", "",
@@ -254,7 +254,7 @@ def readme(F) -> str:
         "## Data", "",
         "NASA C-MAPSS Turbofan Engine Degradation Simulation (A. Saxena and K. Goebel, NASA Prognostics Center of "
         "Excellence, 2008): four datasets, FD001-FD004, each with training engines run to failure and test engines that "
-        "stop before failure. One command downloads them and checks every file against the SHA-256 checksums in "
+        "stop before failure. One command downloads them and checks every file against the checksums in "
         "`data/checksums.sha256`, so results are always reproduced on byte-identical data. Data files are not committed.", "",
         "```bash",
         "python -m pipeline.download_data",
@@ -335,13 +335,13 @@ RUN_BASH = [
 CI_JOBS = [
     "- **test**: installs the pinned packages and runs the test suite.",
     "- **verify**: downloads the pinned NASA data, runs the pipeline into a fresh PostgreSQL database, builds the "
-    "features and runs the Phase 3, 4, 5, 5b and 6 verifiers plus the Phase 8 database checks.",
-    "- **phase7**: replays shifts of the Prefect flow in a fresh database and runs the Phase 7 and 7b verifiers.",
+    "features and runs the verifiers of Phases 3-6 plus the Phase 8 database checks.",
+    "- **phase7**: replays shifts of the Prefect flow in a fresh database and runs the verifiers of Phases 7-7b.",
     "- **dashboards**: installs only the app's pinned requirements on Python 3.12, 3.13 and 3.14 and runs the Phase 8 verifier.",
     "- **writeup**: re-renders the write-up, checks it is unchanged and runs the Phase 9 verifier (external links are "
     "checked in a non-blocking step).",
     "- **writeup-repro**: runs the macOS/Linux commands above, exactly as written, on a fresh machine.",
-    "- **keep-awake** (separate workflow, every 6 hours): one visit to the public app so the free host does not put it to sleep.",
+    "- **keep-awake** (separate workflow, four times a day): one visit to the public app so the free host does not put it to sleep.",
 ]
 
 
@@ -355,7 +355,7 @@ def results(F) -> str:
          f"XGBoost {cyc(F['rmse_xgb_fd001'])} (not significant on FD001 alone)", "models/results_phase5.json, results_phase4.json",
          "[MODEL_METRICS_PHASE5.md](MODEL_METRICS_PHASE5.md)"),
         ("LSTM vs XGBoost, pooled FD001 + FD003 (primary pre-registered test)",
-         f"LSTM better by {cyc(abs(F['h1_diff']))} cycles RMSE (95% interval {cyc(abs(F['h1_ci_hi']))} to "
+         f"LSTM better by {cyc(abs(F['h1_diff']))} cycles RMSE (bootstrap interval {cyc(abs(F['h1_ci_hi']))} to "
          f"{cyc(abs(F['h1_ci_lo']))}, Holm p {F['h1_p_holm']:.3f})",
          f"pooled RMSE {cyc(F['pooled_rmse_lstm'])} vs {cyc(F['pooled_rmse_xgb'])}", "models/results_phase5b.json (tests.H1)",
          "[MODEL_METRICS_PHASE5B.md](MODEL_METRICS_PHASE5B.md)"),
@@ -367,7 +367,7 @@ def results(F) -> str:
          "[MODEL_METRICS_PHASE5B.md](MODEL_METRICS_PHASE5B.md)"),
         ("Simulated OEE, 200 machines pooled", f"predictive {pct(F['oee_pred'])}",
          f"fixed interval {pct(F['oee_fixed'])}, run to failure {pct(F['oee_rtf'])}; predictive minus fixed "
-         f"{pts(F['gap_fixed'])} percentage points (95% interval {pts(F['gap_fixed_lo'])} to {pts(F['gap_fixed_hi'])}, simulated)",
+         f"{pts(F['gap_fixed'])} percentage points (bootstrap interval {pts(F['gap_fixed_lo'])} to {pts(F['gap_fixed_hi'])}, simulated)",
          "maintenance/results_phase6.json", "[MAINTENANCE_OEE.md](MAINTENANCE_OEE.md)"),
         ("Simulated unplanned failures", f"predictive {n(F['failures_pred'])}",
          f"fixed interval {n(F['failures_fixed'])}, run to failure {n(F['failures_rtf'])} (simulated)",
@@ -390,23 +390,23 @@ def results(F) -> str:
     ]
     L = ["# Results", "", GENERATED, "",
          "Every headline result in one place: the value, what it is compared with, the file it is read from and the doc "
-         "that explains it. Intervals are 95% bootstrap intervals over whole engines. OEE, downtime and failure figures "
+         "that explains it. Intervals are bootstrap intervals over whole engines (see the [glossary](GLOSSARY.md)). OEE, downtime and failure figures "
          "come from a simulated plant.", "",
          "| Result | Value | Compared with | Source file | Explained in |", "| --- | --- | --- | --- | --- |",
          *[f"| {a} | {b} | {c} | `{d}` | {e} |" for a, b, c, d, e in rows], "",
          "## Reading the misses", "", misses(F), "",
          "## Technical highlights by phase", "",
-         f"- **Baselines (Phase 4, FD001):** XGBoost reaches {cyc(F['rmse_xgb_fd001'])} RMSE (95% interval "
+         f"- **Baselines (Phase 4, FD001):** XGBoost reaches {cyc(F['rmse_xgb_fd001'])} RMSE (bootstrap interval "
          f"{F['rmse_xgb_fd001_lo']:.1f}-{F['rmse_xgb_fd001_hi']:.1f}), against a fleet average ({F['rmse_fleet_fd001']:.1f}) "
          f"and an age-only rule ({F['rmse_age_fd001']:.1f}). Near-failure errors are in [MODEL_METRICS.md](MODEL_METRICS.md).", "",
-         f"- **Deep models (Phase 5, FD001):** the LSTM reaches {cyc(F['rmse_lstm_fd001'])} RMSE (95% interval "
+         f"- **Deep models (Phase 5, FD001):** the LSTM reaches {cyc(F['rmse_lstm_fd001'])} RMSE (bootstrap interval "
          f"{F['rmse_lstm_fd001_lo']:.1f}-{F['rmse_lstm_fd001_hi']:.1f}), better than XGBoost on paper but not significantly, "
          f"so XGBoost stayed published. Raw MC-dropout intervals covered only {pct(F['p5_raw_val_coverage'], 0)} of validation "
          f"truths at a nominal {pct(F['interval_nominal'], 0)}; one scale factor learned on validation brought test coverage "
          f"to {pct(F['p5_calibrated_test_coverage'], 0)}.", "",
          f"- **Confirmation (Phase 5b, FD003):** the LSTM reaches {cyc(F['rmse_lstm_fd003'])} RMSE against XGBoost's "
          f"{cyc(F['rmse_xgb_fd003'])}. Pooled over FD001 and FD003 its advantage is {cyc(abs(F['h1_diff']))} cycles RMSE "
-         f"(95% interval {cyc(abs(F['h1_ci_hi']))}-{cyc(abs(F['h1_ci_lo']))}, Holm p {F['h1_p_holm']:.3f}) and "
+         f"(bootstrap interval {cyc(abs(F['h1_ci_hi']))}-{cyc(abs(F['h1_ci_lo']))}, Holm p {F['h1_p_holm']:.3f}) and "
          f"{cyc(F['pooled_nf_mae_lstm'])} vs {cyc(F['pooled_nf_mae_xgb'])} cycles near failure, so the LSTM is now the "
          f"published model. The two-factor interval rule covers {pct(F['coverage_fd003'], 0)} of FD003 test engines.", "",
          f"- **Maintenance (Phase 6, simulated plant):** the predictive policy reaches {pct(F['oee_pred'])} simulated OEE "
@@ -670,7 +670,8 @@ def docs_index() -> str:
         raise SystemExit(f"docs index: add a description for {missing}")
     L = ["# Documentation index", "", GENERATED, "",
          "Start with the [case study](CASE_STUDY.md) (5 minutes, non-technical) or the [results](RESULTS.md); the phase "
-         "docs go deeper.", "", "## Documents", ""]
+         "docs go deeper.", "", "## Phases", "", "| Phase | Status |", "| --- | --- |",
+         *[f"| {name.split(':')[0]} | Done |" for name, _ in PHASES], "", "## Documents", ""]
     L += [f"- [{Path(p).name}]({Path(p).name}): {DOC_DESCRIPTIONS[p]}" for p in docs]
     L += ["", "## Notebooks", "",
           "Each notebook is built by the `build_*.py` script beside it, so its findings come from the results files.", ""]

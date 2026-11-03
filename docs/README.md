@@ -4,6 +4,23 @@
 
 Start with the [case study](CASE_STUDY.md) (5 minutes, non-technical) or the [results](RESULTS.md); the phase docs go deeper.
 
+## Phases
+
+| Phase | Status |
+| --- | --- |
+| 0. Setup | Done |
+| 1. Exploratory data analysis | Done |
+| 2. Data pipeline | Done |
+| 3. Feature engineering | Done |
+| 4. Baseline models | Done |
+| 5. Deep learning | Done |
+| 5b. Confirmation on a fresh dataset (FD003) with pre-registered tests | Done |
+| 6. Alerts, CP-SAT crew schedule, simulated plant and OEE, three-policy comparison | Done |
+| 7. Prefect shift flow, model health, drift and retraining rules | Done |
+| 7b. Monitoring re-tested on unseen FD002/FD004 (one criterion failed on FD004, reported) | Done |
+| 8. Dashboards | Done |
+| 9. Write-up | Done |
+
 ## Documents
 
 - [ARCHITECTURE.md](ARCHITECTURE.md): System diagram, star schema, data flow per shift and why each technology was chosen.

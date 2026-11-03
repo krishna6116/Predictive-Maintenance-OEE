@@ -12,7 +12,7 @@ Predicts when jet engines will need maintenance from their sensor data, then pla
 - **Simulated plant, 200 machines:** OEE 98.2% with predictive maintenance vs 97.8% fixed interval vs 95.2% run to failure; unplanned failures 8 / 21 / 200 (simulated).
 - **Live app:** https://predictive-maintenance-oee.streamlit.app (free hosting; if it shows a sleep page, click the wake-up button and wait about a minute)
 
-**Tech stack:** Python · PostgreSQL · pandas · scikit-learn · XGBoost · PyTorch (LSTM, 1D-CNN) · OR-Tools CP-SAT · Prefect · Streamlit · Power BI · pytest · GitHub Actions
+**Tech stack:** Python · PostgreSQL · pandas · scikit-learn · XGBoost · PyTorch (LSTM, CNN) · OR-Tools CP-SAT · Prefect · Streamlit · Power BI · pytest · GitHub Actions
 
 ![The live app's Home page: headline results and a guide to each page](docs/figures/phase9/app_home.png)
 
@@ -23,7 +23,7 @@ Predicts when jet engines will need maintenance from their sensor data, then pla
 | Remaining-life error, unseen FD003 engines (RMSE, cycles; lower is better) | **LSTM 12.66** | XGBoost 15.50, age-only rule 33.94 |
 | Error near failure (mean absolute error on engines near failure, see [glossary](docs/GLOSSARY.md); FD001 + FD003) | **2.76 cycles** | XGBoost 4.60 cycles |
 | Published 90% interval: share of FD003 engines whose true remaining life falls inside | **86%** | 100% of engines near failure |
-| Simulated OEE: predictive / fixed interval / run to failure | **98.2%** / 97.8% / 95.2% | predictive minus fixed +0.37 percentage points (95% interval +0.19 to +0.56, simulated) |
+| Simulated OEE: predictive / fixed interval / run to failure | **98.2%** / 97.8% / 95.2% | predictive minus fixed +0.37 percentage points (bootstrap interval +0.19 to +0.56, simulated) |
 | Simulated unplanned failures: predictive / fixed interval / run to failure | **8** / 21 / 200 | every simulated machine fails under run to failure |
 
 Every number on this page is generated from the results files and re-checked by independent code on every push. Full results with intervals and sources: [docs/RESULTS.md](docs/RESULTS.md).
@@ -149,7 +149,7 @@ The full pipeline (PostgreSQL, Prefect, dashboards) is described in [docs/ARCHIT
 
 ## Data
 
-NASA C-MAPSS Turbofan Engine Degradation Simulation (A. Saxena and K. Goebel, NASA Prognostics Center of Excellence, 2008): four datasets, FD001-FD004, each with training engines run to failure and test engines that stop before failure. One command downloads them and checks every file against the SHA-256 checksums in `data/checksums.sha256`, so results are always reproduced on byte-identical data. Data files are not committed.
+NASA C-MAPSS Turbofan Engine Degradation Simulation (A. Saxena and K. Goebel, NASA Prognostics Center of Excellence, 2008): four datasets, FD001-FD004, each with training engines run to failure and test engines that stop before failure. One command downloads them and checks every file against the checksums in `data/checksums.sha256`, so results are always reproduced on byte-identical data. Data files are not committed.
 
 ```bash
 python -m pipeline.download_data
@@ -160,12 +160,12 @@ python -m pipeline.download_data
 Every push runs these GitHub Actions jobs ([ci.yml](.github/workflows/ci.yml)):
 
 - **test**: installs the pinned packages and runs the test suite.
-- **verify**: downloads the pinned NASA data, runs the pipeline into a fresh PostgreSQL database, builds the features and runs the Phase 3, 4, 5, 5b and 6 verifiers plus the Phase 8 database checks.
-- **phase7**: replays shifts of the Prefect flow in a fresh database and runs the Phase 7 and 7b verifiers.
+- **verify**: downloads the pinned NASA data, runs the pipeline into a fresh PostgreSQL database, builds the features and runs the verifiers of Phases 3-6 plus the Phase 8 database checks.
+- **phase7**: replays shifts of the Prefect flow in a fresh database and runs the verifiers of Phases 7-7b.
 - **dashboards**: installs only the app's pinned requirements on Python 3.12, 3.13 and 3.14 and runs the Phase 8 verifier.
 - **writeup**: re-renders the write-up, checks it is unchanged and runs the Phase 9 verifier (external links are checked in a non-blocking step).
 - **writeup-repro**: runs the macOS/Linux commands above, exactly as written, on a fresh machine.
-- **keep-awake** (separate workflow, every 6 hours): one visit to the public app so the free host does not put it to sleep.
+- **keep-awake** (separate workflow, four times a day): one visit to the public app so the free host does not put it to sleep.
 
 ## Limitations and what I would do next
 
