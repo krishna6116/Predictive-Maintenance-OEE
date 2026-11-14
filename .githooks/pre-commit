@@ -1,0 +1,10 @@
+#!/bin/sh
+# Blocks a commit when a generated file (README, docs, notebook summaries) differs from a fresh render.
+# Turned on by: git config core.hooksPath .githooks   (see "Run locally" in the README)
+PY=.venv/Scripts/python
+[ -x "$PY" ] || PY=.venv/bin/python
+[ -x "$PY" ] || PY=python
+if ! "$PY" -m writeup.report_phase9 --check; then
+    echo "pre-commit: generated files are stale. Run 'python -m writeup.report_phase9', add the changed files and commit again."
+    exit 1
+fi

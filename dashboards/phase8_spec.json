@@ -80,6 +80,22 @@
 
   "pages": [
     {
+      "id": "home",
+      "title": "What did this project build, and what did it find?",
+      "added": "Phase 9 amendment (extension only): a landing page for recruiters; no existing page, number or tolerance changes",
+      "filters": {},
+      "numbers": [
+        {"id": "home.forecast_error", "label": "Published model and XGBoost RMSE on FD003 (cycles)", "per": "none",
+         "source": "models.csv", "independent": "prediction files re-scored (as the model table)", "tolerance": "shown to 0.01 cycles"},
+        {"id": "home.oee", "label": "Simulated OEE for predictive / fixed interval / run to failure, pooled", "per": "none",
+         "source": "oee_policies.csv", "independent": "machines_phase6.csv re-aggregated", "tolerance": "shown to 0.1 percentage point"},
+        {"id": "home.failures", "label": "Simulated unplanned failures for the three policies, pooled", "per": "none",
+         "source": "oee_policies.csv", "independent": "machines_phase6.csv re-aggregated", "tolerance": "exact"}
+      ],
+      "charts": [],
+      "required_text": ["Simulated", "How to read this app", "What this shows"]
+    },
+    {
       "id": "fleet",
       "title": "Which engines are closest to failure, and how sure is the model?",
       "filters": {"dataset": ["FD001", "FD003", "Both"]},

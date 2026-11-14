@@ -255,7 +255,10 @@ def main() -> int:
     print("\n== Published documents match the results")
     from models.report_phase5b import DOC, render
     check(DOC.exists() and DOC.read_text(encoding="utf-8") == render(), f"{DOC} equals a fresh rendering of the results")
-    readme = Path("README.md").read_text(encoding="utf-8")
+    # Phase 9 (post hoc): the detailed numbers moved from the README to docs/RESULTS.md, so the quotes are looked for
+    # in the published docs (README, results, case study and this phase's own doc); each must still equal the results
+    readme = "\n".join(p.read_text(encoding="utf-8") for p in (Path("README.md"), Path("docs/RESULTS.md"),
+                                                               Path("docs/CASE_STUDY.md"), Path(DOC)) if p.exists())
     h1 = T[key["H1"]]
     quoted = [f"{M['LSTM']['rmse']:.2f} RMSE", f"{M[XGB]['rmse']:.2f}", f"{abs(h1['diff']):.2f} cycles RMSE",
               f"{-h1['ci'][1]:.2f}-{-h1['ci'][0]:.2f}", f"Holm p {h1['p_holm']:.3f}", f"{pooled['LSTM']['near_failure_mae']:.2f} vs "

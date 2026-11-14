@@ -281,7 +281,10 @@ def main() -> int:
     print("\n== Published documents match the results")
     from models.report_phase5 import DOC, render
     check(DOC.read_text(encoding="utf-8") == render(), f"{DOC} equals a fresh rendering of the results")
-    readme = Path("README.md").read_text(encoding="utf-8")
+    # Phase 9 (post hoc): the detailed numbers moved from the README to docs/RESULTS.md, so the quotes are looked for
+    # in the published docs (README, results, case study and this phase's own doc); each must still equal the results
+    readme = "\n".join(p.read_text(encoding="utf-8") for p in (Path("README.md"), Path("docs/RESULTS.md"),
+                                                               Path("docs/CASE_STUDY.md"), Path(DOC)) if p.exists())
     quoted = [f"{r['rmse']:.2f} RMSE", f"{r['rmse_ci95'][0]:.1f}-{r['rmse_ci95'][1]:.1f}",
               f"{mc['calibrated']['test_coverage']:.0%}", f"{mc['raw']['val_coverage']:.0%}"]
     missing = [q for q in quoted if q not in readme]

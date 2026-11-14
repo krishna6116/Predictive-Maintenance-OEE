@@ -212,7 +212,10 @@ def main() -> int:
               f"{k}: {d:+.2%} (95% interval {gap['ci'][0]:+.2%} to {gap['ci'][1]:+.2%}) recomputes")
     from maintenance.report_phase6 import DOC, render
     check(DOC.read_text(encoding="utf-8") == render(), f"{DOC} equals a fresh rendering of the results")
-    readme = Path("README.md").read_text(encoding="utf-8")
+    # Phase 9 (post hoc): the detailed numbers moved from the README to docs/RESULTS.md, so the quotes are looked for
+    # in the published docs (README, results, case study and this phase's own doc); each must still equal the results
+    readme = "\n".join(p.read_text(encoding="utf-8") for p in (Path("README.md"), Path("docs/RESULTS.md"),
+                                                               Path("docs/CASE_STUDY.md"), Path(DOC)) if p.exists())
     p = R["pooled"]
     quotes = [f"{p['Predictive']['oee']:.1%}", f"{p['Run to failure']['oee']:.1%}", f"{p['Fixed interval']['oee']:.1%}",
               f"{p['Predictive']['unplanned_failures']} unplanned failures", f"({p['Run to failure']['unplanned_failures']} failures)",
