@@ -1,0 +1,68 @@
+{
+  "external_links": {
+    "https://github.com/Krishna6116": {
+      "ok": true,
+      "how": "HTTP 200"
+    },
+    "https://github.com/krishna6116/Predictive-Maintenance-OEE": {
+      "ok": true,
+      "how": "HTTP 200"
+    },
+    "https://github.com/krishna6116/Predictive-Maintenance-OEE/actions/workflows/ci.yml/badge.svg": {
+      "ok": true,
+      "how": "HTTP 200"
+    },
+    "https://github.com/krishna6116/Predictive-Maintenance-OEE/blob/main/docs/CASE_STUDY.md": {
+      "ok": true,
+      "how": "HTTP 200"
+    },
+    "https://github.com/krishna6116/Predictive-Maintenance-OEE/blob/main/docs/README.md": {
+      "ok": true,
+      "how": "HTTP 200"
+    },
+    "https://github.com/krishna6116/Predictive-Maintenance-OEE/blob/main/docs/RESULTS.md": {
+      "ok": true,
+      "how": "HTTP 200"
+    },
+    "https://img.shields.io/badge/license-MIT-green": {
+      "ok": true,
+      "how": "HTTP 200"
+    },
+    "https://img.shields.io/badge/python-3.14-blue": {
+      "ok": true,
+      "how": "HTTP 200"
+    },
+    "https://predictive-maintenance-oee.streamlit.app": {
+      "ok": true,
+      "how": "HTTP 200"
+    },
+    "https://static.streamlit.io/badges/streamlit_badge_black_white.svg": {
+      "ok": true,
+      "how": "HTTP 200"
+    },
+    "https://www.linkedin.com/in/krishnakumar-balasundaram-3a92b6422": {
+      "ok": true,
+      "how": "exception: the URL must equal author.linkedin exactly"
+    }
+  },
+  "live_app": {
+    "home_title": "What did this project build, and what did it find?",
+    "checksums": [
+      "6467d24fa7dd4e586f0e37eaffc2914ccfadca104692fd51a6dd3149766ea079"
+    ],
+    "ok": true
+  },
+  "ci_repro": {
+    "commit": "16158a4c02764b4d6b67b97a2290c042152f8fc4",
+    "ok": true
+  },
+  "release": {
+    "description": true,
+    "homepage": true,
+    "topics": true,
+    "tag_on_main": true,
+    "ci_green_on_tag": true,
+    "release_notes": true,
+    "ok": true
+  }
+}

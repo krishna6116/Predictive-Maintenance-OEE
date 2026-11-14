@@ -1,0 +1,46 @@
+{
+  "checks": {
+    "W1": {
+      "passed": true,
+      "detail": "generated docs equal a fresh render; every number in README, CASE_STUDY, RESULTS and the Home page is a results-file value at its displayed precision"
+    },
+    "W2": {
+      "passed": true,
+      "detail": "no stale phrase; phases 0-9 Done in the README, docs/README.md and CLAUDE.md"
+    },
+    "W3": {
+      "passed": true,
+      "detail": "every relative link and image in 22 Markdown files resolves; external: 11/11 ok"
+    },
+    "W4": {
+      "passed": true,
+      "detail": "first screen has the problem line, live app link, three headline results, tech stack and an image"
+    },
+    "W5": {
+      "passed": true,
+      "detail": "every paragraph and table row mentioning OEE, downtime, failures, hours or wasted life says simulated"
+    },
+    "W6": {
+      "passed": true,
+      "detail": "README and case study state both misses with their numbers and name every limitation"
+    },
+    "W7": {
+      "passed": true,
+      "detail": "CI job writeup-repro runs the README block verbatim on Python 3.14; execution is proven by that job; CI run confirmed"
+    },
+    "W8": {
+      "passed": true,
+      "detail": "live app: {'home_title': 'What did this project build, and what did it find?', 'checksums': ['6467d24fa7dd4e586f0e37eaffc2914ccfadca104692fd51a6dd3149766ea079'], 'ok': True}; Home renders under AppTest with no exception"
+    },
+    "W9": {
+      "passed": true,
+      "detail": "all 35 docs and notebooks are listed with a description"
+    },
+    "W10": {
+      "passed": true,
+      "detail": "release: {'description': True, 'homepage': True, 'topics': True, 'tag_on_main': True, 'ci_green_on_tag': True, 'release_notes': True, 'ok': True}; checklist ticked: True"
+    }
+  },
+  "passed": 10,
+  "out_of": 10
+}
