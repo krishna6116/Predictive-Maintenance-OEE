@@ -165,3 +165,9 @@
 - App: Home landing page (KPI tiles recomputed by the Phase 8 verifier, now 594 values; Phase 8 still 5/5), business-question subtitles and 'what this shows' expanders on every page, sidebar footer. The first Home screenshot showed cut-off tiles and a developer 'Deploy' button; both fixed.
 - `writeup/verify_phase9.py` re-reads the results files directly; 8 planted bugs are each caught. New CI jobs `writeup` and `writeup-repro` (the README's commands, verbatim). A stale notebook turned four CI jobs red once; a pre-commit hook now blocks commits with stale generated files. 137 tests (131 before).
 - Lesson: writing the rules first made every shortcut visible; most of today's fixes were the rules catching me, not the reader.
+
+## 2026-11-14: Phase 9 release preparation (v1.0.0)
+- State check: `phase9` equals GitHub at c7c882d, main has nothing it lacks, regenerating the write-up changes nothing, 137 tests pass; Phase 9 checks W1, W4, W5, W6 and W9 pass, W2 is pending until the tag, and W3, W7, W8 and W10 need the release steps.
+- Commit order worked out from the checks themselves: W2 makes CLAUDE.md's Phase 9 line required once v1.0.0 exists, and pushing a tag re-runs CI on the same commit, so CLAUDE.md is updated before the tag; W10 reads the release and repository settings live from the GitHub API, so the evidence and checklist ticks can follow in a later commit. Nothing circular.
+- Redeploy: Community Cloud cannot change an app's branch, but it can change an app's custom subdomain in its settings. So the new app is deployed from main under a temporary subdomain first, checked, and only then is the old app deleted and the subdomain moved: the URL is free for seconds, not minutes.
+- Lesson: read what each check actually requires before planning a release; the order falls out of the checks.
