@@ -171,3 +171,10 @@
 - Commit order worked out from the checks themselves: W2 makes CLAUDE.md's Phase 9 line required once v1.0.0 exists, and pushing a tag re-runs CI on the same commit, so CLAUDE.md is updated before the tag; W10 reads the release and repository settings live from the GitHub API, so the evidence and checklist ticks can follow in a later commit. Nothing circular.
 - Redeploy: Community Cloud cannot change an app's branch, but it can change an app's custom subdomain in its settings. So the new app is deployed from main under a temporary subdomain first, checked, and only then is the old app deleted and the subdomain moved: the URL is free for seconds, not minutes.
 - Lesson: read what each check actually requires before planning a release; the order falls out of the checks.
+
+## 2026-11-14 (later): v1.0.0 released
+- Merged PR #4 (phase9) as merge commit 16158a4 after all 16 checks passed; CI green on it. Installed GitHub CLI (signed in by the author; the token never left the keyring).
+- Redeploy without a gap: a second app from `main` under a temporary subdomain, every page checked in a browser (titles, no errors, About checksum = manifest), then the old `phase8` app deleted and the subdomain moved. W8 passed on the real URL.
+- Tagged v1.0.0 on 16158a4; the tag's own CI run (where W2 now requires CLAUDE.md's Phase 9 line) was all green; GitHub release body checked equal to docs/RELEASE_NOTES.md through the API. Repository settings set from the spec; two older topics outside the spec were removed so the settings match it exactly. Social preview checked through the page's og:image (pixel-identical).
+- Release evidence (PR #5, merged as 3929ba5): all 10 Phase 9 checks pass. Branch `phase8` deleted once nothing referenced it.
+- Lesson: when a step can't be undone cheaply (deleting the app), make the irreversible moment as short as possible and check everything just before it.
