@@ -36,5 +36,5 @@
     {"id": "W10", "name": "Release", "kind": "manual",
      "check": "Tag v1.0.0 exists on GitHub and points to a commit on main; a GitHub release v1.0.0 exists whose body equals docs/RELEASE_NOTES.md as rendered by python -m writeup.report_phase9; CI concluded success on the tagged commit; the repository description, homepage and topics equal writeup/phase9_spec.json release (read from the public GitHub API); the manual items in docs/PHASE9_CHECKLIST.md are ticked."}
   ],
-  "result": null
+  "result": {"date": "2026-11-14", "release": "v1.0.0 on merge commit 16158a4", "checks": {"W1": "pass", "W2": "pass", "W3": "pass", "W4": "pass", "W5": "pass", "W6": "pass", "W7": "pass", "W8": "pass", "W9": "pass", "W10": "pass"}, "how": "python -m writeup.verify_phase9 --network, then the checklist; details in writeup/phase9_results.json and writeup/phase9_evidence.json"}
 }
