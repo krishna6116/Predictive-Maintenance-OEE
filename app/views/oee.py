@@ -27,7 +27,7 @@ if C.has_rows(t.dropna(subset=["oee"]), "policies"):
     t["label"] = t.oee.map(C.pct)
     COLOURS = [C.OKABE_ITO["vermillion"], C.OKABE_ITO["orange"], C.OKABE_ITO["blue"]]
     bars = alt.Chart(t).mark_bar().encode(
-        x=alt.X("policy:N", title="Policy", sort=ORDER),
+        x=alt.X("policy:N", title="Policy", sort=ORDER, axis=alt.Axis(labelAngle=0)),  # upright names (2026-11-15)
         y=alt.Y("oee_pct:Q", title="OEE (%)", scale=alt.Scale(domain=[0, 100])),
         color=alt.Color("policy:N", title="Policy", sort=ORDER, scale=alt.Scale(domain=ORDER, range=COLOURS), legend=None),
         tooltip=[alt.Tooltip("policy:N", title="Policy"), alt.Tooltip("oee_pct:Q", title="OEE (%)", format=".1f")])
@@ -45,10 +45,10 @@ if C.has_rows(t.dropna(subset=["oee"]), "policies"):
                                 "quality": "Quality", "oee": "OEE", "unplanned_failures": "Unplanned failures",
                                 "planned_services": "Planned services", "downtime_hours": "Downtime (hours)",
                                 "wasted_cycles": "Wasted life (cycles)"})
-    # two tables: nine columns in one cut the last one off at laptop width (review 2026-11-15)
-    st.dataframe(show[["Policy", "Availability", "Performance", "Quality", "OEE"]], hide_index=True, width="stretch")
-    st.dataframe(show[["Policy", "Unplanned failures", "Planned services", "Downtime (hours)", "Wasted life (cycles)"]],
-                 hide_index=True, width="stretch")
+    # two static tables: nine columns in one cut the last one off at laptop width, and a data grid still cut
+    # 'Downtime (hours)' on a narrow laptop; a static table wraps its headers to fit (review 2026-11-15)
+    st.table(show[["Policy", "Availability", "Performance", "Quality", "OEE"]].set_index("Policy"))
+    st.table(show[["Policy", "Unplanned failures", "Planned services", "Downtime (hours)", "Wasted life (cycles)"]].set_index("Policy"))
 
 gaps = pol[pol.kind == "gap"].set_index("policy")
 n_machines = int(pol[(pol.scope == "Pooled") & (pol.policy == "Predictive")].machines.iloc[0])

@@ -61,13 +61,13 @@ m[1].metric(f"{C.pct(nominal, 0)} interval at the last reading (cycles)", f"{las
             help=f"{C.plain('90% interval')} {C.plain('MC dropout')} Technical: {C.define('interval')}")
 n = st.columns(2)
 n[0].metric("Observed cycles", f"{len(h)}", help="Cycles of sensor data NASA's test file has for this engine before it stops.")
-n[1].metric(f"First cycle the lower bound reached {thr} cycles", f"{int(cross.cycle.iloc[0])}" if len(cross) else "Never",
-            help=f"The first cycle at which the {C.pct(nominal, 0)} interval's lower edge was at or below the alert threshold.")
-o = st.columns(2)
-o[0].metric("Flagged for service", "Yes" if bool(fr.flagged) else "No", help=C.define("flagged"))
-o[1].metric("Maintenance plan", service,
-            help=f"From the crew schedule at the last observed cycle; day 0 is that day. {C.plain('CP-SAT')} {crews} crews "
-                 "a day, so a service day is one of that day's crew slots.")
+n[1].metric("Flagged for service", "Yes" if bool(fr.flagged) else "No", help=C.define("flagged"))
+# the two long ones get a full row each, so neither is cut off on a narrow laptop (review 2026-11-15)
+st.metric(f"First cycle the lower bound reached {thr} cycles", f"{int(cross.cycle.iloc[0])}" if len(cross) else "Never",
+          help=f"The first cycle at which the {C.pct(nominal, 0)} interval's lower edge was at or below the alert threshold.")
+st.metric("Maintenance plan", service,
+          help=f"From the crew schedule at the last observed cycle; day 0 is that day. {C.plain('CP-SAT')} {crews} crews "
+               "a day, so a service day is one of that day's crew slots.")
 if service == "Service today":
     st.caption(f"Service today (day 0, one of {crews} crew slots). Day 0 is the last observed day.")
 elif service.startswith("Service day"):

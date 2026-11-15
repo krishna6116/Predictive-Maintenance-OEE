@@ -116,7 +116,7 @@
           "id": "V4.2",
           "kind": "code",
           "passed": true,
-          "detail": "under 5 s under AppTest: home 1.08s, cost 0.26s, engine (first run) 0.35s, engine, slowest of 200 0.13s"
+          "detail": "under 5 s under AppTest: home 1.12s, cost 0.28s, engine (first run) 0.38s, engine, slowest of 200 0.14s"
         },
         {
           "id": "V4.3",
@@ -165,10 +165,10 @@
           "id": "V5.5",
           "kind": "code+live",
           "passed": true,
-          "detail": "committed tree 47cf816: 9/9 pages load; in CI with planted-title test: True; live real app: pass"
+          "detail": "committed tree 1c31d48: 9/9 pages load; in CI with planted-title test: True; live real app: pass"
         }
       ]
     }
   ],
-  "checked_utc": "2026-11-15T22:08:06Z"
+  "checked_utc": "2026-11-15T22:52:27Z"
 }

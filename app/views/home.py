@@ -40,14 +40,20 @@ def policy_chart(field: str, title: str, x_title: str, fmt) -> alt.LayerChart:
     d = pd.DataFrame({"policy": ORDER, "value": [float(pooled.loc[p, field]) for p in ORDER]})
     d["shown"] = 100 * d.value if field == "oee" else d.value
     d["label"] = d.value.map(fmt)
-    bars = alt.Chart(d, title=title).mark_bar().encode(
-        y=alt.Y("policy:N", title="Policy", sort=ORDER, axis=alt.Axis(labelOverlap=False, labelFontSize=10)),
+    # Narrow laptops (review 2026-11-15, 1,024 px with the menu open: about 180 px per chart): the title breaks after
+    # its first part, the policy names are shortened on the axis only (the data keep the full names), fewer ticks
+    head, _, tail = title.partition(" (")
+    two_lines = [head, f"({tail}"] if tail else [head]  # a list of lines: Vega-Lite draws one line per item
+    bars = alt.Chart(d, title=alt.TitleParams(two_lines, fontSize=12)).mark_bar().encode(
+        y=alt.Y("policy:N", title="Policy", sort=ORDER, axis=alt.Axis(
+            labelOverlap=False, labelFontSize=10, labelLimit=70, titlePadding=2,
+            labelExpr="datum.label == 'Fixed interval' ? 'Fixed' : datum.label == 'Run to failure' ? 'To failure' : datum.label")),
         # OEE cannot exceed 100%; the count axes get room for the value labels
-        x=alt.X("shown:Q", title=x_title, scale=alt.Scale(domain=[0, 100]) if field == "oee"
-                else alt.Scale(domainMax=float(d.shown.max()) * 1.35)),
+        x=alt.X("shown:Q", title=x_title, axis=alt.Axis(tickCount=3, labelFontSize=10, titleFontSize=10),
+                scale=alt.Scale(domain=[0, 100]) if field == "oee" else alt.Scale(domainMax=float(d.shown.max()) * 1.35)),
         color=alt.Color("policy:N", sort=ORDER, scale=alt.Scale(domain=ORDER, range=COLOURS), legend=None),
         tooltip=[alt.Tooltip("policy:N", title="Policy"), alt.Tooltip("label:N", title=title)])
-    text = bars.mark_text(align="left", dx=3, color=C.OKABE_ITO["black"]).encode(text="label:N", color=alt.value(C.OKABE_ITO["black"]))
+    text = bars.mark_text(align="left", dx=3, fontSize=10, color=C.OKABE_ITO["black"]).encode(text="label:N", color=alt.value(C.OKABE_ITO["black"]))
     return alt.layer(bars, text).properties(height=165)
 
 

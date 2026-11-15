@@ -62,5 +62,6 @@ st.subheader("Definitions")
 st.markdown("\n".join(f"- **{k.replace('_', ' ')}:** {v}" for k, v in C.fact("definitions").items()))
 
 st.subheader("Snapshot files")
-st.dataframe(pd.DataFrame([{"File": n, "Rows": "n/a (JSON file)" if f["rows"] is None else f"{f['rows']:,}", "sha256": f["sha256"][:16]} for n, f in sorted(man["files"].items())]),
-             hide_index=True, width="stretch")
+# a static table wraps, so 'n/a (JSON file)' is not cut off in a narrow Rows column (review 2026-11-15)
+st.table(pd.DataFrame([{"File": n, "Rows": "n/a (JSON file)" if f["rows"] is None else f"{f['rows']:,}", "sha256": f["sha256"][:16]}
+                       for n, f in sorted(man["files"].items())]).set_index("File"))
