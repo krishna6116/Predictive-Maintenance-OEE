@@ -83,13 +83,23 @@ def texts(at: AppTest) -> str:
         out += [str(e.value) for e in getattr(at, kind)]
     for m in at.metric:
         out += [m.label, str(m.value), m.help or ""]
-    for d in at.dataframe:
-        out += [" ".join(map(str, d.value.columns)), d.value.to_string()]
+    for d in frames(at):
+        out += [" ".join(map(str, d.columns)), d.to_string()]
     for c in charts(at):
         out.append(json.dumps(c))
     for e in at.get("expander"):
         out.append(str(e.label))
     return "\n".join(out)
+
+
+def frames(at: AppTest) -> list:
+    """Every table a page shows: interactive data grids and static tables (v1.1: Home's impact table is static so it
+    wraps at phone width); a static table's index is turned back into its first column."""
+    out = [d.value for d in at.dataframe]
+    for t in at.table:
+        v = t.value
+        out.append(v.reset_index() if v.index.name else v)
+    return out
 
 
 def charts(at: AppTest) -> list[dict]:
@@ -289,7 +299,7 @@ def rendered_numbers() -> dict:
             at = run_page(page, widgets=w or None)
             out.setdefault(page, {})[json.dumps(w, sort_keys=True)] = {
                 "metrics": {m.label: str(m.value) for m in at.metric},
-                "tables": [d.value for d in at.dataframe],
+                "tables": frames(at),
                 "charts": chart_labels(at),
                 "text": texts(at)}
     return out

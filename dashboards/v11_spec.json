@@ -29,6 +29,7 @@
         "downtime_saved_vs_rtf": "downtime hours, run to failure - predictive",
         "wasted_life": "wasted cycles, predictive vs fixed interval (both shown)"
       },
+      "review_amendment": "2026-11-15, author-approved after the Chrome review (checks unchanged): the table is a static table so its numbers stay visible at phone width; the wasted-life row reads 'Wasted engine life, cycles (simulated): predictive / other' with cells 'a / b'; the simulated notice reads 'Simulated plant: production, downtime and OEE are not measured data.' once instead of after a second 'Simulated.'",
       "source": "oee_policies.csv (pooled)",
       "independent": "machines_phase6.csv re-aggregated, then the same differences",
       "tolerance": "exact"

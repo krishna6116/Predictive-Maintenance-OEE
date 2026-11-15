@@ -295,8 +295,9 @@ def expected_tables(T, page: str, view: dict) -> list[tuple[str, list]]:
         for col, other in (("vs fixed interval", "Fixed interval"), ("vs run to failure", "Run to failure")):
             cells += [(("Failures avoided (simulated)",), col, f"{o[other]['unplanned_failures'] - o['Predictive']['unplanned_failures']:,}"),
                       (("Downtime hours saved (simulated)",), col, f"{o[other]['downtime_hours'] - o['Predictive']['downtime_hours']:,.0f}"),
-                      (("Wasted engine life, cycles (simulated): predictive vs",), col,
-                       f"{o['Predictive']['wasted_cycles']:,} vs {o[other]['wasted_cycles']:,}")]
+                      # amended 2026-11-15, author-approved review fix: label ends 'predictive / other', cells 'a / b'
+                      (("Wasted engine life, cycles (simulated): predictive / other",), col,
+                       f"{o['Predictive']['wasted_cycles']:,} / {o[other]['wasted_cycles']:,}")]
         checks.append(("business impact table", cells))
     if page == "fleet":
         dss = ["FD001", "FD003"] if view["dataset"] == "Both" else [view["dataset"]]

@@ -22,7 +22,7 @@ for ds in datasets:
     if not C.has_rows(f, f"{ds} engines"):
         continue
     st.subheader(f"{ds}: {C.fact('published_model')} forecasts")
-    c1, c2, c3 = st.columns(3)
+    c1, c2, c3 = st.columns([1, 1, 2])  # the coverage label needs the room (it was cut off; review 2026-11-15)
     c1.metric(f"Engines ({ds})", str(len(f)), help="Test engines in the dataset, each at its last observed cycle.")
     c2.metric(f"Flagged ({ds})", str(int(f.flagged.sum())), help=C.define("flagged"))
     c3.metric(f"Interval coverage on these engines ({ds})", C.pct(f.inside_interval.mean()), help=C.define("coverage"))

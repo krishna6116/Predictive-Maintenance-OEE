@@ -174,8 +174,10 @@ def explain_why(page: str) -> None:
 
 
 def simulated_notice() -> None:
-    st.warning(f"**Simulated.** {fact('simulation_notice')}. OEE = Availability x Performance x Quality "
-               "from a simulated plant driven by the real NASA engine lives and the real forecasts.")
+    # the notice text starts 'SIMULATED plant: ...'; shown once in bold, not after a second 'Simulated.' (review 2026-11-15)
+    notice = fact("simulation_notice").replace("SIMULATED plant", "Simulated plant", 1)
+    st.warning(f"**{notice}.** OEE = Availability x Performance x Quality from a simulated plant driven by the real "
+               "NASA engine lives and the real forecasts.")
 
 
 def has_rows(df: pd.DataFrame, what: str) -> bool:

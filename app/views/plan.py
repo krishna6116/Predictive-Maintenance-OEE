@@ -11,7 +11,7 @@ import streamlit as st
 import common as C
 
 C.header("plan", "Engines whose lower 90% bound is at or below the alert threshold, booked onto crews by the CP-SAT "
-                 "scheduler at the last observed cycle (Phase 6).")
+                 "scheduler at the last observed cycle.")
 
 st.caption(f"{C.plain('CP-SAT')} {C.plain('90% interval')}")
 
@@ -30,14 +30,14 @@ for ds in datasets:
     p = plan[plan.dataset == ds]
     st.subheader(ds)
     booked = p[p.scheduled_day.notna()]
-    c = st.columns(5)
+    c = st.columns(3) + st.columns(2)  # two rows: five tiles in one row cut their labels off (review 2026-11-15)
     c[0].metric(f"Crew slots in the horizon ({ds})", str(crews * days), help=f"{crews} crews a day x {days} days (assumption).")
     c[1].metric(f"Engines flagged ({ds})", str(len(p)), help=C.define("flagged"))
     c[2].metric(f"Scheduled ({ds})", str(len(booked)), help="Flagged engines booked onto a crew within the horizon.")
     c[3].metric(f"Flagged, no crew in horizon ({ds})", str(int((p.status == "flagged, no crew in horizon").sum())),
                 help="Flagged engines left over because every crew slot in the horizon is taken by a more urgent engine.")
     c[4].metric(f"Solver status ({ds})", C.fact(f"solver_status_{ds}"),
-                help="CP-SAT status; OPTIMAL means no cheaper plan exists under the cost weights (proved again in Phase 6 "
+                help="CP-SAT status; OPTIMAL means no cheaper plan exists under the cost weights (proved again "
                      "by a second method).")
     if not C.has_rows(booked, f"scheduled {ds} engines"):
         continue
@@ -67,7 +67,7 @@ for ds in datasets:
             "engine_id": "Engine", "risk": "Risk", "reason": "Why flagged", "scheduled_day": "Plan day", "status": "Status"}),
             hide_index=True, width="stretch")
 
-st.subheader("Work orders in the predictive replay (Phase 6)")
+st.subheader("Work orders in the predictive replay")
 o = orders[orders.dataset.isin(datasets)]
 if C.has_rows(o, "work orders"):
     st.dataframe(o.groupby(["dataset", "status"]).size().rename("Work orders").reset_index()

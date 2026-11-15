@@ -17,6 +17,7 @@ fleet = C.load("fleet.csv")
 plan = C.load("plan.csv")
 thr = C.fact("alert_threshold")
 crews = C.fact("crews_per_day")
+cycles_per_day = C.fact("cycles_per_day")
 nominal = C.fact("interval_nominal")
 cap = C.fact("rul_cap")
 
@@ -71,6 +72,10 @@ if service == "Service today":
     st.caption(f"Service today (day 0, one of {crews} crew slots). Day 0 is the last observed day.")
 elif service.startswith("Service day"):
     st.caption(f"{service} (one of {crews} crew slots that day). Day 0 is the last observed day.")
+if service != "Not flagged":
+    st.caption(f"How the plan orders engines: it books from each engine's lower edge (the pessimistic end of the "
+               f"interval), not from the middle forecast. One plan day is {cycles_per_day} engine cycles and has {crews} crew "
+               "slots; engines with the same lower edge are equally urgent and can be booked in either order.")
 st.caption("The chart replays the forecast shift by shift; the flag and the plan use the final forecast on Fleet health, "
            "which can differ slightly at the last cycle (why: About and method).")
 
@@ -83,8 +88,9 @@ band = base.mark_area(opacity=0.35, color=C.OKABE_ITO["sky"]).encode(
 line = base.mark_line(color=C.OKABE_ITO["blue"], strokeWidth=2).encode(
     y="rul_mc_mean:Q", tooltip=[alt.Tooltip("cycle:Q", title="Cycle"), alt.Tooltip("rul_mc_mean:Q", title="Forecast (cycles)", format=".1f")])
 alert = alt.Chart().mark_rule(color=C.OKABE_ITO["black"], strokeDash=[4, 3]).encode(y=alt.datum(thr))
-alert_lab = alt.Chart().mark_text(align="right", dx=-4, dy=-6, color=C.OKABE_ITO["black"]).encode(
-    x=alt.value({"expr": "width"}), y=alt.datum(thr), text=alt.value(f"Alert: {thr} cycles"))
+# label at the left end: the forecast line ends at the right, near the alert line (review 2026-11-15)
+alert_lab = alt.Chart().mark_text(align="left", dx=4, dy=-6, color=C.OKABE_ITO["black"]).encode(
+    x=alt.value(0), y=alt.datum(thr), text=alt.value(f"Alert: {thr} cycles"))
 st.altair_chart(alt.layer(band, line, alert, alert_lab).properties(height=260), width="stretch")
 st.caption(f"Blue line: forecast remaining life. Light band: its {C.pct(nominal, 0)} interval. Dashed line: the alert "
            "threshold; the engine is flagged when the band's lower edge reaches it.")

@@ -193,7 +193,7 @@ def check_home(T, card: Card, app: Path = APP, snap: Path = SNAP) -> None:
     with app_env(snap):
         at = new_test(app, "home")
         secs = timed_run(at)
-        errs, shown, labels, tabs, text = errors(at), metrics(at), A.chart_labels(at), [d.value for d in at.dataframe], A.texts(at)
+        errs, shown, labels, tabs, text = errors(at), metrics(at), A.chart_labels(at), A.frames(at), A.texts(at)
         specs = A.charts(at)
     # V1.1: every bar label and every impact-table cell vs the recomputation from machines_phase6.csv
     probs, n = [], 0
@@ -227,9 +227,10 @@ def check_home(T, card: Card, app: Path = APP, snap: Path = SNAP) -> None:
     shown_titles = list(labels)
     miss = [t for t in shown_titles if "simulated" not in t.lower()] + [t for t in titles if t not in shown_titles]
     has_table = any("Impact (simulated)" in t.columns for t in tabs)
-    card.set("V3.1", not miss and has_table and "Simulated." in text,
+    notice = "Simulated plant: production, downtime and OEE are not measured data"  # the warning box (review fix 2026-11-15)
+    card.set("V3.1", not miss and has_table and notice in text,
              f"Home: {len(shown_titles)} chart titles and the impact table say 'simulated', plus the simulated notice"
-             if not miss and has_table and "Simulated." in text else
+             if not miss and has_table and notice in text else
              f"Home: chart titles without 'simulated' or missing {miss}; impact header present {has_table}")
     _chart_and_time(card, "home", specs, secs)
 
@@ -630,7 +631,7 @@ def live(url: str) -> dict:
         box = pg.evaluate("""() => {
             const b = sel => [...document.querySelectorAll(sel)].map(e => Math.round(e.getBoundingClientRect().bottom));
             return {viewport: window.innerHeight, metrics: b('[data-testid="stMetric"]'),
-                    charts: b('[data-testid="stVegaLiteChart"]').slice(0, 3), table: b('[data-testid="stDataFrame"]').slice(0, 1)};
+                    charts: b('[data-testid="stVegaLiteChart"]').slice(0, 3), table: b('[data-testid="stTable"], [data-testid="stDataFrame"]').slice(0, 1)};
         }""")
         pg.screenshot(path=str(FIGS / "home_1280x800.png"))
         parts = box["metrics"][:2] + box["charts"] + box["table"]

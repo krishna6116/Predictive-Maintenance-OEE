@@ -62,14 +62,15 @@ fl = {p: int(pooled.loc[p, "unplanned_failures"]) for p in ORDER}
 dt = {p: float(pooled.loc[p, "downtime_hours"]) for p in ORDER}
 wc = {p: int(pooled.loc[p, "wasted_cycles"]) for p in ORDER}
 # a small table, so each number says what it is compared with (tiles would cut the long labels off)
-st.dataframe(pd.DataFrame([
+# st.table wraps its text, so the numbers stay visible at phone width (a data grid scrolled them off-screen; review 2026-11-15)
+st.table(pd.DataFrame([
     {"Impact (simulated)": "Failures avoided (simulated)", "vs fixed interval": f"{fl['Fixed interval'] - fl['Predictive']:,}",
      "vs run to failure": f"{fl['Run to failure'] - fl['Predictive']:,}"},
     {"Impact (simulated)": "Downtime hours saved (simulated)", "vs fixed interval": f"{dt['Fixed interval'] - dt['Predictive']:,.0f}",
      "vs run to failure": f"{dt['Run to failure'] - dt['Predictive']:,.0f}"},
-    {"Impact (simulated)": "Wasted engine life, cycles (simulated): predictive vs", "vs fixed interval": f"{wc['Predictive']:,} vs {wc['Fixed interval']:,}",
-     "vs run to failure": f"{wc['Predictive']:,} vs {wc['Run to failure']:,}"},
-]), hide_index=True, width="stretch")
+    {"Impact (simulated)": "Wasted engine life, cycles (simulated): predictive / other", "vs fixed interval": f"{wc['Predictive']:,} / {wc['Fixed interval']:,}",
+     "vs run to failure": f"{wc['Predictive']:,} / {wc['Run to failure']:,}"},
+]).set_index("Impact (simulated)"))
 st.caption(f"Predictive maintenance compared with the other two policies, on a simulated plant of {machines} machines.")
 
 C.simulated_notice()
@@ -78,7 +79,7 @@ C.explain_why("home")
 
 st.subheader("How to read this app (one minute)")
 st.markdown("\n".join(f"- **{name}:** {C.BUSINESS[page]}" for page, name in (
-    ("fleet", "Fleet health"), ("plan", "Maintenance plan"), ("oee", "OEE policies (simulated)"),
+    ("fleet", "Fleet health"), ("engine", "Engine drill-down"), ("plan", "Maintenance plan"), ("oee", "OEE policies (simulated)"),
     ("cost", "Cost what-if (illustrative)"), ("monitoring", "Monitoring"), ("about", "About and method"))))
 st.caption("Open a page from the menu on the left (on a phone, the arrow at the top left).")
 

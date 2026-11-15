@@ -58,9 +58,9 @@ st.caption(f"Monte Carlo dropout is random: with {C.fact('interval_passes')} pas
            "use the published draw set, the one the plan acted on.")
 
 st.subheader("Definitions")
-st.dataframe(pd.DataFrame([{"Term": k.replace("_", " "), "Definition": v} for k, v in C.fact("definitions").items()]),
-             hide_index=True, width="stretch")
+# a list, not a grid: long definitions wrap instead of being cut off (review 2026-11-15)
+st.markdown("\n".join(f"- **{k.replace('_', ' ')}:** {v}" for k, v in C.fact("definitions").items()))
 
 st.subheader("Snapshot files")
-st.dataframe(pd.DataFrame([{"File": n, "Rows": f["rows"], "sha256": f["sha256"][:16]} for n, f in sorted(man["files"].items())]),
+st.dataframe(pd.DataFrame([{"File": n, "Rows": "n/a (JSON file)" if f["rows"] is None else f"{f['rows']:,}", "sha256": f["sha256"][:16]} for n, f in sorted(man["files"].items())]),
              hide_index=True, width="stretch")

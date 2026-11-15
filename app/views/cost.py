@@ -53,7 +53,7 @@ with results:
     d = pd.DataFrame({"policy": ORDER, "cost": [r["totals"][p] for p in ORDER]})
     d["label"] = d.cost.map(money)
     bars = alt.Chart(d).mark_bar().encode(
-        x=alt.X("policy:N", title="Maintenance policy", sort=ORDER),
+        x=alt.X("policy:N", title="Maintenance policy", sort=ORDER, axis=alt.Axis(labelAngle=0)),
         y=alt.Y("cost:Q", title="Total cost (illustrative, $)"),
         color=alt.Color("policy:N", title="Policy", sort=ORDER, scale=alt.Scale(domain=ORDER, range=COLOURS), legend=None),
         tooltip=[alt.Tooltip("policy:N", title="Policy"), alt.Tooltip("label:N", title="Total cost (illustrative)")])
