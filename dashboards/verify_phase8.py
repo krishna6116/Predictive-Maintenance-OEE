@@ -215,12 +215,14 @@ def expected_metrics(T, page: str, view: dict) -> dict:
     out = {}
     if page == "home":
         pub = "LSTM" if T["published_model"] == "LSTM" else "XGBoost (168 features)"
-        out[f"{T['published_model']} forecast error on unseen engines (FD003 RMSE, cycles)"] = f"{T['models'][('FD003', pub)]['rmse']:.2f}"
-        out["XGBoost forecast error on unseen engines (FD003 RMSE, cycles)"] = f"{T['models'][('FD003', 'XGBoost (168 features)')]['rmse']:.2f}"
-        order = ("Predictive", "Fixed interval", "Run to failure")
-        out["Simulated OEE: predictive / fixed / run to failure"] = " / ".join(pct(T["oee"][("Pooled", p)]["oee"]) for p in order)
-        out["Simulated unplanned failures: predictive / fixed / run to failure"] = " / ".join(
-            str(T["oee"][("Pooled", p)]["unplanned_failures"]) for p in order)
+        out["Forecast error on engines it never saw (cycles)"] = f"{T['models'][('FD003', pub)]['rmse']:.2f}"
+        out["Error of the best simple model, same engines (cycles)"] = f"{T['models'][('FD003', 'XGBoost (168 features)')]['rmse']:.2f}"
+        o = {p: T["oee"][("Pooled", p)] for p in ("Predictive", "Fixed interval", "Run to failure")}
+        out["Failures avoided (simulated)"] = (f"{o['Fixed interval']['unplanned_failures'] - o['Predictive']['unplanned_failures']:,} / "
+                                               f"{o['Run to failure']['unplanned_failures'] - o['Predictive']['unplanned_failures']:,}")
+        out["Downtime hours saved (simulated)"] = (f"{o['Fixed interval']['downtime_hours'] - o['Predictive']['downtime_hours']:,.0f} / "
+                                                   f"{o['Run to failure']['downtime_hours'] - o['Predictive']['downtime_hours']:,.0f}")
+        out["Wasted engine life, cycles (simulated)"] = f"{o['Predictive']['wasted_cycles']:,} vs {o['Fixed interval']['wasted_cycles']:,}"
     elif page == "cost":
         # own arithmetic (not app/costmodel.py), with the illustrative defaults pre-registered in v11_spec.json
         c = {k: v["default"] for k, v in json.loads((ROOT / "dashboards" / "v11_spec.json").read_text(encoding="utf-8"))["cost_page"]["inputs"].items()}
@@ -260,6 +262,16 @@ def expected_metrics(T, page: str, view: dict) -> dict:
         out["Largest change in MC mean between two draw sets (cycles)"] = f"{T['mc_noise'][0]:.2f}"
         out["Engines whose flag differs between the two draw sets"] = str(T["mc_noise"][1])
     return out
+
+
+def expected_charts(T, page: str) -> dict:
+    """v1.1 Home charts: {chart title: {policy: bar label}}, recomputed from the per-machine file."""
+    if page != "home":
+        return {}
+    o = {p: T["oee"][("Pooled", p)] for p in ("Predictive", "Fixed interval", "Run to failure")}
+    return {"OEE (simulated)": {p: pct(v["oee"]) for p, v in o.items()},
+            "Unplanned failures (simulated, count)": {p: f"{v['unplanned_failures']:,.0f}" for p, v in o.items()},
+            "Downtime (simulated, hours)": {p: f"{v['downtime_hours']:,.0f}" for p, v in o.items()}}
 
 
 def expected_tables(T, page: str, view: dict) -> list[tuple[str, list]]:
@@ -512,6 +524,12 @@ def check_app(T, card: Card, data_checksum: str):
             for label in exp:
                 if label not in got["metrics"]:
                     probs.append(f"{page} {view}: missing metric '{label}'")
+            for title, want in expected_charts(T, page).items():  # v1.1: the bar labels the Home charts show
+                for pol, label in want.items():
+                    n += 1
+                    shown = got.get("charts", {}).get(title, {}).get(pol)
+                    if shown != label:
+                        probs.append(f"{page} {view} chart '{title}' {pol}: shows {shown}, expected {label}")
             for desc, cells in expected_tables(T, page, view):
                 tabs = got["tables"]
                 for key, col, want in cells:

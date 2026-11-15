@@ -1,9 +1,11 @@
-"""Home: what the project built and found, in one screen, with a guide to the other pages (Phase 9)."""
+"""Home: what the project built and found, in one screen, with a guide to the other pages (Phase 9; v1.1 at-a-glance)."""
 import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
+import altair as alt
+import pandas as pd
 import streamlit as st
 
 import common as C
@@ -16,26 +18,62 @@ pol = C.load("oee_policies.csv")
 pub = C.fact("published_model")
 fd3 = models[models.dataset == "FD003"].set_index("model")
 pooled = pol[(pol.scope == "Pooled") & (pol.kind == "policy")].set_index("policy")
+machines = int(pooled.loc["Predictive", "machines"])
 ORDER = ["Predictive", "Fixed interval", "Run to failure"]
 
-st.subheader("Headline results")
-r1 = st.columns(2)
-r1[0].metric(f"{pub} forecast error on unseen engines (FD003 RMSE, cycles)", C.num(fd3.loc[pub, "rmse"]),
-             help=f"{C.define('RMSE')} The published model on NASA FD003, a dataset no model choice was made on.")
-r1[1].metric("XGBoost forecast error on unseen engines (FD003 RMSE, cycles)", C.num(fd3.loc["XGBoost (168 features)", "rmse"]),
-             help=f"{C.define('RMSE')} The strongest non-deep baseline on the same engines.")
-r2 = st.columns(2)
-r2[0].metric("Simulated OEE: predictive / fixed / run to failure", " / ".join(C.pct(pooled.loc[p, "oee"]) for p in ORDER),
-             help=f"{C.define('OEE')} Pooled over the {int(pooled.loc['Predictive', 'machines'])} simulated machines.")
-r2[1].metric("Simulated unplanned failures: predictive / fixed / run to failure",
-             " / ".join(str(int(pooled.loc[p, "unplanned_failures"])) for p in ORDER),
-             help="Simulated machines whose engine failed before it was serviced, out of the same machines under each policy.")
+# 1. The forecast, in plain English
+f = st.columns(2)
+f[0].metric("Forecast error on engines it never saw (cycles)", C.num(fd3.loc[pub, "rmse"]),
+            help=f"{C.define('RMSE')} The published {pub} model on engines no model choice was made on.")
+f[1].metric("Error of the best simple model, same engines (cycles)", C.num(fd3.loc["XGBoost (168 features)", "rmse"]),
+            help=f"{C.define('RMSE')} XGBoost on engineered features: the strongest non-deep baseline.")
+st.caption(f"Lower is better. RMSE is the typical size of a forecast's error, in engine cycles; measured on the "
+           f"{int(fd3.loc[pub, 'engines'])} test engines of NASA FD003.")
+
+# 2. The three maintenance policies on the same simulated plant
+st.markdown(f"**Three maintenance policies on the same {machines} simulated machines**")
+COLOURS = [C.OKABE_ITO["blue"], C.OKABE_ITO["orange"], C.OKABE_ITO["vermillion"]]
+
+
+def policy_chart(field: str, title: str, y_title: str, fmt) -> alt.LayerChart:
+    d = pd.DataFrame({"policy": ORDER, "value": [float(pooled.loc[p, field]) for p in ORDER]})
+    d["shown"] = 100 * d.value if field == "oee" else d.value
+    d["label"] = d.value.map(fmt)
+    bars = alt.Chart(d, title=title).mark_bar().encode(
+        x=alt.X("policy:N", title="Policy", sort=ORDER, axis=alt.Axis(labelAngle=0)),
+        y=alt.Y("shown:Q", title=y_title),
+        color=alt.Color("policy:N", sort=ORDER, scale=alt.Scale(domain=ORDER, range=COLOURS), legend=None),
+        tooltip=[alt.Tooltip("policy:N", title="Policy"), alt.Tooltip("label:N", title=title)])
+    text = bars.mark_text(dy=-7, color=C.OKABE_ITO["black"]).encode(text="label:N", color=alt.value(C.OKABE_ITO["black"]))
+    return alt.layer(bars, text).properties(height=170)
+
+
+g = st.columns(3)
+g[0].altair_chart(policy_chart("oee", "OEE (simulated)", "OEE (%)", C.pct), width="stretch")
+g[1].altair_chart(policy_chart("unplanned_failures", "Unplanned failures (simulated, count)", "Unplanned failures (count)", lambda v: f"{v:,.0f}"),
+                  width="stretch")
+g[2].altair_chart(policy_chart("downtime_hours", "Downtime (simulated, hours)", "Downtime (hours)", lambda v: f"{v:,.0f}"), width="stretch")
+
+# 3. Business impact (simulated)
+st.markdown("**Business impact (simulated)**")
+fl = {p: int(pooled.loc[p, "unplanned_failures"]) for p in ORDER}
+dt = {p: float(pooled.loc[p, "downtime_hours"]) for p in ORDER}
+wc = {p: int(pooled.loc[p, "wasted_cycles"]) for p in ORDER}
+b = st.columns(3)
+b[0].metric("Failures avoided (simulated)", f"{fl['Fixed interval'] - fl['Predictive']:,} / {fl['Run to failure'] - fl['Predictive']:,}",
+            help="Simulated unplanned failures avoided by predictive maintenance: vs a fixed service interval / vs running to failure.")
+b[1].metric("Downtime hours saved (simulated)",
+            f"{dt['Fixed interval'] - dt['Predictive']:,.0f} / {dt['Run to failure'] - dt['Predictive']:,.0f}",
+            help="Simulated downtime hours saved by predictive maintenance: vs a fixed service interval / vs running to failure.")
+b[2].metric("Wasted engine life, cycles (simulated)", f"{wc['Predictive']:,} vs {wc['Fixed interval']:,}",
+            help="Simulated useful life thrown away at early services: predictive maintenance vs a fixed service interval.")
+st.caption("Simulated plant. First number vs a fixed service interval, second vs running to failure; wasted life is predictive vs fixed interval.")
 C.simulated_notice()
 
 st.subheader("How to read this app (one minute)")
 st.markdown("\n".join(f"- **{name}:** {C.BUSINESS[page]}" for page, name in (
     ("fleet", "Fleet health"), ("plan", "Maintenance plan"), ("oee", "OEE policies (simulated)"),
-    ("monitoring", "Monitoring"), ("about", "About and method"))))
+    ("cost", "Cost what-if (illustrative)"), ("monitoring", "Monitoring"), ("about", "About and method"))))
 st.caption("Open a page from the menu on the left (on a phone, the arrow at the top left).")
 
 st.subheader("More")

@@ -11,7 +11,7 @@
           "id": "D1.1",
           "kind": "code",
           "passed": true,
-          "detail": "599 displayed values in every filter view equal the independent recomputation"
+          "detail": "609 displayed values in every filter view equal the independent recomputation"
         },
         {
           "id": "D1.2",
@@ -159,19 +159,19 @@
           "id": "D5.2",
           "kind": "code",
           "passed": true,
-          "detail": "49 charts: Okabe-Ito only, colour always paired"
+          "detail": "52 charts: Okabe-Ito only, colour always paired"
         },
         {
           "id": "D5.3",
           "kind": "code",
           "passed": true,
-          "detail": "49 charts: every axis titled, units on quantitative axes"
+          "detail": "52 charts: every axis titled, units on quantitative axes"
         },
         {
           "id": "D5.4",
           "kind": "code",
           "passed": true,
-          "detail": "cold-cache script time: home 0.26s, fleet 0.30s, plan 0.29s, oee 0.29s, cost 0.28s, monitoring 0.29s, about 0.25s"
+          "detail": "cold-cache script time: home 0.32s, fleet 0.29s, plan 0.29s, oee 0.29s, cost 0.29s, monitoring 0.29s, about 0.26s"
         },
         {
           "id": "D5.5",
