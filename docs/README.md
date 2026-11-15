@@ -21,6 +21,16 @@ Start with the [case study](CASE_STUDY.md) (5 minutes, non-technical) or the [re
 | 8. Dashboards | Done |
 | 9. Write-up | Done |
 
+## v1.1 changes
+
+- **Home at a glance:** plain-English forecast tiles, the three maintenance policies on the simulated plant (OEE, unplanned failures, downtime) and a business impact table, all on the first screen of a laptop.
+- **Engine drill-down:** pick any FD001 or FD003 test engine and follow it cycle by cycle: four named sensors, the forecast remaining life with its interval, the first alert and the service day the crew plan gave it.
+- **Cost what-if (illustrative):** your own cost figures applied to each policy's simulated counts; the defaults are round example values, not data, and a failure's downtime is never counted twice.
+- **Plain-English help:** a one-line explanation wherever RMSE, the interval, near-failure MAE, MC dropout, drift, OEE or CP-SAT first appears; the technical detail stays on About and method.
+- **Checked like every phase:** a specification and scorecard committed before any v1.1 code, and an independent verifier (`python -m dashboards.verify_v11`) that recomputes every drill-down value for every test engine, the cost page at several input sets and the engine history against the NASA files, catches planted bugs, and measures the deployed app at laptop and phone width.
+
+The v1.1.0 release notes are listed under Documents below.
+
 ## Documents
 
 - [ARCHITECTURE.md](ARCHITECTURE.md): System diagram, star schema, data flow per shift and why each technology was chosen.
@@ -41,6 +51,7 @@ Start with the [case study](CASE_STUDY.md) (5 minutes, non-technical) or the [re
 - [PHASE9_CHECKLIST.md](PHASE9_CHECKLIST.md): Phase 9 manual release checklist (redeploy, tag, repository settings, social preview).
 - [PIPELINE.md](PIPELINE.md): Phase 2: ingest, validation, quarantine and idempotent loads into PostgreSQL.
 - [RELEASE_NOTES.md](RELEASE_NOTES.md): Release notes for v1.0.0, generated from the results files.
+- [RELEASE_NOTES_v1.1.0.md](RELEASE_NOTES_v1.1.0.md): Release notes for v1.1.0: Home at a glance, engine drill-down, cost what-if, plain-English help.
 - [RESULTS.md](RESULTS.md): Every headline result with its interval, comparison, source file and explaining doc.
 - [V11_CHECKLIST.md](V11_CHECKLIST.md): v1.1 manual checklist (preview-app live checks, author review, release v1.1.0).
 

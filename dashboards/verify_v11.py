@@ -473,9 +473,20 @@ def check_prior(card: Card, rerun: bool) -> None:
     p9 = json.loads((ROOT / "writeup" / "phase9_results.json").read_text(encoding="utf-8"))
     ci = (ROOT / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8")
     in_ci = all(s in ci for s in ("dashboards.verify_phase8", "writeup.verify_phase9"))
-    ok = p8["score"] == p8["out_of"] == 5 and p9["passed"] == p9["out_of"] == 10 and in_ci and all(n.endswith("exit 0") for n in notes)
-    card.set("V1.5", ok, f"Phase 8 {p8['score']}/{p8['out_of']}, Phase 9 {p9['passed']}/{p9['out_of']} (results files"
-             f"{', re-run here: ' + '; '.join(notes) if notes else ''}); both verifiers run in CI: {in_ci}")
+    # as the check says: Phase 9 code checks now; its network, CI and manual checks are re-run after the merge
+    kinds = {c["id"]: c["kind"] for c in json.loads((ROOT / "writeup" / "phase9_scorecard.json").read_text(encoding="utf-8"))["checks"]}
+    code9 = {k: v["passed"] for k, v in p9["checks"].items() if kinds.get(k) == "code"}
+    rest9 = sorted(k for k, v in p9["checks"].items() if kinds.get(k) != "code" and not v["passed"])
+    p8_ok = p8["score"] == p8["out_of"] == 5
+    code_ok = bool(code9) and all(code9.values())
+    reran = all(n.endswith("exit 0") for n in notes)
+    detail = (f"Phase 8 {p8['score']}/{p8['out_of']}; Phase 9 {p9['passed']}/{p9['out_of']}, code checks {sum(code9.values())}/{len(code9)}"
+              + (f", not passing yet (network/CI/manual, re-run after the merge): {rest9}" if rest9 else "")
+              + f" (results files{', re-run here: ' + '; '.join(notes) if notes else ''}); both verifiers run in CI: {in_ci}")
+    if not (p8_ok and code_ok and in_ci and reran):
+        card.set("V1.5", False, detail)
+    else:
+        card.set("V1.5", True if p9["passed"] == p9["out_of"] == 10 else None, detail)
 
 
 def check_timing_and_charts(card: Card) -> None:

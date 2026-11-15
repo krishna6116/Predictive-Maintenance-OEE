@@ -15,7 +15,8 @@ APP = "https://predictive-maintenance-oee.streamlit.app"
 REPO = "https://github.com/krishna6116/Predictive-Maintenance-OEE"
 LINKEDIN = "https://www.linkedin.com/in/krishnakumar-balasundaram-3a92b6422"
 GITHUB = "https://github.com/Krishna6116"
-TAG = "v1.0.0"
+TAG = "v1.0.0"  # docs/RELEASE_NOTES.md stays the v1.0.0 body (Phase 9 W10)
+TAG_V11 = "v1.1.0"
 
 
 # ---- formatting: every number in the write-up goes through one of these
@@ -40,7 +41,8 @@ def render_all() -> dict[str, str]:
     F = {k: f.value for k, f in facts().items()}
     return {"README.md": readme(F), "docs/RESULTS.md": results(F), "docs/CASE_STUDY.md": case_study(F),
             "docs/ARCHITECTURE.md": architecture(F), "docs/DECISIONS.md": decisions(F), "docs/GLOSSARY.md": glossary(),
-            "docs/RELEASE_NOTES.md": release_notes(F), "docs/README.md": docs_index(), **notebooks(F)}
+            "docs/RELEASE_NOTES.md": release_notes(F), f"docs/RELEASE_NOTES_{TAG_V11}.md": release_notes_v11(),
+            "docs/README.md": docs_index(), **notebooks(F)}
 
 
 def notebook_summaries(F) -> dict[str, tuple[str, str, str]]:
@@ -138,6 +140,9 @@ def readme(F) -> str:
         "# Predictive Maintenance & OEE", "",
         "Predicts when jet engines will need maintenance from their sensor data, then plans crew work so engines are "
         "serviced before they fail.", "",
+        # v1.1 (dashboards/v11_spec.json readme.try_link): directly after the problem line, which Phase 9 W4 keeps first
+        f"**[Try the live app]({APP})**: the headline results on one screen, any test engine's story cycle by cycle, "
+        "and a cost what-if with your own figures. No install needed.", "",
         f"[![CI]({REPO}/actions/workflows/ci.yml/badge.svg)]({REPO}/actions/workflows/ci.yml) "
         "[![Python](https://img.shields.io/badge/python-3.14-blue)](https://www.python.org/) "
         f"[![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE) "
@@ -155,7 +160,8 @@ def readme(F) -> str:
         f"- **Live app:** {APP} (free hosting; if it shows a sleep page, click the wake-up button and wait about a minute)", "",
         "**Tech stack:** Python · PostgreSQL · pandas · scikit-learn · XGBoost · PyTorch (LSTM, CNN) · OR-Tools "
         "CP-SAT · Prefect · Streamlit · Power BI · pytest · GitHub Actions", "",
-        "![The live app's Home page: headline results and a guide to each page](docs/figures/phase9/app_home.png)", "",
+        "![The live app's Home page: forecast error on unseen engines, the three maintenance policies on the simulated "
+        "plant and the business impact table](docs/figures/v11/hero_home.png)", "",
         "## Results at a glance", "",
         "| What | Result | Compared with |", "| --- | --- | --- |",
         f"| Remaining-life error, unseen FD003 engines (RMSE, cycles; lower is better) | **{F['published_model']} "
@@ -607,6 +613,43 @@ def glossary() -> str:
     return "\n".join(L)
 
 
+V11_CHANGES = [
+    "**Home at a glance:** plain-English forecast tiles, the three maintenance policies on the simulated plant (OEE, "
+    "unplanned failures, downtime) and a business impact table, all on the first screen of a laptop.",
+    "**Engine drill-down:** pick any FD001 or FD003 test engine and follow it cycle by cycle: four named sensors, the "
+    "forecast remaining life with its interval, the first alert and the service day the crew plan gave it.",
+    "**Cost what-if (illustrative):** your own cost figures applied to each policy's simulated counts; the defaults "
+    "are round example values, not data, and a failure's downtime is never counted twice.",
+    "**Plain-English help:** a one-line explanation wherever RMSE, the interval, near-failure MAE, MC dropout, drift, "
+    "OEE or CP-SAT first appears; the technical detail stays on About and method.",
+    "**Checked like every phase:** a specification and scorecard committed before any v1.1 code, and an independent "
+    "verifier (`python -m dashboards.verify_v11`) that recomputes every drill-down value for every test engine, the "
+    "cost page at several input sets and the engine history against the NASA files, catches planted bugs, and measures "
+    "the deployed app at laptop and phone width.",
+]
+
+
+def release_notes_v11() -> str:
+    L = [f"# Predictive Maintenance & OEE {TAG_V11}", "", GENERATED, "",
+         "A showcase release for a reader with a minute to spare. The models, the results and the simulated plant are "
+         "unchanged from v1.0.0; the app now explains them faster, follows one engine from first reading to service "
+         "day, and lets a visitor try their own costs.", "",
+         "## What is new", "", *[f"- {c}" for c in V11_CHANGES],
+         "- **More robust deployment:** the app checks each snapshot against its checksum before caching it and reloads "
+         "its own modules on every run (two preview crashes fixed), and CI loads every page from the committed tree.", "",
+         "## What did not change", "",
+         "- The published model, every number in the results, the Phase 8 dashboard scorecard and the Phase 9 write-up "
+         "checks.",
+         "- Every plant value is still labelled simulated, and every cost is labelled illustrative.", "",
+         "## Links", "",
+         f"- Live app: {APP}",
+         f"- Specification and scorecard: {REPO}/blob/main/dashboards/v11_spec.json and "
+         f"{REPO}/blob/main/dashboards/v11_scorecard.json",
+         f"- Checklist with the live-check evidence: {REPO}/blob/main/docs/V11_CHECKLIST.md",
+         f"- Case study: {REPO}/blob/main/docs/CASE_STUDY.md", ""]
+    return "\n".join(L)
+
+
 def release_notes(F) -> str:
     L = [f"# Predictive Maintenance & OEE {TAG}", "", GENERATED, "",
          "First complete release: data pipeline, remaining-life forecasts with uncertainty, crew scheduling, a simulated "
@@ -646,6 +689,7 @@ DOC_DESCRIPTIONS = {
     "docs/V11_CHECKLIST.md": "v1.1 manual checklist (preview-app live checks, author review, release v1.1.0).",
     "docs/PIPELINE.md":"Phase 2: ingest, validation, quarantine and idempotent loads into PostgreSQL.",
     "docs/RELEASE_NOTES.md": "Release notes for v1.0.0, generated from the results files.",
+    "docs/RELEASE_NOTES_v1.1.0.md": "Release notes for v1.1.0: Home at a glance, engine drill-down, cost what-if, plain-English help.",
     "docs/RESULTS.md": "Every headline result with its interval, comparison, source file and explaining doc.",
 }
 NOTEBOOK_DESCRIPTIONS = {
@@ -674,7 +718,9 @@ def docs_index() -> str:
     L = ["# Documentation index", "", GENERATED, "",
          "Start with the [case study](CASE_STUDY.md) (5 minutes, non-technical) or the [results](RESULTS.md); the phase "
          "docs go deeper.", "", "## Phases", "", "| Phase | Status |", "| --- | --- |",
-         *[f"| {name.split(':')[0]} | Done |" for name, _ in PHASES], "", "## Documents", ""]
+         *[f"| {name.split(':')[0]} | Done |" for name, _ in PHASES], "",
+         "## v1.1 changes", "", *[f"- {c}" for c in V11_CHANGES], "",
+         f"The {TAG_V11} release notes are listed under Documents below.", "", "## Documents", ""]
     L += [f"- [{Path(p).name}]({Path(p).name}): {DOC_DESCRIPTIONS[p]}" for p in docs]
     L += ["", "## Notebooks", "",
           "Each notebook is built by the `build_*.py` script beside it, so its findings come from the results files.", ""]
