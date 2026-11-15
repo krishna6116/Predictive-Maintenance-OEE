@@ -17,7 +17,7 @@
           "id": "V1.2",
           "kind": "code",
           "passed": true,
-          "detail": "35 totals and savings over 7 input sets equal the exact recomputation; tests/test_cost.py: 5 passed in 0.05s"
+          "detail": "35 totals and savings over 7 input sets equal the exact recomputation; tests/test_cost.py: 5 passed in 0.02s"
         },
         {
           "id": "V1.3",
@@ -116,7 +116,7 @@
           "id": "V4.2",
           "kind": "code",
           "passed": true,
-          "detail": "under 5 s under AppTest: home 3.15s, cost 0.79s, engine (first run) 0.97s, engine, slowest of 200 0.32s"
+          "detail": "under 5 s under AppTest: home 1.08s, cost 0.26s, engine (first run) 0.35s, engine, slowest of 200 0.13s"
         },
         {
           "id": "V4.3",
@@ -159,16 +159,16 @@
           "id": "V5.4",
           "kind": "code",
           "passed": true,
-          "detail": "CI success on d0369aa"
+          "detail": "CI success on d0369aa, the merge candidate of 3281f48"
         },
         {
           "id": "V5.5",
           "kind": "code+live",
           "passed": true,
-          "detail": "committed tree 3281f48: 9/9 pages load; in CI with planted-title test: True; live real app: pass"
+          "detail": "committed tree 47cf816: 9/9 pages load; in CI with planted-title test: True; live real app: pass"
         }
       ]
     }
   ],
-  "checked_utc": "2026-11-15T20:58:36Z"
+  "checked_utc": "2026-11-15T22:08:06Z"
 }
