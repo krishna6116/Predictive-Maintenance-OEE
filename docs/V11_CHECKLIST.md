@@ -1,0 +1,16 @@
+# v1.1 manual checklist
+
+The v1.1 scorecard (`dashboards/v11_scorecard.json`) counts a manual item only when its line is ticked (`- [x]`) and its
+evidence is committed. Live checks run first on the preview app (branch `v1.1`), then on the real URL after the merge.
+
+## Before the merge (temporary preview app `pm-oee-v11-preview`)
+
+- [ ] **Preview app created** from branch `v1.1`, main file `app/streamlit_app.py`, Python 3.14, secrets empty, public.
+- [ ] **Live checks on the preview** (`python -m dashboards.verify_v11 --live` on the preview address): V2.1, V4.1, V4.3; evidence in `dashboards/v11_evidence.json`, phone screenshots in `docs/figures/v11/`.
+- [ ] **Author review** of every page on a laptop and a phone (Home, cost what-if, engine drill-down, and the existing pages).
+
+## After the merge
+
+- [ ] **Live checks on the real app** (https://predictive-maintenance-oee.streamlit.app, same command); evidence updated.
+- [ ] **Release v1.1.0** tagged on the merge commit after CI is green on it; release body equals `docs/RELEASE_NOTES_v1.1.0.md`.
+- [ ] **Preview app deleted** by the author.

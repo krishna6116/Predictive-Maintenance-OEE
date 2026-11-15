@@ -643,7 +643,8 @@ DOC_DESCRIPTIONS = {
     "docs/MONITORING_7B.md": "Phase 7b: the re-tested monitoring rule on unseen FD002 and FD004, including the FD004 failure.",
     "docs/PHASE8_CHECKLIST.md": "Phase 8 manual evidence checklist (deployed checksum, phone screenshots, Power BI report).",
     "docs/PHASE9_CHECKLIST.md": "Phase 9 manual release checklist (redeploy, tag, repository settings, social preview).",
-    "docs/PIPELINE.md": "Phase 2: ingest, validation, quarantine and idempotent loads into PostgreSQL.",
+    "docs/V11_CHECKLIST.md": "v1.1 manual checklist (preview-app live checks, author review, release v1.1.0).",
+    "docs/PIPELINE.md":"Phase 2: ingest, validation, quarantine and idempotent loads into PostgreSQL.",
     "docs/RELEASE_NOTES.md": "Release notes for v1.0.0, generated from the results files.",
     "docs/RESULTS.md": "Every headline result with its interval, comparison, source file and explaining doc.",
 }

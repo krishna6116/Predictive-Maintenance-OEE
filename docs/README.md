@@ -42,6 +42,7 @@ Start with the [case study](CASE_STUDY.md) (5 minutes, non-technical) or the [re
 - [PIPELINE.md](PIPELINE.md): Phase 2: ingest, validation, quarantine and idempotent loads into PostgreSQL.
 - [RELEASE_NOTES.md](RELEASE_NOTES.md): Release notes for v1.0.0, generated from the results files.
 - [RESULTS.md](RESULTS.md): Every headline result with its interval, comparison, source file and explaining doc.
+- [V11_CHECKLIST.md](V11_CHECKLIST.md): v1.1 manual checklist (preview-app live checks, author review, release v1.1.0).
 
 ## Notebooks
 
