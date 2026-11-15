@@ -45,7 +45,9 @@ def snapshot_dir() -> Path:
 
 
 @st.cache_data(show_spinner=False)
-def _read(folder: str, name: str):
+def _read(folder: str, name: str, version: str | None = None):
+    """`version` (the file's sha256 in the manifest) is part of the cache key only: when a deployment replaces the
+    snapshots in place, the new files get new cache entries instead of the old cached data (preview, 2026-11-15)."""
     d = Path(folder)
     if not (d / "manifest.json").exists():
         raise SnapshotError(f"manifest.json is missing from {d}")
@@ -71,10 +73,18 @@ def _read(folder: str, name: str):
     return df
 
 
+def _version(name: str) -> str | None:
+    """The file's sha256 as listed in manifest.json, or None if the manifest cannot be read (_read then reports it)."""
+    try:
+        return json.loads((snapshot_dir() / "manifest.json").read_text(encoding="utf-8"))["files"][name]["sha256"]
+    except (OSError, ValueError, KeyError, TypeError):
+        return None
+
+
 def load(name: str):
     """A snapshot (DataFrame, or dict for JSON); on any problem show a clear message and stop the page."""
     try:
-        return _read(str(snapshot_dir()), name)
+        return _read(str(snapshot_dir()), name, _version(name))
     except SnapshotError as e:
         st.error(f"Data unavailable: {e}. Rebuild the snapshots with `python -m dashboards.export_snapshots` "
                  "or restore them from the repository.")

@@ -60,3 +60,40 @@ def test_in_place_update_reloads_common(tmp_path):
                 sys.modules.pop(k, None)
             else:
                 sys.modules[k] = m
+
+
+def test_in_place_snapshot_update_is_not_served_from_cache(tmp_path):
+    """The second preview crash replayed: facts.json is replaced in place (new key rul_cap) while the app runs.
+    The cached old file must not be served: the cache key includes the file's sha256 from manifest.json."""
+    import hashlib
+    import json
+    import sys
+
+    from streamlit.testing.v1 import AppTest
+
+    d = copy_app(tmp_path)
+    snap = d / "dashboards" / "snapshots"
+    facts_new, man_new = (snap / "facts.json").read_bytes(), (snap / "manifest.json").read_bytes()
+    old = json.loads(facts_new)
+    old.pop("rul_cap")
+    old_b = json.dumps(old).encode()
+    man = json.loads(man_new)
+    man["files"]["facts.json"]["sha256"] = hashlib.sha256(old_b).hexdigest()
+    saved = {k: sys.modules.get(k) for k in ("common", "costmodel")}
+    try:
+        (snap / "facts.json").write_bytes(old_b)                    # the old deployment's data
+        (snap / "manifest.json").write_text(json.dumps(man), encoding="utf-8")
+        at = AppTest.from_file(str(d / "app" / "streamlit_app.py"), default_timeout=90).run()
+        at.switch_page("views/fleet.py").run()                      # loads facts.json into the cache
+        assert not at.exception
+        (snap / "facts.json").write_bytes(facts_new)                # the update lands in place
+        (snap / "manifest.json").write_bytes(man_new)
+        at = AppTest.from_file(str(d / "app" / "streamlit_app.py"), default_timeout=90).run()
+        at.switch_page("views/engine.py").run()
+        assert not at.exception, [e.value for e in at.exception]
+    finally:
+        for k, m in saved.items():
+            if m is None:
+                sys.modules.pop(k, None)
+            else:
+                sys.modules[k] = m
