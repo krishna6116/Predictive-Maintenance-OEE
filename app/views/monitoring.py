@@ -66,7 +66,13 @@ st.markdown(f"Phase 7b's rule was pre-registered (fixed on validation engines be
 st.subheader("Retraining flags by shift")
 scen = SCEN[st.radio("Scenario", list(SCEN), key="scenario")]
 r = runs[runs.scenario == scen]
-chosen = st.multiselect("Datasets", sorted(r.dataset.unique()), default=sorted(r.dataset.unique()), key="datasets")
+opts = sorted(r.dataset.unique())
+# Rule v1 and rule v2 cover different datasets: a remembered choice from the other scenario would leave nothing selected
+# (Chrome review 2026-11-15), so it is replaced by all of this scenario's datasets. A filter emptied on purpose stays empty.
+prev = st.session_state.get("datasets")
+if prev is None or (prev and not set(prev) & set(opts)):
+    st.session_state["datasets"] = opts
+chosen = st.multiselect("Datasets", opts, key="datasets")
 r = r[r.dataset.isin(chosen)].sort_values(["dataset", "shift"])
 if C.has_rows(r, "runs"):
     r = r.assign(flag=r.needs_retraining.astype(int))

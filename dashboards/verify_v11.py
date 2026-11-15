@@ -734,13 +734,18 @@ def check_live_evidence(card: Card) -> None:
     if not ci:
         card.set("V5.4", None, "pending: python -m dashboards.verify_v11 --record-ci after CI finishes on the merge candidate")
     else:
-        changed = subprocess.run(["git", "diff", "--name-only", ci["commit"], "HEAD"], cwd=ROOT, capture_output=True, text=True)
+        # Post hoc (2026-11-15): compare with the merge commit once v1.1 is merged (v11_scorecard.json result), not with
+        # HEAD; the check is about the merge candidate, and later commits on main (checklist ticks, fixes) must not flip it
+        merged = (CARD.get("result") or {}).get("merge_commit")
+        target = merged or "HEAD"
+        changed = subprocess.run(["git", "diff", "--name-only", ci["commit"], target], cwd=ROOT, capture_output=True, text=True)
         later = [f for f in changed.stdout.split() if f != "dashboards/v11_evidence.json"]
         if changed.returncode != 0:
-            card.set("V5.4", None, f"CI {ci['conclusion']} on {ci['commit'][:7]}; this checkout cannot compare it with HEAD")
+            card.set("V5.4", None, f"CI {ci['conclusion']} on {ci['commit'][:7]}; this checkout cannot compare it with {target}")
         else:
             card.set("V5.4", ci["conclusion"] == "success" and not later,
-                     f"CI {ci['conclusion']} on {ci['commit'][:7]}" + (f"; files changed since: {later[:3]}" if later else ""))
+                     f"CI {ci['conclusion']} on {ci['commit'][:7]}, the merge candidate of {target}" if not later and merged else
+                     f"CI {ci['conclusion']} on {ci['commit'][:7]}" + (f"; files changed before {target}: {later[:3]}" if later else ""))
     real = runs.get(REAL_URL, {}).get("V5.5")
     card.notes["V5.5 live"] = real
 
