@@ -124,6 +124,10 @@ def chart_labels(at: AppTest) -> dict:
             if getattr(e, "type", None) == "vega_lite_chart":
                 spec = json.loads(e.proto.spec)
                 title = next((l.get("title") for l in layers(spec) if l.get("title")), spec.get("title"))
+                if isinstance(title, dict):  # a title given as lines (Home charts, narrow-width fix 2026-11-15)
+                    title = title.get("text", "")
+                if isinstance(title, list):
+                    title = " ".join(str(t) for t in title)
                 for ds in e.proto.datasets:
                     rows = pa.ipc.open_stream(ds.data.data).read_all().to_pylist()
                     if title and rows and {"policy", "label"} <= set(rows[0]):

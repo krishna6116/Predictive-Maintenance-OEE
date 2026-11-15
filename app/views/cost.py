@@ -59,7 +59,7 @@ with results:
         tooltip=[alt.Tooltip("policy:N", title="Policy"), alt.Tooltip("label:N", title="Total cost (illustrative)")])
     text = bars.mark_text(dy=-8, color=C.OKABE_ITO["black"]).encode(text="label:N", color=alt.value(C.OKABE_ITO["black"]))
     st.altair_chart(alt.layer(bars, text).properties(height=260), width="stretch")
-    c = st.columns(3)
+    c = st.columns(2) + st.columns(2)  # two rows: three in a row cut the dollar totals off on narrow laptops (2026-11-15)
     for col, p in zip(c, POLICIES):
         col.metric(f"Total cost, {p.lower()} (illustrative)", money(r["totals"][p]),
                    help=f"Your cost figures applied to this policy's simulated counts over the {machines} simulated machines.")
