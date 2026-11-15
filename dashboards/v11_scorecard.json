@@ -37,7 +37,8 @@
       {"id": "V5.1", "kind": "code", "check": "The drill-down renders for all 200 test engines with no exception; the cost page renders at all-zero and very large inputs with no exception"},
       {"id": "V5.2", "kind": "code", "check": "python -m dashboards.export_snapshots run twice gives byte-identical snapshots, including engine_history.csv (local check recorded like Phase 8 D2.1)"},
       {"id": "V5.3", "kind": "code", "check": "At least 3 new planted bugs are each caught: a wrong cost formula term (double-counted failure downtime), a shifted engine-history row, a wrong default engine, and a dropped 'simulated' label on the Home chart"},
-      {"id": "V5.4", "kind": "code", "check": "CI is green on the merge candidate, including the app-only clean install on Python 3.12, 3.13 and 3.14"}
+      {"id": "V5.4", "kind": "code", "check": "CI is green on the merge candidate, including the app-only clean install on Python 3.12, 3.13 and 3.14"},
+      {"id": "V5.5", "kind": "code+live", "added": "2026-11-15, extension at the author's request after the preview crashed on Engine drill-down (existing checks unchanged)", "check": "python -m dashboards.smoke_v11: every page loads with no exception from the committed tree (git archive of the pushed branch, fresh isolated interpreter), in CI and before each preview review; a planted missing page title is caught; after the merge, --live loads every page of the live app and none shows an exception"}
     ]}
   ],
   "result": null

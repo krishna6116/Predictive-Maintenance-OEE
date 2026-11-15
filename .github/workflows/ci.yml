@@ -122,6 +122,8 @@ jobs:
       - run: pip install -r app/requirements.txt  # nothing else: the app must run from a clean clone
       - name: Phase 8 verification (scorecard; pending items listed, failures fail the job)
         run: python -m dashboards.verify_phase8 --clean-env
+      - name: v1.1 smoke check (V5.5) - every page loads from the committed tree
+        run: python -m dashboards.smoke_v11 --ref HEAD
 
   # Phase 9 write-up: generated docs unchanged, the 10-check scorecard's code checks, and the planted-bug self-test.
   # External links are checked too, but in a non-blocking step so a flaky website cannot break CI.
