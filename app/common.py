@@ -25,7 +25,7 @@ TITLES = {
     "fleet": "Which engines are closest to failure, and how sure is the model?",
     "plan": "Which engines should the crews service in the next 7 days?",
     "oee": "Which maintenance policy gives the highest OEE? (Simulated plant)",
-    "cost": "What would each policy cost, with your own numbers? (Illustrative)",
+    "cost": "What would each policy cost? (Illustrative)",
     "monitoring": "Can we trust the model's forecasts this shift?",
     "about": "How were these numbers made, and can I check them?",
 }

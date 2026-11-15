@@ -97,7 +97,7 @@
     },
     {
       "id": "cost",
-      "title": "What would each policy cost, with your own numbers? (Illustrative)",
+      "title": "What would each policy cost? (Illustrative)",
       "added": "v1.1 amendment (extension only): defined in dashboards/v11_spec.json cost_page, copied here with the page; must stay identical to v11_spec.json phase8_spec_pages.cost",
       "filters": {},
       "numbers": [

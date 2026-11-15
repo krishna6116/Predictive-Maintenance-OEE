@@ -12,9 +12,7 @@ import common as C
 from costmodel import DEFAULTS, POLICIES, Counts, compare
 
 C.header("cost", "Choose your own cost figures; the counts behind them come from the simulated plant.")
-st.warning("**Illustrative:** you choose the costs. The counts and hours come from a simulated plant. "
-           "These are not real cost data.")
-C.simulated_notice()
+st.warning("**Illustrative costs · Simulated plant · not real cost data**")
 
 pol = C.load("oee_policies.csv")
 pooled = pol[(pol.scope == "Pooled") & (pol.kind == "policy")].set_index("policy")

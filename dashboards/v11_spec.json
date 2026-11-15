@@ -35,9 +35,9 @@
     "headline_labels": "plain English, at most 60 characters, no dataset codes (FD00x) in a metric label; dataset codes only in captions; the forecast tile reads like 'Forecast error on engines the model never saw (lower is better)'"
   },
   "cost_page": {
-    "title": "What would each policy cost, with your own numbers? (Illustrative)",
+    "title": "What would each policy cost? (Illustrative)",
     "nav_title": "Cost what-if (illustrative)",
-    "banner": "Illustrative: you choose the costs. The counts and hours come from a simulated plant. These are not real cost data.",
+    "banner": "Illustrative costs · Simulated plant · not real cost data",
     "inputs": {
       "c_hour": {"label": "Cost per hour of downtime", "default": 500},
       "c_service": {"label": "Cost per planned service", "default": 2000},
@@ -107,7 +107,7 @@
   "phase8_spec_pages": {
     "cost": {
       "id": "cost",
-      "title": "What would each policy cost, with your own numbers? (Illustrative)",
+      "title": "What would each policy cost? (Illustrative)",
       "added": "v1.1 amendment (extension only): defined in dashboards/v11_spec.json cost_page, copied here with the page; must stay identical to v11_spec.json phase8_spec_pages.cost",
       "filters": {},
       "numbers": [
