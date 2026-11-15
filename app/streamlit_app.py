@@ -2,9 +2,25 @@
 
 Run locally:  streamlit run app/streamlit_app.py
 """
+import importlib
+import sys
+from pathlib import Path
+
 import streamlit as st
 
-import common as C
+# A running app re-runs the page scripts after a code update but keeps modules it imported earlier, so a page could
+# meet an old app/common.py (the preview crash of 2026-11-15). Re-load the app's own modules on every run; a module of
+# the same name from another folder (tests) is dropped so the import below finds this app's copy.
+APP = Path(__file__).resolve().parent
+for _name in ("common", "costmodel"):
+    _mod = sys.modules.get(_name)
+    if _mod is not None:
+        if Path(getattr(_mod, "__file__", "") or "").resolve().parent == APP:
+            importlib.reload(_mod)
+        else:
+            del sys.modules[_name]
+
+import common as C  # noqa: E402
 
 st.set_page_config(page_title="Predictive Maintenance & OEE", layout="wide")
 

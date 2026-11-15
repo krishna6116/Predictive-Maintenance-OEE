@@ -30,3 +30,33 @@ def test_planted_missing_title_is_caught(tmp_path):
     res = S.run_tree(d)
     assert not res["ok"]
     assert res["pages"]["engine"] and any("engine" in e for e in res["pages"]["engine"])
+
+
+def test_in_place_update_reloads_common(tmp_path):
+    """The preview crash replayed in one process: the app runs with an old common.py, the file is updated in place,
+    then the engine page opens. app/streamlit_app.py must re-load common.py, so the engine page finds its title."""
+    import sys
+
+    from streamlit.testing.v1 import AppTest
+
+    d = copy_app(tmp_path)
+    c = d / "app" / "common.py"
+    new = c.read_text(encoding="utf-8")
+    line = '    "engine": "What happened to one engine, cycle by cycle?",\n'
+    saved = {k: sys.modules.get(k) for k in ("common", "costmodel")}
+    try:
+        c.write_text(new.replace(line, ""), encoding="utf-8")      # the old deployment
+        at = AppTest.from_file(str(d / "app" / "streamlit_app.py"), default_timeout=90).run()
+        assert not at.exception
+        assert "engine" not in sys.modules["common"].TITLES         # the old module is loaded
+        c.write_text(new + "\n", encoding="utf-8")                   # the update lands in place (size differs)
+        at = AppTest.from_file(str(d / "app" / "streamlit_app.py"), default_timeout=90).run()
+        at.switch_page("views/engine.py").run()
+        assert not at.exception, [e.value for e in at.exception]
+        assert at.title[0].value == "What happened to one engine, cycle by cycle?"
+    finally:
+        for k, m in saved.items():
+            if m is None:
+                sys.modules.pop(k, None)
+            else:
+                sys.modules[k] = m
