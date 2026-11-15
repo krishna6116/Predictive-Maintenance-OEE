@@ -171,7 +171,7 @@
           "id": "D5.4",
           "kind": "code",
           "passed": true,
-          "detail": "cold-cache script time: home 0.31s, fleet 0.30s, engine 0.35s, plan 0.28s, oee 0.28s, cost 0.25s, monitoring 0.27s, about 0.24s"
+          "detail": "cold-cache script time: home 0.30s, fleet 0.27s, engine 0.34s, plan 0.27s, oee 0.27s, cost 0.25s, monitoring 0.26s, about 0.23s"
         },
         {
           "id": "D5.5",

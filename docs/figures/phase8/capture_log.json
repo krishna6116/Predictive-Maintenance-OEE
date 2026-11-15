@@ -1,10 +1,10 @@
 {
   "app_url": "https://predictive-maintenance-oee.streamlit.app",
-  "captured_utc": "2026-11-15T20:53:16Z",
+  "captured_utc": "2026-11-15T23:06:49Z",
   "manifest_data_checksum": "e3521987f5db6eebc824b89da9e9df13467c696dc6d25941fb2f73ecb38c9ec9",
   "phone": {
     "home": {
-      "title_visible_s": 1.86,
+      "title_visible_s": 1.76,
       "scroll_width": 320,
       "content_height": 3091,
       "background": "rgb(255, 255, 255)",
@@ -12,7 +12,7 @@
       "under_5_s": true
     },
     "fleet": {
-      "title_visible_s": 1.1,
+      "title_visible_s": 1.2,
       "scroll_width": 375,
       "content_height": 2872,
       "background": "rgb(255, 255, 255)",
@@ -20,7 +20,7 @@
       "under_5_s": true
     },
     "plan": {
-      "title_visible_s": 1.02,
+      "title_visible_s": 1.05,
       "scroll_width": 375,
       "content_height": 2877,
       "background": "rgb(255, 255, 255)",
@@ -28,14 +28,6 @@
       "under_5_s": true
     },
     "oee": {
-      "title_visible_s": 1.06,
-      "scroll_width": 375,
-      "content_height": 2823,
-      "background": "rgb(255, 255, 255)",
-      "no_horizontal_scroll": true,
-      "under_5_s": true
-    },
-    "monitoring": {
       "title_visible_s": 1.05,
       "scroll_width": 375,
       "content_height": 2823,
@@ -43,10 +35,18 @@
       "no_horizontal_scroll": true,
       "under_5_s": true
     },
-    "about": {
-      "title_visible_s": 1.58,
+    "monitoring": {
+      "title_visible_s": 1.06,
       "scroll_width": 375,
-      "content_height": 3473,
+      "content_height": 2823,
+      "background": "rgb(255, 255, 255)",
+      "no_horizontal_scroll": true,
+      "under_5_s": true
+    },
+    "about": {
+      "title_visible_s": 1.02,
+      "scroll_width": 375,
+      "content_height": 3436,
       "background": "rgb(255, 255, 255)",
       "no_horizontal_scroll": true,
       "under_5_s": true
