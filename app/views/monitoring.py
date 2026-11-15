@@ -15,6 +15,11 @@ C.header("monitoring", "Each 8-hour shift the flow checks the incoming sensor da
 
 runs = C.load("monitoring_runs.csv")
 target, limit = C.fact("p7_drift_target"), C.fact("c1_limit")
+
+# plain-English summary first (review 2026-11-15: the page was hard to read without the project's vocabulary);
+# filled once the results below are computed, so every claim in it comes from the data
+summary = st.container()
+st.caption(C.plain("drift"))
 SCEN = {"Phase 7: FD001/FD003, rule v1": "phase7_v1",
         "Phase 7b: FD002/FD004 synchronized, rule v2": "phase7b_v2_synchronized",
         "Phase 7b: FD002/FD004 staggered, rule v2": "phase7b_v2_staggered"}
@@ -30,6 +35,8 @@ c1.caption(f"{int(tested.any_drifted.astype(bool).sum())} of {len(tested)} teste
            f"{'met' if fa <= target else '**not met**'}. Cause traced to a reference that matched engine age but not wear.")
 c2.metric("Phase 7 runs flagged for retraining", f"{int(p7.needs_retraining.sum())} of {len(p7)}",
           help="Runs with needs_retraining set (drift, error ratio or interval misses) in the Phase 7 clean replay.")
+c2.caption("Counted over every run. The false-alarm rate on the left counts only the runs that had a drift test, "
+           "so the two figures use different totals.")
 
 rows = []
 for fleet in ("synchronized", "staggered"):
@@ -42,6 +49,13 @@ for fleet in ("synchronized", "staggered"):
 c1tab = pd.DataFrame(rows)
 st.dataframe(c1tab, hide_index=True, width="stretch")
 failed = sorted(set(c1tab[c1tab.Result == "FAIL"].Dataset))
+passed = sorted(set(c1tab.Dataset) - set(failed))
+summary.info(
+    "**In short:** the model gets a health check every shift. Two alarm rules were tested on healthy engines, where a "
+    f"good alarm should stay quiet. The first rule raised false alarms on {C.pct(fa)} of tested runs against a "
+    f"{C.pct(target, 0)} target ({'met' if fa <= target else 'not met'}). The second rule, fixed in advance, stayed "
+    f"within its {C.pct(limit, 0)} limit on {', '.join(passed) or 'no dataset'} and failed on {', '.join(failed) or 'no dataset'}. "
+    "Every result is shown below as measured, not re-tuned.")
 st.markdown(f"Phase 7b's rule was pre-registered (fixed on validation engines before any FD002/FD004 test replay). "
             f"C1 passes on {', '.join(sorted(set(c1tab.Dataset) - set(failed))) or 'no dataset'} and **FAILS on "
             f"{', '.join(failed) or 'no dataset'}**; the likely cause is a mix of two fault modes the expected sensor levels "
@@ -69,8 +83,17 @@ if C.has_rows(r, "runs"):
                  alt.Tooltip("share:Q", title="Runs flagged, last 10 (%)", format=".0f")])
     # no line-end labels: the lines end at the same point and the labels collided at phone width (D5.5);
     # the legend names each line by colour and dash
-    lim =alt.Chart().mark_rule(color=C.OKABE_ITO["black"], strokeDash=[2, 2]).encode(y=alt.datum(100 * limit))
-    lim_lab = alt.Chart().mark_text(align="left", dx=4, dy=-6).encode(x=alt.value(0), y=alt.datum(100 * limit),
-                                                                     text=alt.value(f"{C.pct(limit, 0)} limit"))
-    st.altair_chart(alt.layer(lines, lim, lim_lab).properties(height=300), width="stretch")
-    st.caption(f"Shift: {C.define('shift')} Clean-run flag rate: {C.define('clean_run_flag_rate')}")
+    layers = [lines]
+    if scen != "phase7_v1":  # the C1 limit belongs to the Phase 7b rule; Phase 7 had a drift target instead
+        lim = alt.Chart().mark_rule(color=C.OKABE_ITO["black"], strokeDash=[2, 2]).encode(y=alt.datum(100 * limit))
+        lim_lab = alt.Chart().mark_text(align="left", dx=4, dy=-6).encode(x=alt.value(0), y=alt.datum(100 * limit),
+                                                                         text=alt.value(f"{C.pct(limit, 0)} limit (C1)"))
+        layers += [lim, lim_lab]
+    st.altair_chart(alt.layer(*layers).properties(height=300), width="stretch")
+    # the note matches the scenario shown (review 2026-11-15: it described rule v2 while rule v1 was selected)
+    if scen == "phase7_v1":
+        st.caption(f"Shift: {C.define('shift')} Phase 7, rule v1: a run is flagged when drift, the error ratio or "
+                   f"interval misses trip; its pre-registered target was on drift false alarms ({C.pct(target, 0)}), so "
+                   "no flag limit is drawn.")
+    else:
+        st.caption(f"Shift: {C.define('shift')} Clean-run flag rate: {C.define('clean_run_flag_rate')}")

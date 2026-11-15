@@ -66,6 +66,8 @@ jobs:
         run: python -m maintenance.verify_phase6
       - name: Phase 8 snapshots vs PostgreSQL (public tables) and the raw results
         run: python -m dashboards.verify_phase8 --no-app
+      - name: v1.1 verification (all 200 drill-downs, cost input sets, engine history vs NASA files, planted bugs)
+        run: python -m dashboards.verify_v11
       - name: Committed files are unchanged by the run
         run: git diff --exit-code -- features/ pipeline/sensor_limits.json models/ maintenance/ docs/MODEL_METRICS.md docs/MODEL_METRICS_PHASE5.md docs/MODEL_METRICS_PHASE5B.md docs/MAINTENANCE_OEE.md dashboards/
 
@@ -122,6 +124,8 @@ jobs:
       - run: pip install -r app/requirements.txt  # nothing else: the app must run from a clean clone
       - name: Phase 8 verification (scorecard; pending items listed, failures fail the job)
         run: python -m dashboards.verify_phase8 --clean-env
+      - name: v1.1 smoke check (V5.5) - every page loads from the committed tree
+        run: python -m dashboards.smoke_v11 --ref HEAD
 
   # Phase 9 write-up: generated docs unchanged, the 10-check scorecard's code checks, and the planted-bug self-test.
   # External links are checked too, but in a non-blocking step so a flaky website cannot break CI.

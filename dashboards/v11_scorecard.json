@@ -1,0 +1,45 @@
+{
+  "version": "1.1.0",
+  "committed_before_code": true,
+  "scoring": "Five dimensions, each pass/fail; a dimension passes only if every one of its checks passes. Manual checks pass only with their evidence committed and their line ticked in docs/V11_CHECKLIST.md. Criteria are never loosened after results are seen; a wrong check is changed in a separate commit labelled 'post hoc' and reported. A miss is reported as a miss.",
+  "check_kinds": {
+    "code": "python -m dashboards.verify_v11 (CI)",
+    "live": "python -m dashboards.verify_v11 --live <url>: on the preview app before the merge and on the real URL after it; evidence in dashboards/v11_evidence.json",
+    "manual": "docs/V11_CHECKLIST.md ticked, with its evidence file committed"
+  },
+  "dimensions": [
+    {"id": "V1", "name": "Correct", "checks": [
+      {"id": "V1.1", "kind": "code", "check": "Every number on the Home chart and the 'Business impact (simulated)' row equals an independent recomputation from maintenance/machines_phase6.csv"},
+      {"id": "V1.2", "kind": "code", "check": "The cost page's totals and savings equal verify_v11's own arithmetic at the defaults and at 3 other input sets (all zeros, one cost at a time, very large values); tests/test_cost.py hand-computed cases pass, including the no-double-counting case"},
+      {"id": "V1.3", "kind": "code", "check": "For every one of the 200 FD001/FD003 test engines, the drill-down's last forecast, interval, first crossing, flagged status, service line and observed-cycle count equal independent recomputations"},
+      {"id": "V1.4", "kind": "code", "check": "engine_history.csv equals data/raw/test_FD00x.txt and maintenance/forecasts_rolling_FD00x.csv cell for cell (CI verify job, which has the pinned data); its manifest entry (rows, sha256) is current"},
+      {"id": "V1.5", "kind": "code", "check": "Phase 8 verifier still 5/5 and Phase 9 verifier still 10 of 10 (code checks in CI; network checks re-run after the merge)"}
+    ]},
+    {"id": "V2", "name": "Clear in 60 seconds", "checks": [
+      {"id": "V2.1", "kind": "live", "check": "At 1280 x 800, the Home page shows without scrolling: the policy chart, the 'Business impact (simulated)' row and the plain-English headline tiles"},
+      {"id": "V2.2", "kind": "code", "check": "No metric label on Home contains a dataset code (FD00x); each Home headline label is at most 60 characters"},
+      {"id": "V2.3", "kind": "code", "check": "Each of the 7 terms (RMSE, 90% interval, near-failure MAE, MC dropout, drift, OEE, CP-SAT) has a one-line caption or tooltip on a page where it appears (AppTest text scan)"},
+      {"id": "V2.4", "kind": "code", "check": "The drill-down opens on the pre-registered default engine (flagged, lowest lower bound in FD001) and shows sensor names with codes, matching v11_spec.json engine_page.sensors.names"}
+    ]},
+    {"id": "V3", "name": "Honest", "checks": [
+      {"id": "V3.1", "kind": "code", "check": "'Simulated' appears with every OEE, downtime or failure element: the Home chart title, the impact row title, and every page that shows plant values (extends Phase 8 D4.1)"},
+      {"id": "V3.2", "kind": "code", "check": "The cost page shows the illustrative banner, the formula, the 'illustrative defaults, change them' note and the no-double-counting sentence"},
+      {"id": "V3.3", "kind": "code", "check": "No currency figure ('$' followed by a digit, or a number followed by USD/dollars) in README.md, docs/CASE_STUDY.md or any file written by writeup.report_phase9"},
+      {"id": "V3.4", "kind": "code", "check": "The Phase 7 false-alarm miss ('not met') and the FD004 C1 failure ('FAIL') are still visible on the monitoring page (Phase 8 D4.3 still passes)"}
+    ]},
+    {"id": "V4", "name": "Usable", "checks": [
+      {"id": "V4.1", "kind": "live", "check": "At 375 px, the Home, cost and drill-down pages have no horizontal page scroll (scroll width <= 375) and the menu opens; phone screenshots of the three pages committed in docs/figures/v11/"},
+      {"id": "V4.2", "kind": "code", "check": "Each page's script runs in under 5 s under AppTest (extends Phase 8 D5.4); the drill-down for any engine in under 5 s"},
+      {"id": "V4.3", "kind": "live", "check": "On the awake app, each new page's title is visible within 5 s of navigation (measured three times; the median counts)"},
+      {"id": "V4.4", "kind": "code", "check": "Every new chart uses only Okabe-Ito colours, pairs colour with a second channel, and titles every axis with units where quantitative (extends Phase 8 D5.2 and D5.3)"}
+    ]},
+    {"id": "V5", "name": "Robust", "checks": [
+      {"id": "V5.1", "kind": "code", "check": "The drill-down renders for all 200 test engines with no exception; the cost page renders at all-zero and very large inputs with no exception"},
+      {"id": "V5.2", "kind": "code", "check": "python -m dashboards.export_snapshots run twice gives byte-identical snapshots, including engine_history.csv (local check recorded like Phase 8 D2.1)"},
+      {"id": "V5.3", "kind": "code", "check": "At least 3 new planted bugs are each caught: a wrong cost formula term (double-counted failure downtime), a shifted engine-history row, a wrong default engine, and a dropped 'simulated' label on the Home chart"},
+      {"id": "V5.4", "kind": "code", "check": "CI is green on the merge candidate, including the app-only clean install on Python 3.12, 3.13 and 3.14"},
+      {"id": "V5.5", "kind": "code+live", "added": "2026-11-15, extension at the author's request after the preview crashed on Engine drill-down (existing checks unchanged)", "check": "python -m dashboards.smoke_v11: every page loads with no exception from the committed tree (git archive of the pushed branch, fresh isolated interpreter), in CI and before each preview review; a planted missing page title is caught; after the merge, --live loads every page of the live app and none shows an exception"}
+    ]}
+  ],
+  "result": null
+}

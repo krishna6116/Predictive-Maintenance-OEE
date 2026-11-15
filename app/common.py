@@ -25,6 +25,8 @@ TITLES = {
     "fleet": "Which engines are closest to failure, and how sure is the model?",
     "plan": "Which engines should the crews service in the next 7 days?",
     "oee": "Which maintenance policy gives the highest OEE? (Simulated plant)",
+    "cost": "What would each policy cost? (Illustrative)",
+    "engine": "What happened to one engine, cycle by cycle?",
     "monitoring": "Can we trust the model's forecasts this shift?",
     "about": "How were these numbers made, and can I check them?",
 }
@@ -43,7 +45,9 @@ def snapshot_dir() -> Path:
 
 
 @st.cache_data(show_spinner=False)
-def _read(folder: str, name: str):
+def _read(folder: str, name: str, version: str | None = None):
+    """`version` (the file's sha256 in the manifest) is part of the cache key only: when a deployment replaces the
+    snapshots in place, the new files get new cache entries instead of the old cached data (preview, 2026-11-15)."""
     d = Path(folder)
     if not (d / "manifest.json").exists():
         raise SnapshotError(f"manifest.json is missing from {d}")
@@ -69,10 +73,18 @@ def _read(folder: str, name: str):
     return df
 
 
+def _version(name: str) -> str | None:
+    """The file's sha256 as listed in manifest.json, or None if the manifest cannot be read (_read then reports it)."""
+    try:
+        return json.loads((snapshot_dir() / "manifest.json").read_text(encoding="utf-8"))["files"][name]["sha256"]
+    except (OSError, ValueError, KeyError, TypeError):
+        return None
+
+
 def load(name: str):
     """A snapshot (DataFrame, or dict for JSON); on any problem show a clear message and stop the page."""
     try:
-        return _read(str(snapshot_dir()), name)
+        return _read(str(snapshot_dir()), name, _version(name))
     except SnapshotError as e:
         st.error(f"Data unavailable: {e}. Rebuild the snapshots with `python -m dashboards.export_snapshots` "
                  "or restore them from the repository.")
@@ -101,16 +113,26 @@ BUSINESS = {
     "fleet": "Which assets need attention first, and how much can we trust the warning?",
     "plan": "With limited crews, which jobs go on which day so nothing fails while waiting?",
     "oee": "Does predictive maintenance pay off against a fixed calendar or running to failure?",
+    "cost": "With our own cost figures, which maintenance policy is cheapest?",
+    "engine": "For one machine: when did the warning start, and what did the plan do about it?",
     "monitoring": "When should we stop trusting the forecasts and retrain the model?",
     "about": "Why should anyone believe these numbers?",
 }
 WHY = {
-    "home": "The headline results of a predictive-maintenance pipeline built on NASA engine data, and where to find each "
+    "home": "The app predicts when jet engines will need maintenance from their sensor data, plans crew work under crew "
+            "limits, and shows the effect on a simulated plant's OEE. This page gives the headline results of that "
+            "predictive-maintenance pipeline, built on NASA engine data, and where to find each "
             "part. It matters because every figure here is re-computed by independent code, and the misses are shown too.",
     "fleet": "Each test engine's forecast remaining life with its uncertainty interval, and which engines are flagged. A planner acts "
              "on the pessimistic edge of the interval, so a confident wrong forecast does not cause a failure.",
     "plan": "The crew schedule the optimizer chose for flagged engines under the crew limit. It shows the trade-off a "
             "maintenance planner makes every day, and which engines miss out when capacity runs short.",
+    "engine": "One test engine's story: four sensor readings drifting as it wears, the forecast remaining life with its "
+              "uncertainty band shift by shift, the moment the band's lower edge reached the alert line, and the service day "
+              "the crew plan gave it. It shows how a single warning turns into a maintenance decision.",
+    "cost": "Your cost figures applied to the simulated counts of each policy: downtime hours, planned services, "
+            "unplanned failures and wasted engine life. It shows how the policy comparison turns into money, while "
+            "making clear that the costs are yours and the plant is simulated.",
     "oee": "Three maintenance policies replayed on the same simulated machines. It turns forecast accuracy into the "
            "operations language of OEE, downtime and failures, labelled as simulated because no real plant was measured.",
     "monitoring": "How the shift-by-shift flow judges its own forecasts, including where its rules failed their targets. "
@@ -119,17 +141,43 @@ WHY = {
 }
 
 
-def header(page: str, intro: str) -> None:
+# v1.1 plain-English help (dashboards/v11_spec.json plain_english_help): one sentence per term, shown where the term
+# first appears on a page; the technical definition stays in the tooltip and About keeps the full detail. No numbers here.
+PLAIN = {
+    "RMSE": "the typical size of a forecast's miss, in engine cycles; lower is better.",
+    "90% interval": "a range of remaining life that should contain the true value for 9 engines in 10.",
+    "near-failure MAE": "the average miss, in cycles, on the engines closest to failure, where a wrong forecast costs most.",
+    "MC dropout": "the model is run many times with random parts switched off; the spread of its answers gives the interval.",
+    "drift": "the incoming sensor readings stop looking like the data the model learned from, so its forecasts may be off.",
+    "OEE": "overall equipment effectiveness: the share of planned time spent making good parts at full speed.",
+    "CP-SAT": "Google OR-Tools' optimizer; it books flagged engines onto crew slots without exceeding the crews available.",
+}
+
+
+def plain(term: str) -> str:
+    """'Term: plain sentence', for captions and tooltips."""
+    return f"{term}: {PLAIN[term]}"
+
+
+def header(page: str, intro: str, explain: bool = True) -> None:
     st.title(TITLES[page])
-    st.caption(intro)
+    if intro:
+        st.caption(intro)
     st.markdown(f"**Business question:** {BUSINESS[page]}")
+    if explain:  # Home shows its results first and calls explain_why() lower down
+        explain_why(page)
+
+
+def explain_why(page: str) -> None:
     with st.expander("What this shows / why it matters"):
         st.write(WHY[page])
 
 
 def simulated_notice() -> None:
-    st.warning(f"**Simulated.** {fact('simulation_notice')}. OEE = Availability x Performance x Quality "
-               "from a simulated plant driven by the real NASA engine lives and the real forecasts.")
+    # the notice text starts 'SIMULATED plant: ...'; shown once in bold, not after a second 'Simulated.' (review 2026-11-15)
+    notice = fact("simulation_notice").replace("SIMULATED plant", "Simulated plant", 1)
+    st.warning(f"**{notice}.** OEE = Availability x Performance x Quality from a simulated plant driven by the real "
+               "NASA engine lives and the real forecasts.")
 
 
 def has_rows(df: pd.DataFrame, what: str) -> bool:

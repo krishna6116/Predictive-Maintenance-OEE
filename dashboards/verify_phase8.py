@@ -215,12 +215,37 @@ def expected_metrics(T, page: str, view: dict) -> dict:
     out = {}
     if page == "home":
         pub = "LSTM" if T["published_model"] == "LSTM" else "XGBoost (168 features)"
-        out[f"{T['published_model']} forecast error on unseen engines (FD003 RMSE, cycles)"] = f"{T['models'][('FD003', pub)]['rmse']:.2f}"
-        out["XGBoost forecast error on unseen engines (FD003 RMSE, cycles)"] = f"{T['models'][('FD003', 'XGBoost (168 features)')]['rmse']:.2f}"
-        order = ("Predictive", "Fixed interval", "Run to failure")
-        out["Simulated OEE: predictive / fixed / run to failure"] = " / ".join(pct(T["oee"][("Pooled", p)]["oee"]) for p in order)
-        out["Simulated unplanned failures: predictive / fixed / run to failure"] = " / ".join(
-            str(T["oee"][("Pooled", p)]["unplanned_failures"]) for p in order)
+        out[f"{T['published_model']} forecast error on engines it never saw (cycles)"] = f"{T['models'][('FD003', pub)]['rmse']:.2f}"
+        out["XGBoost, previous model, same engines (cycles)"] = f"{T['models'][('FD003', 'XGBoost (168 features)')]['rmse']:.2f}"
+    elif page == "engine":
+        # default engine re-derived: flagged at its last cycle, lowest lower bound (rule-E bounds rebuilt above), ties lowest id
+        ds, c = view["dataset"], T["settings"]
+        eng = min((e for e, x in T["fleet"][ds].items() if x["flagged"]), key=lambda e: (T["fleet"][ds][e]["low"], e))
+        roll = sorted((r for r in rows(f"maintenance/forecasts_rolling_{ds}.csv") if int(r["engine_id"]) == eng), key=lambda r: int(r["cycle"]))
+        last, cross = roll[-1], [int(r["cycle"]) for r in roll if fl(r["rul_low"]) <= c["ALERT_THRESHOLD"]]
+        nom = pct(jload("models/results_phase5.json")["mc_dropout"]["nominal"], 0)
+        d = T["decisions"][(ds, eng)]
+        day = int(fl(d["service_day"])) if d["service_day"] else None
+        # v1.1 amendment (author-approved 2026-11-15): day 0 reads 'Service today'
+        service = ("Not flagged" if not tf(d["flagged"]) else "No crew slot in the horizon" if day is None
+                   else "Service today" if day == 0 else f"Service day {day}")
+        out["Forecast remaining life at the last reading (cycles)"] = f"{fl(last['rul_mc_mean']):.1f}"
+        out[f"{nom} interval at the last reading (cycles)"] = f"{fl(last['rul_low']):.1f} to {fl(last['rul_high']):.1f}"
+        out["Observed cycles"] = str(len(roll))
+        out[f"First cycle the lower bound reached {c['ALERT_THRESHOLD']} cycles"] = str(cross[0]) if cross else "Never"
+        out["Flagged for service"] = "Yes" if T["fleet"][ds][eng]["flagged"] else "No"
+        out["Maintenance plan"] = service
+    elif page == "cost":
+        # own arithmetic (not app/costmodel.py), with the illustrative defaults pre-registered in v11_spec.json
+        c = {k: v["default"] for k, v in json.loads((ROOT / "dashboards" / "v11_spec.json").read_text(encoding="utf-8"))["cost_page"]["inputs"].items()}
+        tot = {}
+        for pol in ("Predictive", "Fixed interval", "Run to failure"):
+            o = T["oee"][("Pooled", pol)]
+            tot[pol] = (o["downtime_hours"] * c["c_hour"] + o["planned_services"] * c["c_service"]
+                        + o["unplanned_failures"] * c["c_failure"] + o["wasted_cycles"] * c["c_cycle"])
+            out[f"Total cost, {pol.lower()} (illustrative)"] = f"${tot[pol]:,.0f}"
+        out["Saving of predictive vs fixed interval (illustrative)"] = f"${tot['Fixed interval'] - tot['Predictive']:,.0f}"
+        out["Saving of predictive vs run to failure (illustrative)"] = f"${tot['Run to failure'] - tot['Predictive']:,.0f}"
     elif page == "fleet":
         dss = ["FD001", "FD003"] if view["dataset"] == "Both" else [view["dataset"]]
         for ds in dss:
@@ -251,9 +276,29 @@ def expected_metrics(T, page: str, view: dict) -> dict:
     return out
 
 
+def expected_charts(T, page: str) -> dict:
+    """v1.1 Home charts: {chart title: {policy: bar label}}, recomputed from the per-machine file."""
+    if page != "home":
+        return {}
+    o = {p: T["oee"][("Pooled", p)] for p in ("Predictive", "Fixed interval", "Run to failure")}
+    return {"OEE (simulated)": {p: pct(v["oee"]) for p, v in o.items()},
+            "Unplanned failures (simulated, count)": {p: f"{v['unplanned_failures']:,.0f}" for p, v in o.items()},
+            "Downtime (simulated, hours)": {p: f"{v['downtime_hours']:,.0f}" for p, v in o.items()}}
+
+
 def expected_tables(T, page: str, view: dict) -> list[tuple[str, list]]:
     """(description, [(row key, column, expected string)]) for the tables whose numbers the page shows."""
     checks = []
+    if page == "home":  # v1.1 'Business impact (simulated)' table
+        o = {p: T["oee"][("Pooled", p)] for p in ("Predictive", "Fixed interval", "Run to failure")}
+        cells = []
+        for col, other in (("vs fixed interval", "Fixed interval"), ("vs run to failure", "Run to failure")):
+            cells += [(("Failures avoided (simulated)",), col, f"{o[other]['unplanned_failures'] - o['Predictive']['unplanned_failures']:,}"),
+                      (("Downtime hours saved (simulated)",), col, f"{o[other]['downtime_hours'] - o['Predictive']['downtime_hours']:,.0f}"),
+                      # amended 2026-11-15, author-approved review fix: label ends 'predictive / other', cells 'a / b'
+                      (("Wasted engine life, cycles (simulated): predictive / other",), col,
+                       f"{o['Predictive']['wasted_cycles']:,} / {o[other]['wasted_cycles']:,}")]
+        checks.append(("business impact table", cells))
     if page == "fleet":
         dss = ["FD001", "FD003"] if view["dataset"] == "Both" else [view["dataset"]]
         cells = []
@@ -287,7 +332,7 @@ def expected_tables(T, page: str, view: dict) -> list[tuple[str, list]]:
 
 
 def table_lookup(df, key: tuple, col: str):
-    keycols = {1: ["Policy"], 2: ["Dataset", "Model"] if "Model" in df.columns else (["Dataset", "Fleet"] if "Fleet" in df.columns else ["Dataset", "Status"])}[len(key)]
+    keycols = {1: ["Impact (simulated)" if "Impact (simulated)" in df.columns else "Policy"], 2: ["Dataset", "Model"] if "Model" in df.columns else (["Dataset", "Fleet"] if "Fleet" in df.columns else ["Dataset", "Status"])}[len(key)]
     hit = df
     for kc, kv in zip(keycols, key):
         if kc not in hit.columns:
@@ -476,6 +521,9 @@ def check_facts(T, snap: Path, card: Card):
             "c1_limit": T["c1_limit"], "p7_drift_target": T["p7_target"], "definitions": SPEC["definitions"],
             "solver_status_FD001": T["r6"]["datasets"]["FD001"]["snapshot"]["schedule_status"],
             "solver_status_FD003": T["r6"]["datasets"]["FD003"]["snapshot"]["schedule_status"]}
+    # v1.1: the RUL cap re-derived from the published predictions (the value the true RUL was clipped to), not from code
+    clipped = {fl(r["RUL"]) for r in rows("models/predictions_phase5b.csv") if fl(r["RUL_true"]) > fl(r["RUL"])}
+    want["rul_cap"] = int(clipped.pop()) if len(clipped) == 1 else f"not one clip value: {sorted(clipped)}"
     bad = [k for k, v in want.items() if f.get(k) != v]
     if bad:
         card.set("D1.3", False, f"facts.json differs from its sources: {bad}")
@@ -501,6 +549,12 @@ def check_app(T, card: Card, data_checksum: str):
             for label in exp:
                 if label not in got["metrics"]:
                     probs.append(f"{page} {view}: missing metric '{label}'")
+            for title, want in expected_charts(T, page).items():  # v1.1: the bar labels the Home charts show
+                for pol, label in want.items():
+                    n += 1
+                    shown = got.get("charts", {}).get(title, {}).get(pol)
+                    if shown != label:
+                        probs.append(f"{page} {view} chart '{title}' {pol}: shows {shown}, expected {label}")
             for desc, cells in expected_tables(T, page, view):
                 tabs = got["tables"]
                 for key, col, want in cells:

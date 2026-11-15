@@ -19,9 +19,9 @@ from streamlit.testing.v1 import AppTest
 
 ROOT = Path(__file__).resolve().parents[1]
 SPEC = json.loads((ROOT / "dashboards" / "phase8_spec.json").read_text(encoding="utf-8"))
-PAGES = ["home", "fleet", "plan", "oee", "monitoring", "about"]
+PAGES = ["home", "fleet", "engine", "plan", "oee", "cost", "monitoring", "about"]
 OKABE_ITO = {"#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7", "#000000"}
-SIMULATED_PAGES = {"home", "oee"}     # pages that show OEE or simulated plant values
+SIMULATED_PAGES = {"home", "oee", "cost"}     # pages that show OEE or simulated plant values
 TIMEOUT = 60
 MAX_SECONDS = 5.0
 
@@ -32,7 +32,8 @@ def run_page(page: str, snap: Path | None = None, widgets: dict | None = None) -
         at = AppTest.from_file(str(ROOT / "app" / "views" / f"{page}.py"), default_timeout=TIMEOUT).run()
         if widgets:
             for k, v in widgets.items():
-                el = at.radio(key=k) if k in ("dataset", "scope", "scenario") else at.multiselect(key=k)
+                el = (at.radio(key=k) if k in ("dataset", "scope", "scenario") else at.selectbox(key=k) if k.startswith("engine")
+                      else at.multiselect(key=k))
                 el.set_value(v)
             at.run()
     return at
@@ -54,7 +55,7 @@ def snapshot_env(snap: Path | None):
 
 def combos(page: str) -> list[dict]:
     """Every filter combination the spec lists, plus every subset of the multiselects (empty included)."""
-    if page in ("fleet",):
+    if page in ("fleet", "engine"):  # engine: each dataset with its default engine (verify_v11 covers all 200)
         return [{"dataset": d} for d in SPEC_FILTER(page, "dataset")]
     if page == "plan":
         risks = ["critical", "high", "medium"]
@@ -82,13 +83,23 @@ def texts(at: AppTest) -> str:
         out += [str(e.value) for e in getattr(at, kind)]
     for m in at.metric:
         out += [m.label, str(m.value), m.help or ""]
-    for d in at.dataframe:
-        out += [" ".join(map(str, d.value.columns)), d.value.to_string()]
+    for d in frames(at):
+        out += [" ".join(map(str, d.columns)), d.to_string()]
     for c in charts(at):
         out.append(json.dumps(c))
     for e in at.get("expander"):
         out.append(str(e.label))
     return "\n".join(out)
+
+
+def frames(at: AppTest) -> list:
+    """Every table a page shows: interactive data grids and static tables (v1.1: Home's impact table is static so it
+    wraps at phone width); a static table's index is turned back into its first column."""
+    out = [d.value for d in at.dataframe]
+    for t in at.table:
+        v = t.value
+        out.append(v.reset_index() if v.index.name else v)
+    return out
 
 
 def charts(at: AppTest) -> list[dict]:
@@ -101,6 +112,25 @@ def charts(at: AppTest) -> list[dict]:
             walk(e)
     walk(at.main)
     return specs
+
+
+def chart_labels(at: AppTest) -> dict:
+    """v1.1: the bar labels each titled chart shows, from the data Streamlit sends: {title: {policy: label}}."""
+    import pyarrow as pa
+    out = {}
+
+    def walk(node):
+        for e in getattr(node, "children", {}).values():
+            if getattr(e, "type", None) == "vega_lite_chart":
+                spec = json.loads(e.proto.spec)
+                title = next((l.get("title") for l in layers(spec) if l.get("title")), spec.get("title"))
+                for ds in e.proto.datasets:
+                    rows = pa.ipc.open_stream(ds.data.data).read_all().to_pylist()
+                    if title and rows and {"policy", "label"} <= set(rows[0]):
+                        out[title if isinstance(title, str) else str(title)] = {r["policy"]: r["label"] for r in rows}
+            walk(e)
+    walk(at.main)
+    return out
 
 
 def layers(spec: dict) -> list[dict]:
@@ -269,7 +299,8 @@ def rendered_numbers() -> dict:
             at = run_page(page, widgets=w or None)
             out.setdefault(page, {})[json.dumps(w, sort_keys=True)] = {
                 "metrics": {m.label: str(m.value) for m in at.metric},
-                "tables": [d.value for d in at.dataframe],
+                "tables": frames(at),
+                "charts": chart_labels(at),
                 "text": texts(at)}
     return out
 

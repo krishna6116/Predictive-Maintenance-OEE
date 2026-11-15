@@ -1,6 +1,6 @@
 {
   "note": "Evidence for checks that need the local database; written by python -m dashboards.verify_phase8 --local",
-  "data_checksum": "6467d24fa7dd4e586f0e37eaffc2914ccfadca104692fd51a6dd3149766ea079",
+  "data_checksum": "e3521987f5db6eebc824b89da9e9df13467c696dc6d25941fb2f73ecb38c9ec9",
   "sources": {
     "maintenance/snapshot_decisions_phase6.csv": "ba96bdc09b82e75907c5ae76e7c1c321e4e0aad183325b6bf8a485a801380c09",
     "maintenance/results_phase6.json": "7a086dcd899a485248ee8578649048613bda57588cde2891f1a369c75891a105",
@@ -21,8 +21,10 @@
     "results/phase7b/fresh_staggered/phase7_health.csv": "7a676a554537ac13729fca1aa2867af4f951108f7f73e6a1c94e5e24c88aa345",
     "results/phase7b/checks.json": "a700ca18d0b6ace3c169ce435204ae35a33d197e1d915d714c5b9f04abe44b19",
     "pipeline/phase7b_criteria.json": "c0408d069bc8cbcfa809dd65677e31eff9ecb39a55fd1d893ba01bf6e7bb7339",
-    "dashboards/phase8_spec.json": "2eba3c78e0f98860dfb7969e06082160fb9e00bea80f09553bb0b4cd93fa97b3",
-    "models/calibration.py": "257929cf86f6d9b2d40aa3ddb0006ba0b39f88890ecf1c9b863d2248f8c798e5"
+    "dashboards/phase8_spec.json": "fb946b0aff63c33667ec22eb64b75ef2a33d3943c42b1393834e030d832b8df6",
+    "models/calibration.py": "257929cf86f6d9b2d40aa3ddb0006ba0b39f88890ecf1c9b863d2248f8c798e5",
+    "data/checksums.sha256": "a53ac56fa100946f40158ff0f063b85ce36c2e315c647b6cead97df48af598e1",
+    "features/build.py": "8c46e545f4863f4ea1494a9401b5b47acaf674bdda119cdf9b243fd403caf5e4"
   },
   "checks": {
     "D1.5": [

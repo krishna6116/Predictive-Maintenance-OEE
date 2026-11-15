@@ -96,6 +96,77 @@
       "required_text": ["Simulated", "How to read this app", "What this shows"]
     },
     {
+      "id": "engine",
+      "title": "What happened to one engine, cycle by cycle?",
+      "added": "v1.1 amendment (extension only): defined in dashboards/v11_spec.json engine_page, copied here with the page; must stay identical to v11_spec.json phase8_spec_pages.engine",
+      "filters": {
+        "dataset": [
+          "FD001",
+          "FD003"
+        ]
+      },
+      "numbers": [
+        {
+          "id": "engine.per_engine",
+          "label": "last rolling forecast and its 90% interval, first cycle the lower bound reached the alert threshold, flagged, maintenance plan, observed cycles",
+          "per": "dataset, at its default engine (all 200 engines in verify_v11)",
+          "source": "engine_history.csv, fleet.csv, plan.csv, facts.json",
+          "independent": "maintenance/forecasts_rolling_FD00x.csv, rule-E bounds from the published forecasts, maintenance/snapshot_decisions_phase6.csv",
+          "tolerance": "exact; forecasts shown to 1 decimal"
+        }
+      ],
+      "charts": [
+        {
+          "id": "engine.forecast",
+          "type": "line with interval band and alert line",
+          "x": "Engine cycle (count)",
+          "y": "Remaining useful life (cycles)"
+        },
+        {
+          "id": "engine.sensors",
+          "type": "line per sensor",
+          "x": "Engine cycle (count)",
+          "y": "symbol (unit)"
+        }
+      ],
+      "required_text": [
+        "What this shows",
+        "Saxena",
+        "MC dropout"
+      ]
+    },
+    {
+      "id": "cost",
+      "title": "What would each policy cost? (Illustrative)",
+      "added": "v1.1 amendment (extension only): defined in dashboards/v11_spec.json cost_page, copied here with the page; must stay identical to v11_spec.json phase8_spec_pages.cost",
+      "filters": {},
+      "numbers": [
+        {
+          "id": "cost.totals",
+          "label": "total cost per policy and savings vs fixed interval and run to failure, at the pre-registered illustrative defaults",
+          "per": "input set",
+          "source": "oee_policies.csv (pooled) and the viewer's inputs",
+          "independent": "machines_phase6.csv re-aggregated, own arithmetic with the defaults from v11_spec.json",
+          "tolerance": "exact (whole dollars shown)"
+        }
+      ],
+      "charts": [
+        {
+          "id": "cost.totals_chart",
+          "type": "bar per policy with value labels",
+          "x": "Maintenance policy",
+          "y": "Total cost (illustrative, $)"
+        }
+      ],
+      "required_text": [
+        "Illustrative",
+        "Simulated",
+        "not real cost data",
+        "Illustrative defaults, change them",
+        "already include"
+      ]
+    },
+    {
       "id": "fleet",
       "title": "Which engines are closest to failure, and how sure is the model?",
       "filters": {"dataset": ["FD001", "FD003", "Both"]},

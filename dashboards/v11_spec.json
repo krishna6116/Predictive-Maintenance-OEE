@@ -1,0 +1,184 @@
+{
+  "version": "1.1.0",
+  "title": "v1.1 recruiter showcase: Home at a glance, cost what-if (illustrative), engine drill-down, plain-English help",
+  "committed_before_code": true,
+  "audience": "recruiters and hiring managers (business analytics, product, operations and supply chain) spending about 60 seconds on the app; engineers keep the technical depth on the About page and in the docs",
+  "rules": [
+    "The Phase 8 spec (dashboards/phase8_spec.json) gains the engine and cost pages in the same commit as each page, copied from this file: the Phase 8 checks read every spec page, so listing a page before it exists would break them.",
+    "The app reads only dashboards/snapshots/ (frozen, sha256 in the manifest).",
+    "Every displayed number comes from a results file or a snapshot and is recomputed independently by dashboards/verify_v11.py (CI).",
+    "Phase 8 stays 5/5 and Phase 9 stays 10/10; their criteria are only extended, never loosened.",
+    "Generated docs only through python -m writeup.report_phase9; docs/RELEASE_NOTES.md stays the v1.0.0 body (Phase 9 W10); v1.1 notes go in docs/RELEASE_NOTES_v1.1.0.md.",
+    "No currency figure appears in README.md, docs/CASE_STUDY.md or any generated doc."
+  ],
+  "home": {
+    "policy_chart": {
+      "what": "one chart comparing predictive / fixed interval / run to failure on simulated unplanned failures and simulated downtime hours (pooled, 200 machines)",
+      "source": "oee_policies.csv rows scope=Pooled, kind=policy: unplanned_failures, downtime_hours",
+      "independent": "maintenance/machines_phase6.csv re-aggregated (as Phase 8 D1.3)",
+      "encoding": "Okabe-Ito colour per policy plus the value printed on every bar and the policy named on the axis",
+      "label": "title contains '(simulated)'",
+      "tolerance": "counts and hours exact"
+    },
+    "business_impact_row": {
+      "title": "Business impact (simulated)",
+      "title_amendment": "2026-11-15, author-approved to fit V2.1 (check unchanged): the separate heading is not shown; the table's first column header 'Impact (simulated)' carries the label, and the three policy charts come before the table (shorter charts were tried: below 165 px the bars collapse, so the height is unchanged)",
+      "numbers": {
+        "failures_avoided_vs_fixed": "unplanned failures, fixed - predictive",
+        "downtime_saved_vs_fixed": "downtime hours, fixed - predictive",
+        "downtime_saved_vs_rtf": "downtime hours, run to failure - predictive",
+        "wasted_life": "wasted cycles, predictive vs fixed interval (both shown)"
+      },
+      "review_amendment": "2026-11-15, author-approved after the Chrome review (checks unchanged): the table is a static table so its numbers stay visible at phone width; the wasted-life row reads 'Wasted engine life, cycles (simulated): predictive / other' with cells 'a / b'; the simulated notice reads 'Simulated plant: production, downtime and OEE are not measured data.' once instead of after a second 'Simulated.'",
+      "source": "oee_policies.csv (pooled)",
+      "independent": "machines_phase6.csv re-aggregated, then the same differences",
+      "tolerance": "exact"
+    },
+    "headline_labels": "plain English, at most 60 characters, no dataset codes (FD00x) in a metric label; dataset codes only in captions; the forecast tile reads like 'Forecast error on engines the model never saw (lower is better)'"
+  },
+  "cost_page": {
+    "title": "What would each policy cost? (Illustrative)",
+    "nav_title": "Cost what-if (illustrative)",
+    "banner": "Illustrative costs · Simulated plant · not real cost data",
+    "inputs": {
+      "c_hour": {"label": "Cost per hour of downtime", "default": 500},
+      "c_service": {"label": "Cost per planned service", "default": 2000},
+      "c_failure": {"label": "Extra repair cost per unplanned failure", "default": 10000},
+      "c_cycle": {"label": "Cost per cycle of wasted engine life", "default": 20}
+    },
+    "defaults_note": "illustrative defaults, change them: round example values chosen for the demo, not taken from any data",
+    "formula": "total(policy) = downtime_hours x c_hour + planned_services x c_service + unplanned_failures x c_failure + wasted_cycles x c_cycle",
+    "no_double_counting": "downtime_hours already include the downtime of failures and services, so c_failure is only the extra repair cost of a failure, not its lost production time (stated on the page; unit-tested)",
+    "outputs": ["total cost per policy", "savings: fixed interval - predictive", "savings: run to failure - predictive"],
+    "counts_source": "oee_policies.csv (pooled): downtime_hours, planned_services, unplanned_failures, wasted_cycles",
+    "module": "app/cost.py (pure function, no Streamlit), unit-tested with hand-computed cases in tests/test_cost.py",
+    "independent": "verify_v11 recomputes totals and savings with its own arithmetic from machines_phase6.csv at the defaults and at 3 other input sets: all zeros, one cost at a time, and very large values",
+    "tolerance": "exact for integer inputs; relative 1e-12 otherwise",
+    "currency": "shown with '$' and the word 'illustrative'; never in README, case study or generated docs"
+  },
+  "engine_page": {
+    "title": "What happened to one engine, cycle by cycle?",
+    "nav_title": "Engine drill-down",
+    "filters": {"dataset": ["FD001", "FD003"], "engine": "every test engine of the chosen dataset (100 each)"},
+    "default_engine": "FD001, the flagged engine with the lowest lower bound at its last cycle (ties: lowest engine id)",
+    "snapshot": {
+      "file": "engine_history.csv",
+      "rows": "one per test cycle of FD001 and FD003 (29,692)",
+      "columns": ["dataset", "engine_id", "cycle", "s11", "s4", "s12", "s7", "rul_mc_mean", "rul_low", "rul_high"],
+      "built_by": "dashboards/export_snapshots.py from data/raw/test_FD001.txt, test_FD003.txt and maintenance/forecasts_rolling_FD001.csv, FD003.csv",
+      "precision": "full (sensor values as in the NASA files; forecasts round-trip exact); about 2.7 MB",
+      "independent": "verify_v11 (and the CI verify job, which has the pinned data) compares it cell for cell with the raw files and the rolling forecasts"
+    },
+    "sensors": {
+      "chosen_by": "the four highest absolute correlations with remaining life in the EDA's training-data table (docs/EDA_FINDINGS.md)",
+      "names_source": "A. Saxena, K. Goebel, D. Simon, N. Eklund, 'Damage Propagation Modeling for Aircraft Engine Run-to-Failure Simulation', PHM08, Table 2 (NASA NTRS 20090029214, https://ntrs.nasa.gov/citations/20090029214)",
+      "mapping_note": "the data files number the sensors 1-21 without names; Table 2 lists the 21 outputs in order, and the order was checked against the data (s1 median 518.67 degR = T2 at sea level; s18 demanded fan speed = s8 physical fan speed 2388 rpm; s19 = 100 percent)",
+      "names": {
+        "s11": "Static pressure at HPC outlet (Ps30, psia)",
+        "s4": "Total temperature at LPT outlet (T50, degR)",
+        "s12": "Ratio of fuel flow to Ps30 (phi, pps/psi)",
+        "s7": "Total pressure at HPC outlet (P30, psia)"
+      },
+      "abbreviations": {"HPC": "high-pressure compressor", "LPT": "low-pressure turbine"}
+    },
+    "numbers": [
+      {"id": "engine.last_forecast", "label": "forecast remaining life and its 90% interval at the last observed cycle", "source": "engine_history.csv", "independent": "maintenance/forecasts_rolling_FD00x.csv", "tolerance": "shown to 1 decimal"},
+      {"id": "engine.first_crossing", "label": "first cycle at which the interval's lower bound is at or below the alert threshold", "source": "engine_history.csv + facts.json alert_threshold", "independent": "recomputed from the rolling forecasts", "tolerance": "exact"},
+      {"id": "engine.flagged", "label": "flagged at the last observed cycle (yes/no)", "source": "fleet.csv", "independent": "lower bound at last cycle <= threshold, recomputed", "tolerance": "exact"},
+      {"id": "engine.service", "label": "'Service day N (one of 3 crew slots that day)' or 'not scheduled'", "label_amendment": "2026-11-15, author-approved: day 0 reads 'Service today (day 0, one of 3 crew slots)'; 'Service day N' kept for N >= 1", "source": "plan.csv scheduled_day; facts.json crews_per_day", "independent": "maintenance/snapshot_decisions_phase6.csv", "tolerance": "exact"},
+      {"id": "engine.observed_cycles", "label": "number of observed cycles", "source": "engine_history.csv", "independent": "raw test file", "tolerance": "exact"}
+    ],
+    "charts": ["sensor trends (one small chart per sensor, axis titled with name and unit)", "forecast mean with its 90% interval band and the alert line, axes titled with units"],
+    "simulated_label": "the service-day line says the crew plan comes from the scheduler on real forecasts; no plant numbers on this page"
+  },
+  "plain_english_help": {
+    "terms": ["RMSE", "90% interval", "near-failure MAE", "MC dropout", "drift", "OEE", "CP-SAT"],
+    "rule": "each term has a one-line caption or tooltip wherever it first appears on a page; the About page keeps the full detail; every existing 'simulated' disclaimer stays",
+    "where": "the sentences live in app/common.py PLAIN and are shown as 'Term: sentence' (C.plain); verify_v11 scans each page's rendered text for them",
+    "engine_note_amendment": "2026-11-15, author-approved: the drill-down states the RUL cap (facts.json rul_cap, from features/build.py RUL_CAP; re-derived by verify_phase8 from the clip value in models/predictions_phase5b.csv) and keeps one short sentence on replay vs final forecast above the chart; the MC dropout detail is in the interval tooltip and on About"
+  },
+  "readme": {
+    "try_link": "'Try the live app' line directly after the one-line problem statement (Phase 9 W4 keeps the problem line first)",
+    "hero": "a screenshot of the v1.1 Home page (docs/figures/v11/), under 1 MB",
+    "changes_note": "a short 'v1.1 changes' section in the docs (generated)"
+  },
+  "preview_app": {
+    "why": "live checks (V2, V4) must run before merging, and the live URL deploys from main",
+    "url": "https://pm-oee-v11-preview.streamlit.app",
+    "deploy": "Community Cloud: repository krishna6116/Predictive-Maintenance-OEE, branch v1.1, main file app/streamlit_app.py, Python 3.14, secrets empty, public; created and deleted by the author",
+    "rule": "V2 and V4 are measured on the preview before the merge and measured again on https://predictive-maintenance-oee.streamlit.app after it; both results are reported"
+  },
+  "phase8_spec_pages": {
+    "engine": {
+      "id": "engine",
+      "title": "What happened to one engine, cycle by cycle?",
+      "added": "v1.1 amendment (extension only): defined in dashboards/v11_spec.json engine_page, copied here with the page; must stay identical to v11_spec.json phase8_spec_pages.engine",
+      "filters": {
+        "dataset": [
+          "FD001",
+          "FD003"
+        ]
+      },
+      "numbers": [
+        {
+          "id": "engine.per_engine",
+          "label": "last rolling forecast and its 90% interval, first cycle the lower bound reached the alert threshold, flagged, maintenance plan, observed cycles",
+          "per": "dataset, at its default engine (all 200 engines in verify_v11)",
+          "source": "engine_history.csv, fleet.csv, plan.csv, facts.json",
+          "independent": "maintenance/forecasts_rolling_FD00x.csv, rule-E bounds from the published forecasts, maintenance/snapshot_decisions_phase6.csv",
+          "tolerance": "exact; forecasts shown to 1 decimal"
+        }
+      ],
+      "charts": [
+        {
+          "id": "engine.forecast",
+          "type": "line with interval band and alert line",
+          "x": "Engine cycle (count)",
+          "y": "Remaining useful life (cycles)"
+        },
+        {
+          "id": "engine.sensors",
+          "type": "line per sensor",
+          "x": "Engine cycle (count)",
+          "y": "symbol (unit)"
+        }
+      ],
+      "required_text": [
+        "What this shows",
+        "Saxena",
+        "MC dropout"
+      ]
+    },
+    "cost": {
+      "id": "cost",
+      "title": "What would each policy cost? (Illustrative)",
+      "added": "v1.1 amendment (extension only): defined in dashboards/v11_spec.json cost_page, copied here with the page; must stay identical to v11_spec.json phase8_spec_pages.cost",
+      "filters": {},
+      "numbers": [
+        {
+          "id": "cost.totals",
+          "label": "total cost per policy and savings vs fixed interval and run to failure, at the pre-registered illustrative defaults",
+          "per": "input set",
+          "source": "oee_policies.csv (pooled) and the viewer's inputs",
+          "independent": "machines_phase6.csv re-aggregated, own arithmetic with the defaults from v11_spec.json",
+          "tolerance": "exact (whole dollars shown)"
+        }
+      ],
+      "charts": [
+        {
+          "id": "cost.totals_chart",
+          "type": "bar per policy with value labels",
+          "x": "Maintenance policy",
+          "y": "Total cost (illustrative, $)"
+        }
+      ],
+      "required_text": [
+        "Illustrative",
+        "Simulated",
+        "not real cost data",
+        "Illustrative defaults, change them",
+        "already include"
+      ]
+    }
+  }
+}

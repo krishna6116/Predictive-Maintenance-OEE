@@ -9,8 +9,8 @@
       "detail": "no stale phrase; phases 0-9 Done in the README, docs/README.md and CLAUDE.md"
     },
     "W3": {
-      "passed": true,
-      "detail": "every relative link and image in 22 Markdown files resolves; external: 11/11 ok"
+      "passed": false,
+      "detail": "every relative link and image in 24 Markdown files resolves; external: 11/11 ok, unchecked ['https://github.com/krishna6116/Predictive-Maintenance-OEE/blob/main/dashboards/v11_scorecard.json', 'https://github.com/krishna6116/Predictive-Maintenance-OEE/blob/main/dashboards/v11_spec.json', 'https://github.com/krishna6116/Predictive-Maintenance-OEE/blob/main/docs/V11_CHECKLIST.md']"
     },
     "W4": {
       "passed": true,
@@ -34,13 +34,13 @@
     },
     "W9": {
       "passed": true,
-      "detail": "all 35 docs and notebooks are listed with a description"
+      "detail": "all 37 docs and notebooks are listed with a description"
     },
     "W10": {
       "passed": true,
       "detail": "release: {'description': True, 'homepage': True, 'topics': True, 'tag_on_main': True, 'ci_green_on_tag': True, 'release_notes': True, 'ok': True}; checklist ticked: True"
     }
   },
-  "passed": 10,
+  "passed": 9,
   "out_of": 10
 }

@@ -11,6 +11,7 @@ import common as C
 
 C.header("oee", "Three maintenance policies replayed on the same simulated machines, each running one real NASA engine life.")
 C.simulated_notice()
+st.caption(f"{C.plain('OEE')} Here every OEE value comes from the simulated plant.")
 
 pol = C.load("oee_policies.csv")
 ORDER = ["Run to failure", "Fixed interval", "Predictive"]
@@ -20,7 +21,7 @@ t = pol[(pol.scope == scope) & (pol.kind == "policy")].set_index("policy").reind
 if C.has_rows(t.dropna(subset=["oee"]), "policies"):
     cols = st.columns(3)
     for c, (_, r) in zip(cols, t.iterrows()):
-        c.metric(f"OEE, {r.policy} ({scope}, simulated)", C.pct(r.oee), help=C.define("OEE"))
+        c.metric(f"OEE, {r.policy} ({scope}, simulated)", C.pct(r.oee), help=f"{C.plain('OEE')} Technical: {C.define('OEE')}")
 
     t["oee_pct"] = 100 * t.oee
     t["label"] = t.oee.map(C.pct)
@@ -40,10 +41,14 @@ if C.has_rows(t.dropna(subset=["oee"]), "policies"):
         show[c] = show[c].map(C.pct)
     for c in ("unplanned_failures", "planned_services", "downtime_hours", "wasted_cycles"):
         show[c] = show[c].astype(int)
-    st.dataframe(show.rename(columns={"policy": "Policy", "availability": "Availability", "performance": "Performance",
-                                      "quality": "Quality", "oee": "OEE", "unplanned_failures": "Unplanned failures",
-                                      "planned_services": "Planned services", "downtime_hours": "Downtime (hours)",
-                                      "wasted_cycles": "Wasted life (cycles)"}), hide_index=True, width="stretch")
+    show = show.rename(columns={"policy": "Policy", "availability": "Availability", "performance": "Performance",
+                                "quality": "Quality", "oee": "OEE", "unplanned_failures": "Unplanned failures",
+                                "planned_services": "Planned services", "downtime_hours": "Downtime (hours)",
+                                "wasted_cycles": "Wasted life (cycles)"})
+    # two tables: nine columns in one cut the last one off at laptop width (review 2026-11-15)
+    st.dataframe(show[["Policy", "Availability", "Performance", "Quality", "OEE"]], hide_index=True, width="stretch")
+    st.dataframe(show[["Policy", "Unplanned failures", "Planned services", "Downtime (hours)", "Wasted life (cycles)"]],
+                 hide_index=True, width="stretch")
 
 gaps = pol[pol.kind == "gap"].set_index("policy")
 n_machines = int(pol[(pol.scope == "Pooled") & (pol.policy == "Predictive")].machines.iloc[0])

@@ -22,10 +22,11 @@ for ds in datasets:
     if not C.has_rows(f, f"{ds} engines"):
         continue
     st.subheader(f"{ds}: {C.fact('published_model')} forecasts")
-    c1, c2, c3 = st.columns(3)
+    c1, c2, c3 = st.columns([1, 1, 2])  # the coverage label needs the room (it was cut off; review 2026-11-15)
     c1.metric(f"Engines ({ds})", str(len(f)), help="Test engines in the dataset, each at its last observed cycle.")
     c2.metric(f"Flagged ({ds})", str(int(f.flagged.sum())), help=C.define("flagged"))
     c3.metric(f"Interval coverage on these engines ({ds})", C.pct(f.inside_interval.mean()), help=C.define("coverage"))
+    st.caption(f"{C.plain('90% interval')} {C.plain('MC dropout')}")
     st.caption(f"Nominal {C.pct(nominal, 0)} interval from {C.fact('interval_passes')} MC-dropout passes. Stated coverage "
                f"for {ds}: {C.pct(C.fact(f'coverage_stated_{ds}'), 0)} ({C.fact(f'coverage_kind_{ds}')}). "
                f"{C.define('interval')}")
@@ -65,5 +66,6 @@ st.dataframe(m[["dataset", "Model", "rmse", "near_failure_mae", "engines", "near
              .rename(columns={"dataset": "Dataset", "rmse": "RMSE (cycles)", "near_failure_mae": "Near-failure MAE (cycles)",
                               "engines": "Test engines", "near_failure_engines": "Near-failure engines"})
              .sort_values(["Dataset", "RMSE (cycles)"]).round(2), hide_index=True, width="stretch")
-st.caption(f"RMSE: {C.define('RMSE')} Near-failure MAE: {C.define('near_failure_MAE')} "
+st.caption(f"{C.plain('RMSE')} {C.plain('near-failure MAE')}")
+st.caption(f"Technical. RMSE: {C.define('RMSE')} Near-failure MAE: {C.define('near_failure_MAE')} "
            f"Published model rule: {C.fact('published_rule')}.")
