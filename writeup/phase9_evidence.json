@@ -12,6 +12,14 @@
       "ok": true,
       "how": "HTTP 200"
     },
+    "https://github.com/krishna6116/Predictive-Maintenance-OEE/blob/main/dashboards/v11_scorecard.json": {
+      "ok": true,
+      "how": "HTTP 200"
+    },
+    "https://github.com/krishna6116/Predictive-Maintenance-OEE/blob/main/dashboards/v11_spec.json": {
+      "ok": true,
+      "how": "HTTP 200"
+    },
     "https://github.com/krishna6116/Predictive-Maintenance-OEE/blob/main/docs/CASE_STUDY.md": {
       "ok": true,
       "how": "HTTP 200"
@@ -24,11 +32,19 @@
       "ok": true,
       "how": "HTTP 200"
     },
+    "https://github.com/krishna6116/Predictive-Maintenance-OEE/blob/main/docs/V11_CHECKLIST.md": {
+      "ok": true,
+      "how": "HTTP 200"
+    },
     "https://img.shields.io/badge/license-MIT-green": {
       "ok": true,
       "how": "HTTP 200"
     },
     "https://img.shields.io/badge/python-3.14-blue": {
+      "ok": true,
+      "how": "HTTP 200"
+    },
+    "https://pm-oee-v11-preview.streamlit.app": {
       "ok": true,
       "how": "HTTP 200"
     },
@@ -48,12 +64,12 @@
   "live_app": {
     "home_title": "What did this project build, and what did it find?",
     "checksums": [
-      "6467d24fa7dd4e586f0e37eaffc2914ccfadca104692fd51a6dd3149766ea079"
+      "e3521987f5db6eebc824b89da9e9df13467c696dc6d25941fb2f73ecb38c9ec9"
     ],
     "ok": true
   },
   "ci_repro": {
-    "commit": "16158a4c02764b4d6b67b97a2290c042152f8fc4",
+    "commit": "3281f4885e08306ccced50ad8b0651c031f7afda",
     "ok": true
   },
   "release": {

@@ -1,44 +1,52 @@
 {
   "app_url": "https://predictive-maintenance-oee.streamlit.app",
-  "captured_utc": "2026-11-01T18:18:41Z",
-  "manifest_data_checksum": "6467d24fa7dd4e586f0e37eaffc2914ccfadca104692fd51a6dd3149766ea079",
+  "captured_utc": "2026-11-15T20:53:16Z",
+  "manifest_data_checksum": "e3521987f5db6eebc824b89da9e9df13467c696dc6d25941fb2f73ecb38c9ec9",
   "phone": {
-    "fleet": {
-      "title_visible_s": 1.62,
+    "home": {
+      "title_visible_s": 1.86,
       "scroll_width": 320,
-      "content_height": 2605,
+      "content_height": 3091,
+      "background": "rgb(255, 255, 255)",
+      "no_horizontal_scroll": true,
+      "under_5_s": true
+    },
+    "fleet": {
+      "title_visible_s": 1.1,
+      "scroll_width": 375,
+      "content_height": 2872,
       "background": "rgb(255, 255, 255)",
       "no_horizontal_scroll": true,
       "under_5_s": true
     },
     "plan": {
-      "title_visible_s": 1.07,
+      "title_visible_s": 1.02,
       "scroll_width": 375,
-      "content_height": 2648,
+      "content_height": 2877,
       "background": "rgb(255, 255, 255)",
       "no_horizontal_scroll": true,
       "under_5_s": true
     },
     "oee": {
-      "title_visible_s": 0.99,
+      "title_visible_s": 1.06,
       "scroll_width": 375,
-      "content_height": 2281,
+      "content_height": 2823,
       "background": "rgb(255, 255, 255)",
       "no_horizontal_scroll": true,
       "under_5_s": true
     },
     "monitoring": {
-      "title_visible_s": 0.95,
+      "title_visible_s": 1.05,
       "scroll_width": 375,
-      "content_height": 1980,
+      "content_height": 2823,
       "background": "rgb(255, 255, 255)",
       "no_horizontal_scroll": true,
       "under_5_s": true
     },
     "about": {
-      "title_visible_s": 0.97,
+      "title_visible_s": 1.58,
       "scroll_width": 375,
-      "content_height": 2817,
+      "content_height": 3473,
       "background": "rgb(255, 255, 255)",
       "no_horizontal_scroll": true,
       "under_5_s": true
@@ -46,7 +54,7 @@
   },
   "about_desktop": {
     "checksums_on_page": [
-      "6467d24fa7dd4e586f0e37eaffc2914ccfadca104692fd51a6dd3149766ea079"
+      "e3521987f5db6eebc824b89da9e9df13467c696dc6d25941fb2f73ecb38c9ec9"
     ],
     "equals_manifest": true,
     "sidebar_closed": true

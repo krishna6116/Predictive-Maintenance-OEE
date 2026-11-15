@@ -83,6 +83,89 @@
           }
         }
       }
+    },
+    "https://predictive-maintenance-oee.streamlit.app": {
+      "url": "https://predictive-maintenance-oee.streamlit.app",
+      "captured_utc": "2026-11-15T20:51:31Z",
+      "V5.5": {
+        "ok": true,
+        "pages": {
+          "home": [],
+          "fleet": [],
+          "engine": [],
+          "plan": [],
+          "oee": [],
+          "cost": [],
+          "monitoring": [],
+          "about": []
+        }
+      },
+      "V2.1": {
+        "ok": true,
+        "viewport": 800,
+        "bottoms": {
+          "viewport": 800,
+          "metrics": [
+            419,
+            419
+          ],
+          "charts": [
+            639,
+            639,
+            639
+          ],
+          "table": [
+            776
+          ]
+        },
+        "screenshot": "docs/figures/v11/home_1280x800.png",
+        "detail": "lowest required element ends at 776 px of 800"
+      },
+      "V4.3": {
+        "ok": true,
+        "seconds": {
+          "cost": [
+            1.03,
+            1.03,
+            1.04
+          ],
+          "engine": [
+            1.21,
+            1.1,
+            1.09
+          ]
+        },
+        "median": {
+          "cost": 1.03,
+          "engine": 1.1
+        }
+      },
+      "V4.1": {
+        "ok": true,
+        "pages": {
+          "home": {
+            "viewport_width": 375,
+            "scroll_width": 375,
+            "menu_starts_closed": true,
+            "menu_opens": true,
+            "screenshot": "docs/figures/v11/phone_home.png"
+          },
+          "cost": {
+            "viewport_width": 375,
+            "scroll_width": 375,
+            "menu_starts_closed": true,
+            "menu_opens": true,
+            "screenshot": "docs/figures/v11/phone_cost.png"
+          },
+          "engine": {
+            "viewport_width": 375,
+            "scroll_width": 375,
+            "menu_starts_closed": true,
+            "menu_opens": true,
+            "screenshot": "docs/figures/v11/phone_engine.png"
+          }
+        }
+      }
     }
   },
   "ci": {

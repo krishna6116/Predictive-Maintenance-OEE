@@ -41,5 +41,5 @@
       {"id": "V5.5", "kind": "code+live", "added": "2026-11-15, extension at the author's request after the preview crashed on Engine drill-down (existing checks unchanged)", "check": "python -m dashboards.smoke_v11: every page loads with no exception from the committed tree (git archive of the pushed branch, fresh isolated interpreter), in CI and before each preview review; a planted missing page title is caught; after the merge, --live loads every page of the live app and none shows an exception"}
     ]}
   ],
-  "result": null
+  "result": {"score": "5/5", "date": "2026-11-15", "merge_commit": "3281f48", "detail": "dashboards/v11_results.json; live checks on the preview before the merge and on https://predictive-maintenance-oee.streamlit.app after it, evidence in dashboards/v11_evidence.json; Phase 8 5/5, Phase 9 10/10"}
 }
