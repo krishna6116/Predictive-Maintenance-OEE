@@ -1,0 +1,88 @@
+{
+  "note": "v1.1 live evidence; written by python -m dashboards.verify_v11 --live URL and --record-ci",
+  "runs": {
+    "https://pm-oee-v11-preview.streamlit.app": {
+      "url": "https://pm-oee-v11-preview.streamlit.app",
+      "captured_utc": "2026-11-15T19:48:54Z",
+      "V5.5": {
+        "ok": true,
+        "pages": {
+          "home": [],
+          "fleet": [],
+          "engine": [],
+          "plan": [],
+          "oee": [],
+          "cost": [],
+          "monitoring": [],
+          "about": []
+        }
+      },
+      "V2.1": {
+        "ok": true,
+        "viewport": 800,
+        "bottoms": {
+          "viewport": 800,
+          "metrics": [
+            419,
+            419
+          ],
+          "charts": [
+            639,
+            639,
+            639
+          ],
+          "table": [
+            797
+          ]
+        },
+        "screenshot": "docs/figures/v11/home_1280x800.png",
+        "detail": "lowest required element ends at 797 px of 800"
+      },
+      "V4.3": {
+        "ok": true,
+        "seconds": {
+          "cost": [
+            1.0,
+            1.01,
+            1.02
+          ],
+          "engine": [
+            1.01,
+            1.0,
+            1.05
+          ]
+        },
+        "median": {
+          "cost": 1.01,
+          "engine": 1.01
+        }
+      },
+      "V4.1": {
+        "ok": true,
+        "pages": {
+          "home": {
+            "viewport_width": 375,
+            "scroll_width": 375,
+            "menu_starts_closed": true,
+            "menu_opens": true,
+            "screenshot": "docs/figures/v11/phone_home.png"
+          },
+          "cost": {
+            "viewport_width": 375,
+            "scroll_width": 375,
+            "menu_starts_closed": true,
+            "menu_opens": true,
+            "screenshot": "docs/figures/v11/phone_cost.png"
+          },
+          "engine": {
+            "viewport_width": 375,
+            "scroll_width": 375,
+            "menu_starts_closed": true,
+            "menu_opens": true,
+            "screenshot": "docs/figures/v11/phone_engine.png"
+          }
+        }
+      }
+    }
+  }
+}

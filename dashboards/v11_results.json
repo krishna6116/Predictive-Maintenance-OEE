@@ -1,0 +1,174 @@
+{
+  "score": 2,
+  "out_of": 5,
+  "dimensions": [
+    {
+      "id": "V1",
+      "name": "Correct",
+      "passed": true,
+      "checks": [
+        {
+          "id": "V1.1",
+          "kind": "code",
+          "passed": true,
+          "detail": "27 Home chart labels, impact cells and pooled counts equal the recomputation"
+        },
+        {
+          "id": "V1.2",
+          "kind": "code",
+          "passed": true,
+          "detail": "35 totals and savings over 7 input sets equal the exact recomputation; tests/test_cost.py: 5 passed in 0.01s"
+        },
+        {
+          "id": "V1.3",
+          "kind": "code",
+          "passed": true,
+          "detail": "200 engines: 1400 drill-down values equal the independent recomputation; rolling intervals equal the rule-E rebuild on every cycle"
+        },
+        {
+          "id": "V1.4",
+          "kind": "code",
+          "passed": true,
+          "detail": "29,692 rows, 207,844 cells equal the NASA test files and the rolling forecasts; manifest current"
+        },
+        {
+          "id": "V1.5",
+          "kind": "code",
+          "passed": true,
+          "detail": "Phase 8 5/5, Phase 9 10/10 (results files); both verifiers run in CI: True"
+        }
+      ]
+    },
+    {
+      "id": "V2",
+      "name": "Clear in 60 seconds",
+      "passed": false,
+      "checks": [
+        {
+          "id": "V2.1",
+          "kind": "live",
+          "passed": null,
+          "detail": "preview: pass; real app: not measured yet (live checks run on the preview before the merge and on the real app after it)"
+        },
+        {
+          "id": "V2.2",
+          "kind": "code",
+          "passed": true,
+          "detail": "5 Home headline labels: no dataset code, each <= 60 characters"
+        },
+        {
+          "id": "V2.3",
+          "kind": "code",
+          "passed": true,
+          "detail": "RMSE: fleet; 90% interval: fleet, engine, plan; near-failure MAE: fleet; MC dropout: fleet, engine; drift: monitoring; OEE: home, oee; CP-SAT: engine, plan"
+        },
+        {
+          "id": "V2.4",
+          "kind": "code",
+          "passed": true,
+          "detail": "opens on FD001 engine 34 (FD003: 24), the pre-registered default; 4 sensor names, codes and units match v11_spec.json"
+        }
+      ]
+    },
+    {
+      "id": "V3",
+      "name": "Honest",
+      "passed": true,
+      "checks": [
+        {
+          "id": "V3.1",
+          "kind": "code",
+          "passed": true,
+          "detail": "Home: 3 chart titles and the impact table say 'simulated', plus the simulated notice"
+        },
+        {
+          "id": "V3.2",
+          "kind": "code",
+          "passed": true,
+          "detail": "cost page shows the banner, the formula, the defaults note and the no-double-counting sentence"
+        },
+        {
+          "id": "V3.3",
+          "kind": "code",
+          "passed": true,
+          "detail": "no currency figure in 16 files (README, case study, generated docs and notebook cells)"
+        },
+        {
+          "id": "V3.4",
+          "kind": "code",
+          "passed": true,
+          "detail": "monitoring page still shows the Phase 7 'not met' and the FD004 C1 'FAIL'"
+        }
+      ]
+    },
+    {
+      "id": "V4",
+      "name": "Usable",
+      "passed": false,
+      "checks": [
+        {
+          "id": "V4.1",
+          "kind": "live",
+          "passed": null,
+          "detail": "preview: pass; real app: not measured yet (live checks run on the preview before the merge and on the real app after it)"
+        },
+        {
+          "id": "V4.2",
+          "kind": "code",
+          "passed": true,
+          "detail": "under 5 s under AppTest: home 1.12s, cost 0.28s, engine (first run) 0.39s, engine, slowest of 200 0.14s"
+        },
+        {
+          "id": "V4.3",
+          "kind": "live",
+          "passed": null,
+          "detail": "preview: pass; real app: not measured yet (live checks run on the preview before the merge and on the real app after it)"
+        },
+        {
+          "id": "V4.4",
+          "kind": "code",
+          "passed": true,
+          "detail": "10 new charts: Okabe-Ito only, colour paired with a second channel, every axis titled with units"
+        }
+      ]
+    },
+    {
+      "id": "V5",
+      "name": "Robust",
+      "passed": false,
+      "checks": [
+        {
+          "id": "V5.1",
+          "kind": "code",
+          "passed": true,
+          "detail": "drill-down renders for all 200 engines with no exception; cost page renders at all-zero and very large inputs"
+        },
+        {
+          "id": "V5.2",
+          "kind": "code",
+          "passed": true,
+          "detail": "two rebuilds byte-identical (10 files incl. engine_history.csv) and equal to the committed snapshots"
+        },
+        {
+          "id": "V5.3",
+          "kind": "code",
+          "passed": true,
+          "detail": "4/4 planted bugs caught: wrong cost formula term (failure downtime counted twice) -> V1.2; shifted engine-history rows (FD001 engine 34, one cycle late) -> V1.3, V1.4; wrong default engine (highest lower bound instead of lowest) -> V2.4; dropped 'simulated' label on a Home chart -> V1.1, V3.1"
+        },
+        {
+          "id": "V5.4",
+          "kind": "code",
+          "passed": null,
+          "detail": "pending: python -m dashboards.verify_v11 --record-ci after CI finishes on the merge candidate"
+        },
+        {
+          "id": "V5.5",
+          "kind": "code+live",
+          "passed": null,
+          "detail": "committed tree 29aec42: 9/9 pages load; in CI with planted-title test: True; live real app: after the merge"
+        }
+      ]
+    }
+  ],
+  "checked_utc": "2026-11-15T19:51:27Z"
+}

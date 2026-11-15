@@ -1,0 +1,11 @@
+{
+  "note": "V5.2 evidence; written by python -m dashboards.verify_v11 --local (needs the local database)",
+  "data_checksum": "e3521987f5db6eebc824b89da9e9df13467c696dc6d25941fb2f73ecb38c9ec9",
+  "checked_utc": "2026-11-15T19:42:21Z",
+  "checks": {
+    "V5.2": [
+      true,
+      "two rebuilds byte-identical (10 files incl. engine_history.csv) and equal to the committed snapshots"
+    ]
+  }
+}
