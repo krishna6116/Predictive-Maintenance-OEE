@@ -26,6 +26,7 @@ TITLES = {
     "plan": "Which engines should the crews service in the next 7 days?",
     "oee": "Which maintenance policy gives the highest OEE? (Simulated plant)",
     "cost": "What would each policy cost? (Illustrative)",
+    "engine": "What happened to one engine, cycle by cycle?",
     "monitoring": "Can we trust the model's forecasts this shift?",
     "about": "How were these numbers made, and can I check them?",
 }
@@ -103,6 +104,7 @@ BUSINESS = {
     "plan": "With limited crews, which jobs go on which day so nothing fails while waiting?",
     "oee": "Does predictive maintenance pay off against a fixed calendar or running to failure?",
     "cost": "With our own cost figures, which maintenance policy is cheapest?",
+    "engine": "For one machine: when did the warning start, and what did the plan do about it?",
     "monitoring": "When should we stop trusting the forecasts and retrain the model?",
     "about": "Why should anyone believe these numbers?",
 }
@@ -115,6 +117,9 @@ WHY = {
              "on the pessimistic edge of the interval, so a confident wrong forecast does not cause a failure.",
     "plan": "The crew schedule the optimizer chose for flagged engines under the crew limit. It shows the trade-off a "
             "maintenance planner makes every day, and which engines miss out when capacity runs short.",
+    "engine": "One test engine's story: four sensor readings drifting as it wears, the forecast remaining life with its "
+              "uncertainty band shift by shift, the moment the band's lower edge reached the alert line, and the service day "
+              "the crew plan gave it. It shows how a single warning turns into a maintenance decision.",
     "cost": "Your cost figures applied to the simulated counts of each policy: downtime hours, planned services, "
             "unplanned failures and wasted engine life. It shows how the policy comparison turns into money, while "
             "making clear that the costs are yours and the plant is simulated.",

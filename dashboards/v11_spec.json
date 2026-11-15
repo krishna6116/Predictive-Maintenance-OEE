@@ -105,6 +105,46 @@
     "rule": "V2 and V4 are measured on the preview before the merge and measured again on https://predictive-maintenance-oee.streamlit.app after it; both results are reported"
   },
   "phase8_spec_pages": {
+    "engine": {
+      "id": "engine",
+      "title": "What happened to one engine, cycle by cycle?",
+      "added": "v1.1 amendment (extension only): defined in dashboards/v11_spec.json engine_page, copied here with the page; must stay identical to v11_spec.json phase8_spec_pages.engine",
+      "filters": {
+        "dataset": [
+          "FD001",
+          "FD003"
+        ]
+      },
+      "numbers": [
+        {
+          "id": "engine.per_engine",
+          "label": "last rolling forecast and its 90% interval, first cycle the lower bound reached the alert threshold, flagged, maintenance plan, observed cycles",
+          "per": "dataset, at its default engine (all 200 engines in verify_v11)",
+          "source": "engine_history.csv, fleet.csv, plan.csv, facts.json",
+          "independent": "maintenance/forecasts_rolling_FD00x.csv, rule-E bounds from the published forecasts, maintenance/snapshot_decisions_phase6.csv",
+          "tolerance": "exact; forecasts shown to 1 decimal"
+        }
+      ],
+      "charts": [
+        {
+          "id": "engine.forecast",
+          "type": "line with interval band and alert line",
+          "x": "Engine cycle (count)",
+          "y": "Remaining useful life (cycles)"
+        },
+        {
+          "id": "engine.sensors",
+          "type": "line per sensor",
+          "x": "Engine cycle (count)",
+          "y": "symbol (unit)"
+        }
+      ],
+      "required_text": [
+        "What this shows",
+        "Saxena",
+        "MC dropout"
+      ]
+    },
     "cost": {
       "id": "cost",
       "title": "What would each policy cost? (Illustrative)",

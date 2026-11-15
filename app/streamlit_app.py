@@ -10,6 +10,7 @@ st.set_page_config(page_title="Predictive Maintenance & OEE", layout="wide")
 
 pages = [st.Page("views/home.py", title="Home", default=True),
          st.Page("views/fleet.py", title="Fleet health"),
+         st.Page("views/engine.py", title="Engine drill-down"),
          st.Page("views/plan.py", title="Maintenance plan"),
          st.Page("views/oee.py", title="OEE policies (simulated)"),
          st.Page("views/cost.py", title="Cost what-if (illustrative)"),

@@ -32,13 +32,17 @@ SOURCES = ["maintenance/snapshot_decisions_phase6.csv", "maintenance/results_pha
            "models/predictions_phase5b.csv", "results/phase7/phase7_drift.csv", "results/phase7/phase7_health.csv",
            "results/phase7/results_phase7.json", "results/phase7b/fresh_synchronized/phase7_health.csv",
            "results/phase7b/fresh_staggered/phase7_health.csv", "results/phase7b/checks.json",
-           "pipeline/phase7b_criteria.json", "dashboards/phase8_spec.json", "models/calibration.py"]
+           "pipeline/phase7b_criteria.json", "dashboards/phase8_spec.json", "models/calibration.py",
+           "data/checksums.sha256"]  # v1.1: pins the raw NASA test files behind engine_history.csv
 # model display name -> (key in the results files, column in the predictions files)
 MODELS = {"Fleet average": "Fleet average", "Age only": "Age only (cycle count)", "Ridge (168 features)": "Ridge, all 168 features",
           "XGBoost (168 features)": "XGBoost, all 168 features", "LSTM": "LSTM", "CNN": "CNN"}
 KEYS = {"fleet.csv": ["dataset", "engine_id"], "models.csv": ["dataset", "model"], "plan.csv": ["dataset", "engine_id"],
         "work_orders.csv": ["dataset", "engine_id", "decision_cycle"], "oee_machines.csv": ["dataset", "policy", "machine_id"],
-        "oee_policies.csv": ["scope", "policy"], "monitoring_runs.csv": ["scenario", "dataset", "shift"]}
+        "oee_policies.csv": ["scope", "policy"], "monitoring_runs.csv": ["scenario", "dataset", "shift"],
+        "engine_history.csv": ["dataset", "engine_id", "cycle"]}
+# v1.1 engine drill-down: the four sensors most correlated with remaining life in the EDA (training data)
+HISTORY_SENSORS = ["s11", "s4", "s12", "s7"]
 
 
 def sha256(b: bytes) -> str:
@@ -141,10 +145,29 @@ def monitoring(conn) -> pd.DataFrame:
     return out
 
 
+def engine_history() -> pd.DataFrame:
+    """v1.1: every observed cycle of every FD001/FD003 test engine: four sensors (NASA test files, values as given)
+    and the rolling forecast with its 90% interval (Phase 6 rolling forecasts). Full precision."""
+    cols = ["engine_id", "cycle", "set1", "set2", "set3"] + [f"s{i}" for i in range(1, 22)]
+    out = []
+    for ds in ("FD001", "FD003"):
+        raw = pd.read_csv(f"data/raw/test_{ds}.txt", sep=r"\s+", header=None, names=cols, float_precision="round_trip")
+        raw.insert(0, "dataset", ds)
+        roll = pd.read_csv(f"maintenance/forecasts_rolling_{ds}.csv", float_precision="round_trip")
+        m = raw[["dataset", "engine_id", "cycle", *HISTORY_SENSORS]].merge(
+            roll[["dataset", "engine_id", "cycle", "rul_mc_mean", "rul_low", "rul_high"]],
+            on=["dataset", "engine_id", "cycle"], how="left", validate="one_to_one")
+        if m[["rul_mc_mean", "rul_low", "rul_high"]].isna().any().any():
+            raise RuntimeError(f"{ds}: a test cycle has no rolling forecast")
+        out.append(m)
+    return pd.concat(out, ignore_index=True)
+
+
 def build(conn) -> dict[str, pd.DataFrame]:
     m = oee_machines(conn)
     frames = {"fleet.csv": fleet(conn), "models.csv": models(), "plan.csv": plan(conn), "work_orders.csv": work_orders(conn),
-              "oee_machines.csv": m, "oee_policies.csv": oee_policies(m), "monitoring_runs.csv": monitoring(conn)}
+              "oee_machines.csv": m, "oee_policies.csv": oee_policies(m), "monitoring_runs.csv": monitoring(conn),
+              "engine_history.csv": engine_history()}
     for name, df in frames.items():
         df = df.sort_values(KEYS[name], kind="mergesort").reset_index(drop=True)
         if df.duplicated(KEYS[name]).any():

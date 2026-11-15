@@ -217,6 +217,22 @@ def expected_metrics(T, page: str, view: dict) -> dict:
         pub = "LSTM" if T["published_model"] == "LSTM" else "XGBoost (168 features)"
         out[f"{T['published_model']} forecast error on engines it never saw (cycles)"] = f"{T['models'][('FD003', pub)]['rmse']:.2f}"
         out["XGBoost, previous model, same engines (cycles)"] = f"{T['models'][('FD003', 'XGBoost (168 features)')]['rmse']:.2f}"
+    elif page == "engine":
+        # default engine re-derived: flagged at its last cycle, lowest lower bound (rule-E bounds rebuilt above), ties lowest id
+        ds, c = view["dataset"], T["settings"]
+        eng = min((e for e, x in T["fleet"][ds].items() if x["flagged"]), key=lambda e: (T["fleet"][ds][e]["low"], e))
+        roll = sorted((r for r in rows(f"maintenance/forecasts_rolling_{ds}.csv") if int(r["engine_id"]) == eng), key=lambda r: int(r["cycle"]))
+        last, cross = roll[-1], [int(r["cycle"]) for r in roll if fl(r["rul_low"]) <= c["ALERT_THRESHOLD"]]
+        nom = pct(jload("models/results_phase5.json")["mc_dropout"]["nominal"], 0)
+        d = T["decisions"][(ds, eng)]
+        service = ("Not flagged" if not tf(d["flagged"]) else f"Service day {int(fl(d['service_day']))}" if d["service_day"]
+                   else "No crew slot in the horizon")
+        out["Forecast remaining life at the last reading (cycles)"] = f"{fl(last['rul_mc_mean']):.1f}"
+        out[f"{nom} interval at the last reading (cycles)"] = f"{fl(last['rul_low']):.1f} to {fl(last['rul_high']):.1f}"
+        out["Observed cycles"] = str(len(roll))
+        out[f"First cycle the lower bound reached {c['ALERT_THRESHOLD']} cycles"] = str(cross[0]) if cross else "Never"
+        out["Flagged for service"] = "Yes" if T["fleet"][ds][eng]["flagged"] else "No"
+        out["Maintenance plan"] = service
     elif page == "cost":
         # own arithmetic (not app/costmodel.py), with the illustrative defaults pre-registered in v11_spec.json
         c = {k: v["default"] for k, v in json.loads((ROOT / "dashboards" / "v11_spec.json").read_text(encoding="utf-8"))["cost_page"]["inputs"].items()}

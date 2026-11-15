@@ -11,6 +11,7 @@ evidence is committed. Live checks run first on the preview app (branch `v1.1`),
 
 ## After the merge
 
+- [ ] **Deployed checksum re-captured** (Phase 8 D2.4): v1.1 adds engine_history.csv, so the snapshot data checksum changes; `python scripts/capture_phase8_screenshots.py` re-reads it from the live About page, compares it with the manifest and replaces `docs/figures/phase8/deployed_about.png`.
 - [ ] **Live checks on the real app** (https://predictive-maintenance-oee.streamlit.app, same command); evidence updated.
 - [ ] **Release v1.1.0** tagged on the merge commit after CI is green on it; release body equals `docs/RELEASE_NOTES_v1.1.0.md`.
 - [ ] **Preview app deleted** by the author.

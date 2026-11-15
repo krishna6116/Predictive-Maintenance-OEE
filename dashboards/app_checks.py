@@ -19,7 +19,7 @@ from streamlit.testing.v1 import AppTest
 
 ROOT = Path(__file__).resolve().parents[1]
 SPEC = json.loads((ROOT / "dashboards" / "phase8_spec.json").read_text(encoding="utf-8"))
-PAGES = ["home", "fleet", "plan", "oee", "cost", "monitoring", "about"]
+PAGES = ["home", "fleet", "engine", "plan", "oee", "cost", "monitoring", "about"]
 OKABE_ITO = {"#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7", "#000000"}
 SIMULATED_PAGES = {"home", "oee", "cost"}     # pages that show OEE or simulated plant values
 TIMEOUT = 60
@@ -32,7 +32,8 @@ def run_page(page: str, snap: Path | None = None, widgets: dict | None = None) -
         at = AppTest.from_file(str(ROOT / "app" / "views" / f"{page}.py"), default_timeout=TIMEOUT).run()
         if widgets:
             for k, v in widgets.items():
-                el = at.radio(key=k) if k in ("dataset", "scope", "scenario") else at.multiselect(key=k)
+                el = (at.radio(key=k) if k in ("dataset", "scope", "scenario") else at.selectbox(key=k) if k.startswith("engine")
+                      else at.multiselect(key=k))
                 el.set_value(v)
             at.run()
     return at
@@ -54,7 +55,7 @@ def snapshot_env(snap: Path | None):
 
 def combos(page: str) -> list[dict]:
     """Every filter combination the spec lists, plus every subset of the multiselects (empty included)."""
-    if page in ("fleet",):
+    if page in ("fleet", "engine"):  # engine: each dataset with its default engine (verify_v11 covers all 200)
         return [{"dataset": d} for d in SPEC_FILTER(page, "dataset")]
     if page == "plan":
         risks = ["critical", "high", "medium"]

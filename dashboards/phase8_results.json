@@ -11,13 +11,13 @@
           "id": "D1.1",
           "kind": "code",
           "passed": true,
-          "detail": "612 displayed values in every filter view equal the independent recomputation"
+          "detail": "624 displayed values in every filter view equal the independent recomputation"
         },
         {
           "id": "D1.2",
           "kind": "code",
           "passed": true,
-          "detail": "8 files match the manifest (rows, sha256, sorted unique keys, run IDs)"
+          "detail": "9 files match the manifest (rows, sha256, sorted unique keys, run IDs)"
         },
         {
           "id": "D1.3",
@@ -91,7 +91,7 @@
           "id": "D3.1",
           "kind": "code",
           "passed": true,
-          "detail": "45 page renders, 0 with exceptions"
+          "detail": "47 page renders, 0 with exceptions"
         },
         {
           "id": "D3.2",
@@ -159,19 +159,19 @@
           "id": "D5.2",
           "kind": "code",
           "passed": true,
-          "detail": "52 charts: Okabe-Ito only, colour always paired"
+          "detail": "62 charts: Okabe-Ito only, colour always paired"
         },
         {
           "id": "D5.3",
           "kind": "code",
           "passed": true,
-          "detail": "52 charts: every axis titled, units on quantitative axes"
+          "detail": "62 charts: every axis titled, units on quantitative axes"
         },
         {
           "id": "D5.4",
           "kind": "code",
           "passed": true,
-          "detail": "cold-cache script time: home 0.57s, fleet 0.62s, plan 0.76s, oee 0.76s, cost 0.62s, monitoring 0.57s, about 0.52s"
+          "detail": "cold-cache script time: home 0.30s, fleet 0.30s, engine 0.35s, plan 0.27s, oee 0.27s, cost 0.26s, monitoring 0.29s, about 0.25s"
         },
         {
           "id": "D5.5",
