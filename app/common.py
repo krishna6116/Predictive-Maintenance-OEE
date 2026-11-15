@@ -107,7 +107,9 @@ BUSINESS = {
     "about": "Why should anyone believe these numbers?",
 }
 WHY = {
-    "home": "The headline results of a predictive-maintenance pipeline built on NASA engine data, and where to find each "
+    "home": "The app predicts when jet engines will need maintenance from their sensor data, plans crew work under crew "
+            "limits, and shows the effect on a simulated plant's OEE. This page gives the headline results of that "
+            "predictive-maintenance pipeline, built on NASA engine data, and where to find each "
             "part. It matters because every figure here is re-computed by independent code, and the misses are shown too.",
     "fleet": "Each test engine's forecast remaining life with its uncertainty interval, and which engines are flagged. A planner acts "
              "on the pessimistic edge of the interval, so a confident wrong forecast does not cause a failure.",
@@ -124,10 +126,16 @@ WHY = {
 }
 
 
-def header(page: str, intro: str) -> None:
+def header(page: str, intro: str, explain: bool = True) -> None:
     st.title(TITLES[page])
-    st.caption(intro)
+    if intro:
+        st.caption(intro)
     st.markdown(f"**Business question:** {BUSINESS[page]}")
+    if explain:  # Home shows its results first and calls explain_why() lower down
+        explain_why(page)
+
+
+def explain_why(page: str) -> None:
     with st.expander("What this shows / why it matters"):
         st.write(WHY[page])
 

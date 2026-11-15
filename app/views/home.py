@@ -10,8 +10,9 @@ import streamlit as st
 
 import common as C
 
-C.header("home", "Predicts when jet engines will need maintenance from their sensor data, plans crew work under crew "
-                 "limits, and shows the effect on a simulated plant's OEE.")
+# Home keeps its header short (title and business question) so the results fit on the first screen;
+# what the app does is in "What this shows / why it matters" below the charts
+C.header("home", "", explain=False)
 
 models = C.load("models.csv")
 pol = C.load("oee_policies.csv")
@@ -30,31 +31,7 @@ f[1].metric("Error of the best simple model, same engines (cycles)", C.num(fd3.l
 st.caption(f"Lower is better. RMSE is the typical size of a forecast's error, in engine cycles; measured on the "
            f"{int(fd3.loc[pub, 'engines'])} test engines of NASA FD003.")
 
-# 2. The three maintenance policies on the same simulated plant
-st.markdown(f"**Three maintenance policies on the same {machines} simulated machines**")
-COLOURS = [C.OKABE_ITO["blue"], C.OKABE_ITO["orange"], C.OKABE_ITO["vermillion"]]
-
-
-def policy_chart(field: str, title: str, y_title: str, fmt) -> alt.LayerChart:
-    d = pd.DataFrame({"policy": ORDER, "value": [float(pooled.loc[p, field]) for p in ORDER]})
-    d["shown"] = 100 * d.value if field == "oee" else d.value
-    d["label"] = d.value.map(fmt)
-    bars = alt.Chart(d, title=title).mark_bar().encode(
-        x=alt.X("policy:N", title="Policy", sort=ORDER, axis=alt.Axis(labelAngle=0)),
-        y=alt.Y("shown:Q", title=y_title),
-        color=alt.Color("policy:N", sort=ORDER, scale=alt.Scale(domain=ORDER, range=COLOURS), legend=None),
-        tooltip=[alt.Tooltip("policy:N", title="Policy"), alt.Tooltip("label:N", title=title)])
-    text = bars.mark_text(dy=-7, color=C.OKABE_ITO["black"]).encode(text="label:N", color=alt.value(C.OKABE_ITO["black"]))
-    return alt.layer(bars, text).properties(height=170)
-
-
-g = st.columns(3)
-g[0].altair_chart(policy_chart("oee", "OEE (simulated)", "OEE (%)", C.pct), width="stretch")
-g[1].altair_chart(policy_chart("unplanned_failures", "Unplanned failures (simulated, count)", "Unplanned failures (count)", lambda v: f"{v:,.0f}"),
-                  width="stretch")
-g[2].altair_chart(policy_chart("downtime_hours", "Downtime (simulated, hours)", "Downtime (hours)", lambda v: f"{v:,.0f}"), width="stretch")
-
-# 3. Business impact (simulated)
+# 2. Business impact (simulated), the business message, right after the forecast
 st.markdown("**Business impact (simulated)**")
 fl = {p: int(pooled.loc[p, "unplanned_failures"]) for p in ORDER}
 dt = {p: float(pooled.loc[p, "downtime_hours"]) for p in ORDER}
@@ -67,8 +44,32 @@ b[1].metric("Downtime hours saved (simulated)",
             help="Simulated downtime hours saved by predictive maintenance: vs a fixed service interval / vs running to failure.")
 b[2].metric("Wasted engine life, cycles (simulated)", f"{wc['Predictive']:,} vs {wc['Fixed interval']:,}",
             help="Simulated useful life thrown away at early services: predictive maintenance vs a fixed service interval.")
-st.caption("Simulated plant. First number vs a fixed service interval, second vs running to failure; wasted life is predictive vs fixed interval.")
+st.caption(f"Simulated plant of {machines} machines. First number vs a fixed service interval, second vs running to failure.")
+
+# 3. The three maintenance policies on the same simulated plant: horizontal bars stay readable in narrow columns
+COLOURS = [C.OKABE_ITO["blue"], C.OKABE_ITO["orange"], C.OKABE_ITO["vermillion"]]
+
+
+def policy_chart(field: str, title: str, x_title: str, fmt) -> alt.LayerChart:
+    d = pd.DataFrame({"policy": ORDER, "value": [float(pooled.loc[p, field]) for p in ORDER]})
+    d["shown"] = 100 * d.value if field == "oee" else d.value
+    d["label"] = d.value.map(fmt)
+    bars = alt.Chart(d, title=title).mark_bar().encode(
+        y=alt.Y("policy:N", title="Policy", sort=ORDER, axis=alt.Axis(labelOverlap=False, labelFontSize=10)),
+        x=alt.X("shown:Q", title=x_title, scale=alt.Scale(domainMax=float(d.shown.max()) * 1.35)),
+        color=alt.Color("policy:N", sort=ORDER, scale=alt.Scale(domain=ORDER, range=COLOURS), legend=None),
+        tooltip=[alt.Tooltip("policy:N", title="Policy"), alt.Tooltip("label:N", title=title)])
+    text = bars.mark_text(align="left", dx=3, color=C.OKABE_ITO["black"]).encode(text="label:N", color=alt.value(C.OKABE_ITO["black"]))
+    return alt.layer(bars, text).properties(height=165)
+
+
+g = st.columns(3)
+g[0].altair_chart(policy_chart("oee", "OEE (simulated)", "OEE (%)", C.pct), width="stretch")
+g[1].altair_chart(policy_chart("unplanned_failures", "Unplanned failures (simulated, count)", "Failures (count)", lambda v: f"{v:,.0f}"),
+                  width="stretch")
+g[2].altair_chart(policy_chart("downtime_hours", "Downtime (simulated, hours)", "Downtime (hours)", lambda v: f"{v:,.0f}"), width="stretch")
 C.simulated_notice()
+C.explain_why("home")
 
 st.subheader("How to read this app (one minute)")
 st.markdown("\n".join(f"- **{name}:** {C.BUSINESS[page]}" for page, name in (
