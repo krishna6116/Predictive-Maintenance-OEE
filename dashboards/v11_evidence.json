@@ -3,7 +3,7 @@
   "runs": {
     "https://pm-oee-v11-preview.streamlit.app": {
       "url": "https://pm-oee-v11-preview.streamlit.app",
-      "captured_utc": "2026-11-15T19:48:54Z",
+      "captured_utc": "2026-11-15T20:26:55Z",
       "V5.5": {
         "ok": true,
         "pages": {
@@ -32,29 +32,29 @@
             639
           ],
           "table": [
-            797
+            776
           ]
         },
         "screenshot": "docs/figures/v11/home_1280x800.png",
-        "detail": "lowest required element ends at 797 px of 800"
+        "detail": "lowest required element ends at 776 px of 800"
       },
       "V4.3": {
         "ok": true,
         "seconds": {
           "cost": [
+            1.05,
             1.0,
-            1.01,
-            1.02
+            1.03
           ],
           "engine": [
-            1.01,
-            1.0,
-            1.05
+            1.31,
+            1.1,
+            1.06
           ]
         },
         "median": {
-          "cost": 1.01,
-          "engine": 1.01
+          "cost": 1.03,
+          "engine": 1.1
         }
       },
       "V4.1": {
