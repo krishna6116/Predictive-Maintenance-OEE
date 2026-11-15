@@ -147,6 +147,9 @@ def readme(F) -> str:
         "[![Python](https://img.shields.io/badge/python-3.14-blue)](https://www.python.org/) "
         f"[![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE) "
         f"[![Live app](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)]({APP})", "",
+        f"**[▶ Live app]({APP}) · [Results](#results-at-a-glance) · [Business impact](#business-impact-simulated) · "
+        "[The problem](#the-problem) · [How it works](#how-it-works) · [Skills](#skills-demonstrated) · "
+        "[Run locally](#run-locally) · [Limitations](#limitations-and-what-i-would-do-next) · [Author](#author)**", "",
         "**TL;DR**", "",
         "- **Problem:** unplanned equipment failures stop production; fixed service schedules throw away useful life.",
         "- **Built end to end:** data pipeline into PostgreSQL, remaining-life forecasts with uncertainty, a crew "
@@ -162,6 +165,24 @@ def readme(F) -> str:
         "CP-SAT · Prefect · Streamlit · Power BI · pytest · GitHub Actions", "",
         "![The live app's Home page: forecast error on unseen engines, the three maintenance policies on the simulated "
         "plant and the business impact table](docs/figures/v11/hero_home.png)", "",
+        "## Project at a glance", "",
+        "| | |", "| --- | --- |",
+        "| **What it does** | Forecasts how many cycles each jet engine has left before it fails, flags engines that "
+        "need service, books them into a crew schedule and shows what that means for a simulated plant |",
+        "| **Data** | NASA C-MAPSS turbofan engine data, all four datasets (FD001-FD004); downloaded and checked "
+        "against pinned checksums, never edited |",
+        "| **Machine learning** | Fleet-average, age-only, Ridge and XGBoost baselines; PyTorch LSTM and 1D-CNN with "
+        "Monte Carlo dropout intervals; models chosen on validation engines only |",
+        "| **Optimization** | Google OR-Tools CP-SAT crew schedule under a daily crew limit, with optimality proved "
+        "by a second method |",
+        "| **Operations analytics** | Three maintenance policies (predictive, fixed interval, run to failure) compared "
+        "on a simulated plant: availability x performance x quality, failures and lost engine life (simulated) |",
+        "| **MLOps** | Prefect flow that runs once per shift, with retries, resume, model-health and drift checks and "
+        "a retraining flag |",
+        "| **Dashboards** | Public Streamlit app (headline results, engine drill-down, cost what-if) and a Power BI "
+        "report on the PostgreSQL star schema |",
+        "| **Engineering** | PostgreSQL star schema, pytest suite, GitHub Actions CI with an independent verifier for "
+        "every phase, pinned dependencies, pre-registered success criteria |", "",
         "## Results at a glance", "",
         "| What | Result | Compared with |", "| --- | --- | --- |",
         f"| Remaining-life error, unseen FD003 engines (RMSE, cycles; lower is better) | **{F['published_model']} "
@@ -191,6 +212,17 @@ def readme(F) -> str:
         f"while the fixed interval throws away {F['wasted_ratio']:.1f} times as much useful engine life. The crew plan "
         f"respects {F['crews_per_day']} crews a day: on FD001 it books {n(F['fd001_scheduled'])} of the "
         f"{n(F['fd001_flagged'])} flagged engines into the {F['horizon_days']}-day horizon.", "",
+        "## The problem", "",
+        "Maintenance teams in manufacturing, aviation and energy face the same trade-off. Service a machine too late "
+        "and it breaks in the middle of production; service it on a fixed calendar and you replace parts that still "
+        "had plenty of life left. Sensors show how a machine is wearing, but a reading on its own does not say when "
+        "to act, and there are only so many crews to do the work. This project asks three questions:", "",
+        "1. How accurately can remaining useful life be forecast from sensor data, and does a deep learning model "
+        "actually beat simple rules and classic machine learning on engines it has never seen?",
+        "2. Given those forecasts and their uncertainty, which engines should be serviced, and when, with a limited "
+        "number of crews?",
+        "3. What would that policy change on the shop floor compared with a fixed interval or run to failure, and "
+        "how would you know when the model stops being trustworthy? (Answered on a simulated plant.)", "",
         "## How it works", "",
         "```mermaid",
         "flowchart LR",
@@ -223,6 +255,11 @@ def readme(F) -> str:
         "with different code; CI runs them on every push.",
         "- **Misses reported, not re-tuned:** " + misses(F), "",
         "## Skills demonstrated", "",
+        "Predictive maintenance · Remaining useful life forecasting · Time-series deep learning (PyTorch LSTM, CNN) · "
+        "Uncertainty quantification · Gradient boosting (XGBoost) · Statistical testing and bootstrap · Constraint "
+        "optimization (OR-Tools CP-SAT) · Maintenance policy and OEE analysis on a simulated plant · Data pipelines "
+        "and SQL (PostgreSQL) · Workflow orchestration (Prefect) · Drift monitoring and MLOps · BI dashboards "
+        "(Streamlit, Power BI) · Automated testing and CI/CD (pytest, GitHub Actions)", "",
         "| Job function | What this project shows | Proof |", "| --- | --- | --- |",
         "| Data engineering | PostgreSQL star schema, validation with a quarantine table, idempotent run-ID loads | "
         "[pipeline/schema.sql](pipeline/schema.sql) · [pipeline/validate.py](pipeline/validate.py) · [pipeline/load.py](pipeline/load.py) |",
@@ -277,8 +314,12 @@ def readme(F) -> str:
         "Claude wrote most of the code, tests and documentation under my direction. Every published claim is re-checked "
         "by independent verifier code in CI, so it does not depend on trusting either of us.", "",
         "## Author", "",
-        f"Krishnakumar Balasundaram · MS Business Analytics, UMass Amherst (Isenberg) · [LinkedIn]({LINKEDIN}) · "
-        f"[GitHub]({GITHUB})", "",
+        "**Krishnakumar Balasundaram**, MS Business Analytics candidate at the Isenberg School of Management, UMass "
+        "Amherst (expected May 2028). B.E. Mechanical Engineering, with industry experience in production, quality "
+        "control and operations analytics in manufacturing.", "",
+        f"[LinkedIn]({LINKEDIN}) · [GitHub]({GITHUB}) · [Live app]({APP}) · [Case study](docs/CASE_STUDY.md)", "",
+        "Open to Summer 2027 internships in data analytics, operations and supply chain analytics, quality analytics, "
+        "healthcare analytics and AI product roles.", "",
         "## License", "",
         "MIT, see [LICENSE](LICENSE).", "",
     ]
