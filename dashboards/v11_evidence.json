@@ -86,7 +86,7 @@
     },
     "https://predictive-maintenance-oee.streamlit.app": {
       "url": "https://predictive-maintenance-oee.streamlit.app",
-      "captured_utc": "2026-11-15T20:51:31Z",
+      "captured_utc": "2026-11-15T23:05:14Z",
       "V5.5": {
         "ok": true,
         "pages": {
@@ -125,19 +125,19 @@
         "ok": true,
         "seconds": {
           "cost": [
-            1.03,
-            1.03,
+            1.57,
+            1.14,
             1.04
           ],
           "engine": [
-            1.21,
-            1.1,
-            1.09
+            1.08,
+            1.09,
+            1.11
           ]
         },
         "median": {
-          "cost": 1.03,
-          "engine": 1.1
+          "cost": 1.14,
+          "engine": 1.09
         }
       },
       "V4.1": {
