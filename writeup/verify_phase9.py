@@ -112,8 +112,10 @@ def allowed_values(root: Path) -> set[float]:
     p6 = json.loads(read(root, "maintenance/results_phase6.json"))["pooled"]
     f = {k: p6[k]["unplanned_failures"] for k in p6}
     w = {k: p6[k]["wasted_cycles"] for k in p6}
+    h = {k: p6[k]["downtime_hours"] for k in p6}
     vals |= {f["Fixed interval"] - f["Predictive"], f["Run to failure"] - f["Predictive"],
-             w["Fixed interval"] / w["Predictive"]}  # the three pre-registered derived values
+             w["Fixed interval"] / w["Predictive"],  # the three pre-registered derived values
+             h["Fixed interval"] - h["Predictive"], h["Run to failure"] - h["Predictive"]}  # v1.1 amendment (2026-11-15)
     return vals | {abs(v) for v in vals}
 
 

@@ -60,6 +60,8 @@
       "fixed_vs_predictive_wasted_life_ratio": "wasted cycles, fixed interval / wasted cycles, predictive (Phase 6 pooled)",
       "failures_avoided_vs_fixed": "unplanned failures, fixed interval - predictive (Phase 6 pooled)",
       "failures_avoided_vs_rtf": "unplanned failures, run to failure - predictive (Phase 6 pooled)",
+      "downtime_saved_vs_fixed": "downtime hours, fixed interval - predictive (Phase 6 pooled, simulated); added 2026-11-15 before v1.1 was built",
+      "downtime_saved_vs_rtf": "downtime hours, run to failure - predictive (Phase 6 pooled, simulated); added 2026-11-15 before v1.1 was built",
       "percent_forms": "a share x shown as 100x with the % sign",
       "absolute_gaps": "the absolute value of a signed gap when the text says which side is better"
     },
