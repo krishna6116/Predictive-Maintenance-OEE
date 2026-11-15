@@ -103,6 +103,25 @@ def charts(at: AppTest) -> list[dict]:
     return specs
 
 
+def chart_labels(at: AppTest) -> dict:
+    """v1.1: the bar labels each titled chart shows, from the data Streamlit sends: {title: {policy: label}}."""
+    import pyarrow as pa
+    out = {}
+
+    def walk(node):
+        for e in getattr(node, "children", {}).values():
+            if getattr(e, "type", None) == "vega_lite_chart":
+                spec = json.loads(e.proto.spec)
+                title = next((l.get("title") for l in layers(spec) if l.get("title")), spec.get("title"))
+                for ds in e.proto.datasets:
+                    rows = pa.ipc.open_stream(ds.data.data).read_all().to_pylist()
+                    if title and rows and {"policy", "label"} <= set(rows[0]):
+                        out[title if isinstance(title, str) else str(title)] = {r["policy"]: r["label"] for r in rows}
+            walk(e)
+    walk(at.main)
+    return out
+
+
 def layers(spec: dict) -> list[dict]:
     out = []
     for l in spec.get("layer", [spec]):
@@ -270,6 +289,7 @@ def rendered_numbers() -> dict:
             out.setdefault(page, {})[json.dumps(w, sort_keys=True)] = {
                 "metrics": {m.label: str(m.value) for m in at.metric},
                 "tables": [d.value for d in at.dataframe],
+                "charts": chart_labels(at),
                 "text": texts(at)}
     return out
 

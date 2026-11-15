@@ -138,11 +138,18 @@ def unexplained_numbers(text: str, vals: set[float]) -> list[str]:
 
 
 def home_text() -> str:
-    from dashboards.app_checks import run_page, texts
+    """The text a viewer sees on Home. Post hoc (v1.1): each chart's hidden configuration (JSON with internal dataset
+    ids such as '36888c6a...' and settings such as the height) is dropped, and the chart's visible bar labels are
+    added instead, so W1 judges every displayed number and nothing that is not displayed."""
+    from dashboards.app_checks import chart_labels, charts, run_page, texts
     at = run_page("home")
     if at.exception:
         raise RuntimeError(f"Home page raised {[e.value for e in at.exception]}")
-    return texts(at)
+    hidden = {json.dumps(c) for c in charts(at)}
+    visible = [line for line in texts(at).split("\n") if line not in hidden]
+    for title, bars in chart_labels(at).items():
+        visible += [f"{title}: {policy} {label}" for policy, label in bars.items()]
+    return "\n".join(visible)
 
 
 def w1(root: Path, home: str | None) -> tuple[bool, str]:
