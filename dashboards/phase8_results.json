@@ -11,7 +11,7 @@
           "id": "D1.1",
           "kind": "code",
           "passed": true,
-          "detail": "594 displayed values in every filter view equal the independent recomputation"
+          "detail": "599 displayed values in every filter view equal the independent recomputation"
         },
         {
           "id": "D1.2",
@@ -91,7 +91,7 @@
           "id": "D3.1",
           "kind": "code",
           "passed": true,
-          "detail": "44 page renders, 0 with exceptions"
+          "detail": "45 page renders, 0 with exceptions"
         },
         {
           "id": "D3.2",
@@ -116,7 +116,7 @@
           "id": "D4.1",
           "kind": "code",
           "passed": true,
-          "detail": "'Simulated' on ['home', 'oee']"
+          "detail": "'Simulated' on ['cost', 'home', 'oee']"
         },
         {
           "id": "D4.2",
@@ -159,19 +159,19 @@
           "id": "D5.2",
           "kind": "code",
           "passed": true,
-          "detail": "48 charts: Okabe-Ito only, colour always paired"
+          "detail": "49 charts: Okabe-Ito only, colour always paired"
         },
         {
           "id": "D5.3",
           "kind": "code",
           "passed": true,
-          "detail": "48 charts: every axis titled, units on quantitative axes"
+          "detail": "49 charts: every axis titled, units on quantitative axes"
         },
         {
           "id": "D5.4",
           "kind": "code",
           "passed": true,
-          "detail": "cold-cache script time: home 0.22s, fleet 0.27s, plan 0.25s, oee 0.23s, monitoring 0.24s, about 0.24s"
+          "detail": "cold-cache script time: home 0.26s, fleet 0.30s, plan 0.29s, oee 0.29s, cost 0.28s, monitoring 0.29s, about 0.25s"
         },
         {
           "id": "D5.5",

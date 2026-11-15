@@ -221,6 +221,17 @@ def expected_metrics(T, page: str, view: dict) -> dict:
         out["Simulated OEE: predictive / fixed / run to failure"] = " / ".join(pct(T["oee"][("Pooled", p)]["oee"]) for p in order)
         out["Simulated unplanned failures: predictive / fixed / run to failure"] = " / ".join(
             str(T["oee"][("Pooled", p)]["unplanned_failures"]) for p in order)
+    elif page == "cost":
+        # own arithmetic (not app/costmodel.py), with the illustrative defaults pre-registered in v11_spec.json
+        c = {k: v["default"] for k, v in json.loads((ROOT / "dashboards" / "v11_spec.json").read_text(encoding="utf-8"))["cost_page"]["inputs"].items()}
+        tot = {}
+        for pol in ("Predictive", "Fixed interval", "Run to failure"):
+            o = T["oee"][("Pooled", pol)]
+            tot[pol] = (o["downtime_hours"] * c["c_hour"] + o["planned_services"] * c["c_service"]
+                        + o["unplanned_failures"] * c["c_failure"] + o["wasted_cycles"] * c["c_cycle"])
+            out[f"Total cost, {pol.lower()} (illustrative)"] = f"${tot[pol]:,.0f}"
+        out["Saving of predictive vs fixed interval (illustrative)"] = f"${tot['Fixed interval'] - tot['Predictive']:,.0f}"
+        out["Saving of predictive vs run to failure (illustrative)"] = f"${tot['Run to failure'] - tot['Predictive']:,.0f}"
     elif page == "fleet":
         dss = ["FD001", "FD003"] if view["dataset"] == "Both" else [view["dataset"]]
         for ds in dss:

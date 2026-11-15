@@ -96,6 +96,37 @@
       "required_text": ["Simulated", "How to read this app", "What this shows"]
     },
     {
+      "id": "cost",
+      "title": "What would each policy cost, with your own numbers? (Illustrative)",
+      "added": "v1.1 amendment (extension only): defined in dashboards/v11_spec.json cost_page, copied here with the page; must stay identical to v11_spec.json phase8_spec_pages.cost",
+      "filters": {},
+      "numbers": [
+        {
+          "id": "cost.totals",
+          "label": "total cost per policy and savings vs fixed interval and run to failure, at the pre-registered illustrative defaults",
+          "per": "input set",
+          "source": "oee_policies.csv (pooled) and the viewer's inputs",
+          "independent": "machines_phase6.csv re-aggregated, own arithmetic with the defaults from v11_spec.json",
+          "tolerance": "exact (whole dollars shown)"
+        }
+      ],
+      "charts": [
+        {
+          "id": "cost.totals_chart",
+          "type": "bar per policy with value labels",
+          "x": "Maintenance policy",
+          "y": "Total cost (illustrative, $)"
+        }
+      ],
+      "required_text": [
+        "Illustrative",
+        "Simulated",
+        "not real cost data",
+        "Illustrative defaults, change them",
+        "already include"
+      ]
+    },
+    {
       "id": "fleet",
       "title": "Which engines are closest to failure, and how sure is the model?",
       "filters": {"dataset": ["FD001", "FD003", "Both"]},

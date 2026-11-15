@@ -25,6 +25,7 @@ TITLES = {
     "fleet": "Which engines are closest to failure, and how sure is the model?",
     "plan": "Which engines should the crews service in the next 7 days?",
     "oee": "Which maintenance policy gives the highest OEE? (Simulated plant)",
+    "cost": "What would each policy cost, with your own numbers? (Illustrative)",
     "monitoring": "Can we trust the model's forecasts this shift?",
     "about": "How were these numbers made, and can I check them?",
 }
@@ -101,6 +102,7 @@ BUSINESS = {
     "fleet": "Which assets need attention first, and how much can we trust the warning?",
     "plan": "With limited crews, which jobs go on which day so nothing fails while waiting?",
     "oee": "Does predictive maintenance pay off against a fixed calendar or running to failure?",
+    "cost": "With our own cost figures, which maintenance policy is cheapest?",
     "monitoring": "When should we stop trusting the forecasts and retrain the model?",
     "about": "Why should anyone believe these numbers?",
 }
@@ -111,6 +113,9 @@ WHY = {
              "on the pessimistic edge of the interval, so a confident wrong forecast does not cause a failure.",
     "plan": "The crew schedule the optimizer chose for flagged engines under the crew limit. It shows the trade-off a "
             "maintenance planner makes every day, and which engines miss out when capacity runs short.",
+    "cost": "Your cost figures applied to the simulated counts of each policy: downtime hours, planned services, "
+            "unplanned failures and wasted engine life. It shows how the policy comparison turns into money, while "
+            "making clear that the costs are yours and the plant is simulated.",
     "oee": "Three maintenance policies replayed on the same simulated machines. It turns forecast accuracy into the "
            "operations language of OEE, downtime and failures, labelled as simulated because no real plant was measured.",
     "monitoring": "How the shift-by-shift flow judges its own forecasts, including where its rules failed their targets. "

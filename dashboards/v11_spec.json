@@ -103,5 +103,38 @@
     "url": "https://pm-oee-v11-preview.streamlit.app",
     "deploy": "Community Cloud: repository krishna6116/Predictive-Maintenance-OEE, branch v1.1, main file app/streamlit_app.py, Python 3.14, secrets empty, public; created and deleted by the author",
     "rule": "V2 and V4 are measured on the preview before the merge and measured again on https://predictive-maintenance-oee.streamlit.app after it; both results are reported"
+  },
+  "phase8_spec_pages": {
+    "cost": {
+      "id": "cost",
+      "title": "What would each policy cost, with your own numbers? (Illustrative)",
+      "added": "v1.1 amendment (extension only): defined in dashboards/v11_spec.json cost_page, copied here with the page; must stay identical to v11_spec.json phase8_spec_pages.cost",
+      "filters": {},
+      "numbers": [
+        {
+          "id": "cost.totals",
+          "label": "total cost per policy and savings vs fixed interval and run to failure, at the pre-registered illustrative defaults",
+          "per": "input set",
+          "source": "oee_policies.csv (pooled) and the viewer's inputs",
+          "independent": "machines_phase6.csv re-aggregated, own arithmetic with the defaults from v11_spec.json",
+          "tolerance": "exact (whole dollars shown)"
+        }
+      ],
+      "charts": [
+        {
+          "id": "cost.totals_chart",
+          "type": "bar per policy with value labels",
+          "x": "Maintenance policy",
+          "y": "Total cost (illustrative, $)"
+        }
+      ],
+      "required_text": [
+        "Illustrative",
+        "Simulated",
+        "not real cost data",
+        "Illustrative defaults, change them",
+        "already include"
+      ]
+    }
   }
 }
