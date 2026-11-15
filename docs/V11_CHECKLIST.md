@@ -16,4 +16,4 @@ evidence is committed. Live checks run first on the preview app (branch `v1.1`),
 - [x] **Smoke check (V5.5) on the real app**: `python -m dashboards.smoke_v11 --live https://predictive-maintenance-oee.streamlit.app`; every page loads with no exception.
 - [x] **Live checks on the real app** (https://predictive-maintenance-oee.streamlit.app, same command); evidence updated.
 - [x] **Release v1.1.0** tagged on the merge commit after CI is green on it; release body equals `docs/RELEASE_NOTES_v1.1.0.md`.
-- [ ] **Preview app deleted** by the author.
+- [x] **Preview app deleted** by the author.
