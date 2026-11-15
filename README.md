@@ -6,6 +6,8 @@ Predicts when jet engines will need maintenance from their sensor data, then pla
 
 [![CI](https://github.com/krishna6116/Predictive-Maintenance-OEE/actions/workflows/ci.yml/badge.svg)](https://github.com/krishna6116/Predictive-Maintenance-OEE/actions/workflows/ci.yml) [![Python](https://img.shields.io/badge/python-3.14-blue)](https://www.python.org/) [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE) [![Live app](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://predictive-maintenance-oee.streamlit.app)
 
+**[▶ Live app](https://predictive-maintenance-oee.streamlit.app) · [Results](#results-at-a-glance) · [Business impact](#business-impact-simulated) · [The problem](#the-problem) · [How it works](#how-it-works) · [Skills](#skills-demonstrated) · [Run locally](#run-locally) · [Limitations](#limitations-and-what-i-would-do-next) · [Author](#author)**
+
 **TL;DR**
 
 - **Problem:** unplanned equipment failures stop production; fixed service schedules throw away useful life.
@@ -17,6 +19,19 @@ Predicts when jet engines will need maintenance from their sensor data, then pla
 **Tech stack:** Python · PostgreSQL · pandas · scikit-learn · XGBoost · PyTorch (LSTM, CNN) · OR-Tools CP-SAT · Prefect · Streamlit · Power BI · pytest · GitHub Actions
 
 ![The live app's Home page: forecast error on unseen engines, the three maintenance policies on the simulated plant and the business impact table](docs/figures/v11/hero_home.png)
+
+## Project at a glance
+
+| | |
+| --- | --- |
+| **What it does** | Forecasts how many cycles each jet engine has left before it fails, flags engines that need service, books them into a crew schedule and shows what that means for a simulated plant |
+| **Data** | NASA C-MAPSS turbofan engine data, all four datasets (FD001-FD004); downloaded and checked against pinned checksums, never edited |
+| **Machine learning** | Fleet-average, age-only, Ridge and XGBoost baselines; PyTorch LSTM and 1D-CNN with Monte Carlo dropout intervals; models chosen on validation engines only |
+| **Optimization** | Google OR-Tools CP-SAT crew schedule under a daily crew limit, with optimality proved by a second method |
+| **Operations analytics** | Three maintenance policies (predictive, fixed interval, run to failure) compared on a simulated plant: availability x performance x quality, failures and lost engine life (simulated) |
+| **MLOps** | Prefect flow that runs once per shift, with retries, resume, model-health and drift checks and a retraining flag |
+| **Dashboards** | Public Streamlit app (headline results, engine drill-down, cost what-if) and a Power BI report on the PostgreSQL star schema |
+| **Engineering** | PostgreSQL star schema, pytest suite, GitHub Actions CI with an independent verifier for every phase, pinned dependencies, pre-registered success criteria |
 
 ## Results at a glance
 
@@ -42,6 +57,14 @@ What the maintenance policies mean in operations terms, on the same 200 simulate
 | Useful life thrown away at early services, cycles (simulated) | **4,843** | 12,989 | 0 |
 
 In the simulated plant, predictive maintenance avoids 13 unplanned failures compared with a fixed service interval and 192 compared with run to failure, while the fixed interval throws away 2.7 times as much useful engine life. The crew plan respects 3 crews a day: on FD001 it books 21 of the 23 flagged engines into the 7-day horizon.
+
+## The problem
+
+Maintenance teams in manufacturing, aviation and energy face the same trade-off. Service a machine too late and it breaks in the middle of production; service it on a fixed calendar and you replace parts that still had plenty of life left. Sensors show how a machine is wearing, but a reading on its own does not say when to act, and there are only so many crews to do the work. This project asks three questions:
+
+1. How accurately can remaining useful life be forecast from sensor data, and does a deep learning model actually beat simple rules and classic machine learning on engines it has never seen?
+2. Given those forecasts and their uncertainty, which engines should be serviced, and when, with a limited number of crews?
+3. What would that policy change on the shop floor compared with a fixed interval or run to failure, and how would you know when the model stops being trustworthy? (Answered on a simulated plant.)
 
 ## How it works
 
@@ -76,6 +99,8 @@ Architecture, star schema and technology choices: [docs/ARCHITECTURE.md](docs/AR
 - **Misses reported, not re-tuned:** Phase 7's drift test raised false alarms on 11.6% of clean test runs against a 5% target (not met). Phase 7b's new rule failed its pre-registered criterion C1 on FD004: 19.5% and 13.9% of clean runs flagged (synchronized and staggered fleets) against a 5% limit. Both are reported, not re-tuned.
 
 ## Skills demonstrated
+
+Predictive maintenance · Remaining useful life forecasting · Time-series deep learning (PyTorch LSTM, CNN) · Uncertainty quantification · Gradient boosting (XGBoost) · Statistical testing and bootstrap · Constraint optimization (OR-Tools CP-SAT) · Maintenance policy and OEE analysis on a simulated plant · Data pipelines and SQL (PostgreSQL) · Workflow orchestration (Prefect) · Drift monitoring and MLOps · BI dashboards (Streamlit, Power BI) · Automated testing and CI/CD (pytest, GitHub Actions)
 
 | Job function | What this project shows | Proof |
 | --- | --- | --- |
@@ -186,7 +211,11 @@ I built this phase by phase from a study guide, with Claude (Anthropic's AI assi
 
 ## Author
 
-Krishnakumar Balasundaram · MS Business Analytics, UMass Amherst (Isenberg) · [LinkedIn](https://www.linkedin.com/in/krishnakumar-balasundaram-3a92b6422) · [GitHub](https://github.com/Krishna6116)
+**Krishnakumar Balasundaram**, MS Business Analytics candidate at the Isenberg School of Management, UMass Amherst (expected May 2028). B.E. Mechanical Engineering, with industry experience in production, quality control and operations analytics in manufacturing.
+
+[LinkedIn](https://www.linkedin.com/in/krishnakumar-balasundaram-3a92b6422) · [GitHub](https://github.com/Krishna6116) · [Live app](https://predictive-maintenance-oee.streamlit.app) · [Case study](docs/CASE_STUDY.md)
+
+Open to Summer 2027 internships in data analytics, operations and supply chain analytics, quality analytics, healthcare analytics and AI product roles.
 
 ## License
 
