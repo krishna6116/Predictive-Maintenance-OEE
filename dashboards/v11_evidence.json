@@ -84,5 +84,11 @@
         }
       }
     }
+  },
+  "ci": {
+    "commit": "d0369aaccb0a40c6a2e2cd89e862b1cc552c532f",
+    "conclusion": "success",
+    "url": "https://github.com/krishna6116/Predictive-Maintenance-OEE/actions/runs/43758305037",
+    "recorded_utc": "2026-11-15T20:40:03Z"
   }
 }
