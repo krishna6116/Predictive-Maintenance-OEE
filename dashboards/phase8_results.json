@@ -11,7 +11,7 @@
           "id": "D1.1",
           "kind": "code",
           "passed": true,
-          "detail": "609 displayed values in every filter view equal the independent recomputation"
+          "detail": "612 displayed values in every filter view equal the independent recomputation"
         },
         {
           "id": "D1.2",
@@ -171,7 +171,7 @@
           "id": "D5.4",
           "kind": "code",
           "passed": true,
-          "detail": "cold-cache script time: home 0.32s, fleet 0.30s, plan 0.28s, oee 0.28s, cost 0.27s, monitoring 0.29s, about 0.25s"
+          "detail": "cold-cache script time: home 0.57s, fleet 0.62s, plan 0.76s, oee 0.76s, cost 0.62s, monitoring 0.57s, about 0.52s"
         },
         {
           "id": "D5.5",

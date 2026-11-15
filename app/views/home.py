@@ -10,9 +10,9 @@ import streamlit as st
 
 import common as C
 
-# Home keeps its header short (title and business question) so the results fit on the first screen;
-# what the app does is in "What this shows / why it matters" below the charts
-C.header("home", "", explain=False)
+# Home keeps its header short (title, one line on what the app does, business question) so the results fit on the
+# first screen; the longer explanation is in "What this shows / why it matters" below the charts
+C.header("home", "Predicts when jet engines need maintenance from sensor data, then plans crew work.", explain=False)
 
 models = C.load("models.csv")
 pol = C.load("oee_policies.csv")
@@ -24,10 +24,11 @@ ORDER = ["Predictive", "Fixed interval", "Run to failure"]
 
 # 1. The forecast, in plain English
 f = st.columns(2)
-f[0].metric("Forecast error on engines it never saw (cycles)", C.num(fd3.loc[pub, "rmse"]),
+f[0].metric(f"{pub} forecast error on engines it never saw (cycles)", C.num(fd3.loc[pub, "rmse"]),
             help=f"{C.define('RMSE')} The published {pub} model on engines no model choice was made on.")
-f[1].metric("Error of the best simple model, same engines (cycles)", C.num(fd3.loc["XGBoost (168 features)", "rmse"]),
-            help=f"{C.define('RMSE')} XGBoost on engineered features: the strongest non-deep baseline.")
+f[1].metric("XGBoost, previous model, same engines (cycles)", C.num(fd3.loc["XGBoost (168 features)", "rmse"]),
+            help=f"{C.define('RMSE')} XGBoost on engineered features: the published model until the {pub} beat it on "
+                 "a fresh dataset with tests fixed in advance.")
 st.caption(f"Lower is better. RMSE is the typical size of a forecast's error, in engine cycles; measured on the "
            f"{int(fd3.loc[pub, 'engines'])} test engines of NASA FD003.")
 
@@ -36,15 +37,16 @@ st.markdown("**Business impact (simulated)**")
 fl = {p: int(pooled.loc[p, "unplanned_failures"]) for p in ORDER}
 dt = {p: float(pooled.loc[p, "downtime_hours"]) for p in ORDER}
 wc = {p: int(pooled.loc[p, "wasted_cycles"]) for p in ORDER}
-b = st.columns(3)
-b[0].metric("Failures avoided (simulated)", f"{fl['Fixed interval'] - fl['Predictive']:,} / {fl['Run to failure'] - fl['Predictive']:,}",
-            help="Simulated unplanned failures avoided by predictive maintenance: vs a fixed service interval / vs running to failure.")
-b[1].metric("Downtime hours saved (simulated)",
-            f"{dt['Fixed interval'] - dt['Predictive']:,.0f} / {dt['Run to failure'] - dt['Predictive']:,.0f}",
-            help="Simulated downtime hours saved by predictive maintenance: vs a fixed service interval / vs running to failure.")
-b[2].metric("Wasted engine life, cycles (simulated)", f"{wc['Predictive']:,} vs {wc['Fixed interval']:,}",
-            help="Simulated useful life thrown away at early services: predictive maintenance vs a fixed service interval.")
-st.caption(f"Simulated plant of {machines} machines. First number vs a fixed service interval, second vs running to failure.")
+# a small table, so each number says what it is compared with (tiles would cut the long labels off)
+st.dataframe(pd.DataFrame([
+    {"Impact (simulated)": "Failures avoided (simulated)", "vs fixed interval": f"{fl['Fixed interval'] - fl['Predictive']:,}",
+     "vs run to failure": f"{fl['Run to failure'] - fl['Predictive']:,}"},
+    {"Impact (simulated)": "Downtime hours saved (simulated)", "vs fixed interval": f"{dt['Fixed interval'] - dt['Predictive']:,.0f}",
+     "vs run to failure": f"{dt['Run to failure'] - dt['Predictive']:,.0f}"},
+    {"Impact (simulated)": "Wasted engine life, cycles (simulated): predictive vs", "vs fixed interval": f"{wc['Predictive']:,} vs {wc['Fixed interval']:,}",
+     "vs run to failure": f"{wc['Predictive']:,} vs {wc['Run to failure']:,}"},
+]), hide_index=True, width="stretch")
+st.caption(f"Predictive maintenance compared with the other two policies, on a simulated plant of {machines} machines.")
 
 # 3. The three maintenance policies on the same simulated plant: horizontal bars stay readable in narrow columns
 COLOURS = [C.OKABE_ITO["blue"], C.OKABE_ITO["orange"], C.OKABE_ITO["vermillion"]]
@@ -56,7 +58,9 @@ def policy_chart(field: str, title: str, x_title: str, fmt) -> alt.LayerChart:
     d["label"] = d.value.map(fmt)
     bars = alt.Chart(d, title=title).mark_bar().encode(
         y=alt.Y("policy:N", title="Policy", sort=ORDER, axis=alt.Axis(labelOverlap=False, labelFontSize=10)),
-        x=alt.X("shown:Q", title=x_title, scale=alt.Scale(domainMax=float(d.shown.max()) * 1.35)),
+        # OEE cannot exceed 100%; the count axes get room for the value labels
+        x=alt.X("shown:Q", title=x_title, scale=alt.Scale(domain=[0, 100]) if field == "oee"
+                else alt.Scale(domainMax=float(d.shown.max()) * 1.35)),
         color=alt.Color("policy:N", sort=ORDER, scale=alt.Scale(domain=ORDER, range=COLOURS), legend=None),
         tooltip=[alt.Tooltip("policy:N", title="Policy"), alt.Tooltip("label:N", title=title)])
     text = bars.mark_text(align="left", dx=3, color=C.OKABE_ITO["black"]).encode(text="label:N", color=alt.value(C.OKABE_ITO["black"]))

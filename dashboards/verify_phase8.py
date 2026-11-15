@@ -215,14 +215,8 @@ def expected_metrics(T, page: str, view: dict) -> dict:
     out = {}
     if page == "home":
         pub = "LSTM" if T["published_model"] == "LSTM" else "XGBoost (168 features)"
-        out["Forecast error on engines it never saw (cycles)"] = f"{T['models'][('FD003', pub)]['rmse']:.2f}"
-        out["Error of the best simple model, same engines (cycles)"] = f"{T['models'][('FD003', 'XGBoost (168 features)')]['rmse']:.2f}"
-        o = {p: T["oee"][("Pooled", p)] for p in ("Predictive", "Fixed interval", "Run to failure")}
-        out["Failures avoided (simulated)"] = (f"{o['Fixed interval']['unplanned_failures'] - o['Predictive']['unplanned_failures']:,} / "
-                                               f"{o['Run to failure']['unplanned_failures'] - o['Predictive']['unplanned_failures']:,}")
-        out["Downtime hours saved (simulated)"] = (f"{o['Fixed interval']['downtime_hours'] - o['Predictive']['downtime_hours']:,.0f} / "
-                                                   f"{o['Run to failure']['downtime_hours'] - o['Predictive']['downtime_hours']:,.0f}")
-        out["Wasted engine life, cycles (simulated)"] = f"{o['Predictive']['wasted_cycles']:,} vs {o['Fixed interval']['wasted_cycles']:,}"
+        out[f"{T['published_model']} forecast error on engines it never saw (cycles)"] = f"{T['models'][('FD003', pub)]['rmse']:.2f}"
+        out["XGBoost, previous model, same engines (cycles)"] = f"{T['models'][('FD003', 'XGBoost (168 features)')]['rmse']:.2f}"
     elif page == "cost":
         # own arithmetic (not app/costmodel.py), with the illustrative defaults pre-registered in v11_spec.json
         c = {k: v["default"] for k, v in json.loads((ROOT / "dashboards" / "v11_spec.json").read_text(encoding="utf-8"))["cost_page"]["inputs"].items()}
@@ -277,6 +271,15 @@ def expected_charts(T, page: str) -> dict:
 def expected_tables(T, page: str, view: dict) -> list[tuple[str, list]]:
     """(description, [(row key, column, expected string)]) for the tables whose numbers the page shows."""
     checks = []
+    if page == "home":  # v1.1 'Business impact (simulated)' table
+        o = {p: T["oee"][("Pooled", p)] for p in ("Predictive", "Fixed interval", "Run to failure")}
+        cells = []
+        for col, other in (("vs fixed interval", "Fixed interval"), ("vs run to failure", "Run to failure")):
+            cells += [(("Failures avoided (simulated)",), col, f"{o[other]['unplanned_failures'] - o['Predictive']['unplanned_failures']:,}"),
+                      (("Downtime hours saved (simulated)",), col, f"{o[other]['downtime_hours'] - o['Predictive']['downtime_hours']:,.0f}"),
+                      (("Wasted engine life, cycles (simulated): predictive vs",), col,
+                       f"{o['Predictive']['wasted_cycles']:,} vs {o[other]['wasted_cycles']:,}")]
+        checks.append(("business impact table", cells))
     if page == "fleet":
         dss = ["FD001", "FD003"] if view["dataset"] == "Both" else [view["dataset"]]
         cells = []
@@ -310,7 +313,7 @@ def expected_tables(T, page: str, view: dict) -> list[tuple[str, list]]:
 
 
 def table_lookup(df, key: tuple, col: str):
-    keycols = {1: ["Policy"], 2: ["Dataset", "Model"] if "Model" in df.columns else (["Dataset", "Fleet"] if "Fleet" in df.columns else ["Dataset", "Status"])}[len(key)]
+    keycols = {1: ["Impact (simulated)" if "Impact (simulated)" in df.columns else "Policy"], 2: ["Dataset", "Model"] if "Model" in df.columns else (["Dataset", "Fleet"] if "Fleet" in df.columns else ["Dataset", "Status"])}[len(key)]
     hit = df
     for kc, kv in zip(keycols, key):
         if kc not in hit.columns:
