@@ -1,11 +1,11 @@
 {
-  "score": 1,
+  "score": 5,
   "out_of": 5,
   "dimensions": [
     {
       "id": "V1",
       "name": "Correct",
-      "passed": false,
+      "passed": true,
       "checks": [
         {
           "id": "V1.1",
@@ -17,7 +17,7 @@
           "id": "V1.2",
           "kind": "code",
           "passed": true,
-          "detail": "35 totals and savings over 7 input sets equal the exact recomputation; tests/test_cost.py: 5 passed in 0.02s"
+          "detail": "35 totals and savings over 7 input sets equal the exact recomputation; tests/test_cost.py: 5 passed in 0.05s"
         },
         {
           "id": "V1.3",
@@ -34,21 +34,21 @@
         {
           "id": "V1.5",
           "kind": "code",
-          "passed": null,
-          "detail": "Phase 8 5/5; Phase 9 9/10, code checks 6/6, not passing yet (network/CI/manual, re-run after the merge): ['W3'] (results files); both verifiers run in CI: True"
+          "passed": true,
+          "detail": "Phase 8 5/5; Phase 9 10/10, code checks 6/6 (results files); both verifiers run in CI: True"
         }
       ]
     },
     {
       "id": "V2",
       "name": "Clear in 60 seconds",
-      "passed": false,
+      "passed": true,
       "checks": [
         {
           "id": "V2.1",
           "kind": "live",
-          "passed": null,
-          "detail": "preview: pass; real app: not measured yet (live checks run on the preview before the merge and on the real app after it)"
+          "passed": true,
+          "detail": "preview: pass; real app: pass"
         },
         {
           "id": "V2.2",
@@ -104,25 +104,25 @@
     {
       "id": "V4",
       "name": "Usable",
-      "passed": false,
+      "passed": true,
       "checks": [
         {
           "id": "V4.1",
           "kind": "live",
-          "passed": null,
-          "detail": "preview: pass; real app: not measured yet (live checks run on the preview before the merge and on the real app after it)"
+          "passed": true,
+          "detail": "preview: pass; real app: pass"
         },
         {
           "id": "V4.2",
           "kind": "code",
           "passed": true,
-          "detail": "under 5 s under AppTest: home 2.54s, cost 0.63s, engine (first run) 0.80s, engine, slowest of 200 0.35s"
+          "detail": "under 5 s under AppTest: home 3.15s, cost 0.79s, engine (first run) 0.97s, engine, slowest of 200 0.32s"
         },
         {
           "id": "V4.3",
           "kind": "live",
-          "passed": null,
-          "detail": "preview: pass; real app: not measured yet (live checks run on the preview before the merge and on the real app after it)"
+          "passed": true,
+          "detail": "preview: pass; real app: pass"
         },
         {
           "id": "V4.4",
@@ -135,7 +135,7 @@
     {
       "id": "V5",
       "name": "Robust",
-      "passed": false,
+      "passed": true,
       "checks": [
         {
           "id": "V5.1",
@@ -158,17 +158,17 @@
         {
           "id": "V5.4",
           "kind": "code",
-          "passed": null,
-          "detail": "pending: python -m dashboards.verify_v11 --record-ci after CI finishes on the merge candidate"
+          "passed": true,
+          "detail": "CI success on d0369aa"
         },
         {
           "id": "V5.5",
           "kind": "code+live",
-          "passed": null,
-          "detail": "committed tree ea8bf51: 9/9 pages load; in CI with planted-title test: True; live real app: after the merge"
+          "passed": true,
+          "detail": "committed tree 3281f48: 9/9 pages load; in CI with planted-title test: True; live real app: pass"
         }
       ]
     }
   ],
-  "checked_utc": "2026-11-15T20:21:59Z"
+  "checked_utc": "2026-11-15T20:58:36Z"
 }
