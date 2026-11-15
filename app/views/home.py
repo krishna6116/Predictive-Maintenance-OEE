@@ -32,22 +32,6 @@ f[1].metric("XGBoost, previous model, same engines (cycles)", C.num(fd3.loc["XGB
 st.caption(f"Lower is better. RMSE is the typical size of a forecast's error, in engine cycles; measured on the "
            f"{int(fd3.loc[pub, 'engines'])} test engines of NASA FD003.")
 
-# 2. Business impact (simulated), the business message, right after the forecast
-st.markdown("**Business impact (simulated)**")
-fl = {p: int(pooled.loc[p, "unplanned_failures"]) for p in ORDER}
-dt = {p: float(pooled.loc[p, "downtime_hours"]) for p in ORDER}
-wc = {p: int(pooled.loc[p, "wasted_cycles"]) for p in ORDER}
-# a small table, so each number says what it is compared with (tiles would cut the long labels off)
-st.dataframe(pd.DataFrame([
-    {"Impact (simulated)": "Failures avoided (simulated)", "vs fixed interval": f"{fl['Fixed interval'] - fl['Predictive']:,}",
-     "vs run to failure": f"{fl['Run to failure'] - fl['Predictive']:,}"},
-    {"Impact (simulated)": "Downtime hours saved (simulated)", "vs fixed interval": f"{dt['Fixed interval'] - dt['Predictive']:,.0f}",
-     "vs run to failure": f"{dt['Run to failure'] - dt['Predictive']:,.0f}"},
-    {"Impact (simulated)": "Wasted engine life, cycles (simulated): predictive vs", "vs fixed interval": f"{wc['Predictive']:,} vs {wc['Fixed interval']:,}",
-     "vs run to failure": f"{wc['Predictive']:,} vs {wc['Run to failure']:,}"},
-]), hide_index=True, width="stretch")
-st.caption(f"Predictive maintenance compared with the other two policies, on a simulated plant of {machines} machines.")
-
 # 3. The three maintenance policies on the same simulated plant: horizontal bars stay readable in narrow columns
 COLOURS = [C.OKABE_ITO["blue"], C.OKABE_ITO["orange"], C.OKABE_ITO["vermillion"]]
 
@@ -72,6 +56,22 @@ g[0].altair_chart(policy_chart("oee", "OEE (simulated)", "OEE (%)", C.pct), widt
 g[1].altair_chart(policy_chart("unplanned_failures", "Unplanned failures (simulated, count)", "Failures (count)", lambda v: f"{v:,.0f}"),
                   width="stretch")
 g[2].altair_chart(policy_chart("downtime_hours", "Downtime (simulated, hours)", "Downtime (hours)", lambda v: f"{v:,.0f}"), width="stretch")
+# 2. Business impact (simulated), the business message, right below the policy charts (option 3, author-approved 2026-11-15). No separate heading (author-approved
+#    2026-11-15, V2.1 fold): the table's first column header 'Impact (simulated)' carries the label.
+fl = {p: int(pooled.loc[p, "unplanned_failures"]) for p in ORDER}
+dt = {p: float(pooled.loc[p, "downtime_hours"]) for p in ORDER}
+wc = {p: int(pooled.loc[p, "wasted_cycles"]) for p in ORDER}
+# a small table, so each number says what it is compared with (tiles would cut the long labels off)
+st.dataframe(pd.DataFrame([
+    {"Impact (simulated)": "Failures avoided (simulated)", "vs fixed interval": f"{fl['Fixed interval'] - fl['Predictive']:,}",
+     "vs run to failure": f"{fl['Run to failure'] - fl['Predictive']:,}"},
+    {"Impact (simulated)": "Downtime hours saved (simulated)", "vs fixed interval": f"{dt['Fixed interval'] - dt['Predictive']:,.0f}",
+     "vs run to failure": f"{dt['Run to failure'] - dt['Predictive']:,.0f}"},
+    {"Impact (simulated)": "Wasted engine life, cycles (simulated): predictive vs", "vs fixed interval": f"{wc['Predictive']:,} vs {wc['Fixed interval']:,}",
+     "vs run to failure": f"{wc['Predictive']:,} vs {wc['Run to failure']:,}"},
+]), hide_index=True, width="stretch")
+st.caption(f"Predictive maintenance compared with the other two policies, on a simulated plant of {machines} machines.")
+
 C.simulated_notice()
 C.explain_why("home")
 

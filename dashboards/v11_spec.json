@@ -22,6 +22,7 @@
     },
     "business_impact_row": {
       "title": "Business impact (simulated)",
+      "title_amendment": "2026-11-15, author-approved to fit V2.1 (check unchanged): the separate heading is not shown; the table's first column header 'Impact (simulated)' carries the label, and the three policy charts come before the table (shorter charts were tried: below 165 px the bars collapse, so the height is unchanged)",
       "numbers": {
         "failures_avoided_vs_fixed": "unplanned failures, fixed - predictive",
         "downtime_saved_vs_fixed": "downtime hours, fixed - predictive",
