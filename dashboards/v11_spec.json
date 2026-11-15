@@ -84,7 +84,7 @@
       {"id": "engine.last_forecast", "label": "forecast remaining life and its 90% interval at the last observed cycle", "source": "engine_history.csv", "independent": "maintenance/forecasts_rolling_FD00x.csv", "tolerance": "shown to 1 decimal"},
       {"id": "engine.first_crossing", "label": "first cycle at which the interval's lower bound is at or below the alert threshold", "source": "engine_history.csv + facts.json alert_threshold", "independent": "recomputed from the rolling forecasts", "tolerance": "exact"},
       {"id": "engine.flagged", "label": "flagged at the last observed cycle (yes/no)", "source": "fleet.csv", "independent": "lower bound at last cycle <= threshold, recomputed", "tolerance": "exact"},
-      {"id": "engine.service", "label": "'Service day N (one of 3 crew slots that day)' or 'not scheduled'", "source": "plan.csv scheduled_day; facts.json crews_per_day", "independent": "maintenance/snapshot_decisions_phase6.csv", "tolerance": "exact"},
+      {"id": "engine.service", "label": "'Service day N (one of 3 crew slots that day)' or 'not scheduled'", "label_amendment": "2026-11-15, author-approved: day 0 reads 'Service today (day 0, one of 3 crew slots)'; 'Service day N' kept for N >= 1", "source": "plan.csv scheduled_day; facts.json crews_per_day", "independent": "maintenance/snapshot_decisions_phase6.csv", "tolerance": "exact"},
       {"id": "engine.observed_cycles", "label": "number of observed cycles", "source": "engine_history.csv", "independent": "raw test file", "tolerance": "exact"}
     ],
     "charts": ["sensor trends (one small chart per sensor, axis titled with name and unit)", "forecast mean with its 90% interval band and the alert line, axes titled with units"],
@@ -92,7 +92,9 @@
   },
   "plain_english_help": {
     "terms": ["RMSE", "90% interval", "near-failure MAE", "MC dropout", "drift", "OEE", "CP-SAT"],
-    "rule": "each term has a one-line caption or tooltip wherever it first appears on a page; the About page keeps the full detail; every existing 'simulated' disclaimer stays"
+    "rule": "each term has a one-line caption or tooltip wherever it first appears on a page; the About page keeps the full detail; every existing 'simulated' disclaimer stays",
+    "where": "the sentences live in app/common.py PLAIN and are shown as 'Term: sentence' (C.plain); verify_v11 scans each page's rendered text for them",
+    "engine_note_amendment": "2026-11-15, author-approved: the drill-down states the RUL cap (facts.json rul_cap, from features/build.py RUL_CAP; re-derived by verify_phase8 from the clip value in models/predictions_phase5b.csv) and keeps one short sentence on replay vs final forecast above the chart; the MC dropout detail is in the interval tooltip and on About"
   },
   "readme": {
     "try_link": "'Try the live app' line directly after the one-line problem statement (Phase 9 W4 keeps the problem line first)",

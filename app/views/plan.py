@@ -13,6 +13,8 @@ import common as C
 C.header("plan", "Engines whose lower 90% bound is at or below the alert threshold, booked onto crews by the CP-SAT "
                  "scheduler at the last observed cycle (Phase 6).")
 
+st.caption(f"{C.plain('CP-SAT')} {C.plain('90% interval')}")
+
 plan, orders = C.load("plan.csv"), C.load("work_orders.csv")
 crews, days, thr = C.fact("crews_per_day"), C.fact("horizon_days"), C.fact("alert_threshold")
 st.info(f"Planning assumption (guide value): {crews} crews a day, each able to service one engine, over a {days}-day "

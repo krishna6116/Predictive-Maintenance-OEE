@@ -131,6 +131,24 @@ WHY = {
 }
 
 
+# v1.1 plain-English help (dashboards/v11_spec.json plain_english_help): one sentence per term, shown where the term
+# first appears on a page; the technical definition stays in the tooltip and About keeps the full detail. No numbers here.
+PLAIN = {
+    "RMSE": "the typical size of a forecast's miss, in engine cycles; lower is better.",
+    "90% interval": "a range of remaining life that should contain the true value for 9 engines in 10.",
+    "near-failure MAE": "the average miss, in cycles, on the engines closest to failure, where a wrong forecast costs most.",
+    "MC dropout": "the model is run many times with random parts switched off; the spread of its answers gives the interval.",
+    "drift": "the incoming sensor readings stop looking like the data the model learned from, so its forecasts may be off.",
+    "OEE": "overall equipment effectiveness: the share of planned time spent making good parts at full speed.",
+    "CP-SAT": "Google OR-Tools' optimizer; it books flagged engines onto crew slots without exceeding the crews available.",
+}
+
+
+def plain(term: str) -> str:
+    """'Term: plain sentence', for captions and tooltips."""
+    return f"{term}: {PLAIN[term]}"
+
+
 def header(page: str, intro: str, explain: bool = True) -> None:
     st.title(TITLES[page])
     if intro:

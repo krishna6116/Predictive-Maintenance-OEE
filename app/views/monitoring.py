@@ -13,6 +13,8 @@ import common as C
 C.header("monitoring", "Each 8-hour shift the flow checks the incoming sensor data for drift and the model's errors once "
                        "failures are known, and raises a retraining flag. On clean data the flag should stay quiet.")
 
+st.caption(C.plain("drift"))
+
 runs = C.load("monitoring_runs.csv")
 target, limit = C.fact("p7_drift_target"), C.fact("c1_limit")
 SCEN = {"Phase 7: FD001/FD003, rule v1": "phase7_v1",

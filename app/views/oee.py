@@ -11,6 +11,7 @@ import common as C
 
 C.header("oee", "Three maintenance policies replayed on the same simulated machines, each running one real NASA engine life.")
 C.simulated_notice()
+st.caption(f"{C.plain('OEE')} Here every OEE value comes from the simulated plant.")
 
 pol = C.load("oee_policies.csv")
 ORDER = ["Run to failure", "Fixed interval", "Predictive"]
@@ -20,7 +21,7 @@ t = pol[(pol.scope == scope) & (pol.kind == "policy")].set_index("policy").reind
 if C.has_rows(t.dropna(subset=["oee"]), "policies"):
     cols = st.columns(3)
     for c, (_, r) in zip(cols, t.iterrows()):
-        c.metric(f"OEE, {r.policy} ({scope}, simulated)", C.pct(r.oee), help=C.define("OEE"))
+        c.metric(f"OEE, {r.policy} ({scope}, simulated)", C.pct(r.oee), help=f"{C.plain('OEE')} Technical: {C.define('OEE')}")
 
     t["oee_pct"] = 100 * t.oee
     t["label"] = t.oee.map(C.pct)

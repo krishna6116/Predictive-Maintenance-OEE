@@ -33,7 +33,8 @@ SOURCES = ["maintenance/snapshot_decisions_phase6.csv", "maintenance/results_pha
            "results/phase7/results_phase7.json", "results/phase7b/fresh_synchronized/phase7_health.csv",
            "results/phase7b/fresh_staggered/phase7_health.csv", "results/phase7b/checks.json",
            "pipeline/phase7b_criteria.json", "dashboards/phase8_spec.json", "models/calibration.py",
-           "data/checksums.sha256"]  # v1.1: pins the raw NASA test files behind engine_history.csv
+           "data/checksums.sha256",  # v1.1: pins the raw NASA test files behind engine_history.csv
+           "features/build.py"]  # v1.1: RUL_CAP, shown on the engine drill-down
 # model display name -> (key in the results files, column in the predictions files)
 MODELS = {"Fleet average": "Fleet average", "Age only": "Age only (cycle count)", "Ridge (168 features)": "Ridge, all 168 features",
           "XGBoost (168 features)": "XGBoost, all 168 features", "LSTM": "LSTM", "CNN": "CNN"}
@@ -215,6 +216,9 @@ def facts() -> dict:
         "c1_limit": f(limit_pct(crit["criteria"]["C1_clean_false_alarms"], r"<= (\d+(?:\.\d+)?)%"),
                       "pipeline/phase7b_criteria.json criteria.C1_clean_false_alarms"),
         "definitions": f(spec["definitions"], "dashboards/phase8_spec.json definitions"),
+        # read from the source text: importing features.build would need scikit-learn, which the app install lacks
+        "rul_cap": f(int(re.search(r"^RUL_CAP = (\d+)", Path("features/build.py").read_text(encoding="utf-8"), re.M).group(1)),
+                     "features/build.py RUL_CAP"),
     }
     for ds in r6["datasets"]:
         s = r6["datasets"][ds]["snapshot"]

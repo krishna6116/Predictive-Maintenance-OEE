@@ -225,8 +225,10 @@ def expected_metrics(T, page: str, view: dict) -> dict:
         last, cross = roll[-1], [int(r["cycle"]) for r in roll if fl(r["rul_low"]) <= c["ALERT_THRESHOLD"]]
         nom = pct(jload("models/results_phase5.json")["mc_dropout"]["nominal"], 0)
         d = T["decisions"][(ds, eng)]
-        service = ("Not flagged" if not tf(d["flagged"]) else f"Service day {int(fl(d['service_day']))}" if d["service_day"]
-                   else "No crew slot in the horizon")
+        day = int(fl(d["service_day"])) if d["service_day"] else None
+        # v1.1 amendment (author-approved 2026-11-15): day 0 reads 'Service today'
+        service = ("Not flagged" if not tf(d["flagged"]) else "No crew slot in the horizon" if day is None
+                   else "Service today" if day == 0 else f"Service day {day}")
         out["Forecast remaining life at the last reading (cycles)"] = f"{fl(last['rul_mc_mean']):.1f}"
         out[f"{nom} interval at the last reading (cycles)"] = f"{fl(last['rul_low']):.1f} to {fl(last['rul_high']):.1f}"
         out["Observed cycles"] = str(len(roll))
@@ -518,6 +520,9 @@ def check_facts(T, snap: Path, card: Card):
             "c1_limit": T["c1_limit"], "p7_drift_target": T["p7_target"], "definitions": SPEC["definitions"],
             "solver_status_FD001": T["r6"]["datasets"]["FD001"]["snapshot"]["schedule_status"],
             "solver_status_FD003": T["r6"]["datasets"]["FD003"]["snapshot"]["schedule_status"]}
+    # v1.1: the RUL cap re-derived from the published predictions (the value the true RUL was clipped to), not from code
+    clipped = {fl(r["RUL"]) for r in rows("models/predictions_phase5b.csv") if fl(r["RUL_true"]) > fl(r["RUL"])}
+    want["rul_cap"] = int(clipped.pop()) if len(clipped) == 1 else f"not one clip value: {sorted(clipped)}"
     bad = [k for k, v in want.items() if f.get(k) != v]
     if bad:
         card.set("D1.3", False, f"facts.json differs from its sources: {bad}")

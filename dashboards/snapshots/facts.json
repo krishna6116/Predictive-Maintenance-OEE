@@ -99,6 +99,10 @@
     "value": "LSTM replaces XGBoost only if H1 is significant after Holm with LSTM better AND its pooled near-failure MAE is not worse",
     "source": "models/results_phase5b.json verdict.rule"
   },
+  "rul_cap": {
+    "value": 125,
+    "source": "features/build.py RUL_CAP"
+  },
   "simulation_notice": {
     "value": "SIMULATED plant: production, downtime and OEE are not measured data",
     "source": "maintenance/results_phase6.json simulation_notice"

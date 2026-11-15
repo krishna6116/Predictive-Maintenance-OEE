@@ -73,6 +73,7 @@ st.dataframe(pd.DataFrame([
 st.caption(f"Predictive maintenance compared with the other two policies, on a simulated plant of {machines} machines.")
 
 C.simulated_notice()
+st.caption(f"{C.plain('OEE')} Here every OEE value comes from the simulated plant.")
 C.explain_why("home")
 
 st.subheader("How to read this app (one minute)")
