@@ -621,7 +621,7 @@ def live(url: str) -> dict:
                 pg.wait_for_timeout(60_000)
         # V5.5 live: every page loads with no exception
         smoke = {}
-        for page in ("home", "fleet", "engine", "plan", "oee", "cost", "monitoring", "about"):
+        for page in ("home", "how", "fleet", "engine", "plan", "oee", "cost", "monitoring", "about"):
             load(pg, "" if page == "home" else page)
             exc = pg.locator("[data-testid='stException']")
             smoke[page] = [exc.nth(i).inner_text()[:300] for i in range(exc.count())]
