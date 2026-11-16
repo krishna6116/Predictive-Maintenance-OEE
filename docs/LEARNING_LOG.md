@@ -196,3 +196,10 @@
 - Every change is in the renderer (`writeup/report_phase9.py`), so the README is still generated and byte-identical to a fresh render. No email or phone number: the Phase 9 spec forbids them in the repository, so LinkedIn stays the contact link.
 - The new text uses no numbers except years, and every sentence that touches the plant layer says simulated, so the number rule (W1) and the simulated rule (W5) still pass, as do W2-W4, W6, W7 and W9.
 - Lesson: when a document is generated and checked, change the generator and re-run the checks; a hand edit to the README would have turned CI red.
+
+## 2026-11-15 (night): How it works page
+- Added a "How it works" page to the app, right after Home: a diagram of the eight steps (sensor data, pipeline, features, forecast, alerts, crew plan, simulated plant, monitoring loop), and for each step what happens, why it matters in operations, which page shows its result and where its code is. It ends with a real-vs-simulated table, how the numbers are kept honest, and a short About the builder.
+- The page is a map of the app, not a results page: it shows no new results, and every number on it is read from `facts.json`, so a test fails if a hand-typed number appears.
+- The diagram pairs colour with a second channel (dashed border and "(simulated)" on the simulated step, dashed arrows for the feedback loop), the same rule the charts follow.
+- Lesson: before proposing new pages, read the app; three of the five ideas first suggested (crew plan, monitoring, author links) already existed on other pages.
+
