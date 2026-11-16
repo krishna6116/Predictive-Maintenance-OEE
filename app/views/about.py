@@ -31,11 +31,11 @@ if checksum != man["data_checksum"]:
     st.stop()
 st.metric("Snapshot data checksum", checksum[:16], help="sha256 over all snapshot files' sha256 values (manifest.json "
           "data_checksum); equal to the repository's means this app shows exactly the committed data.")
-st.code(checksum, language=None)
+st.code(checksum, language=None, wrap_lines=True)  # wraps on a phone instead of scrolling inside the box (review 2026-11-16)
 
 st.markdown(f"""
 **What is real and what is simulated**
-- Real: NASA C-MAPSS turbofan engines (FD001-FD004), the published {C.fact('published_model')} forecasts, their intervals,
+- **Real:** NASA C-MAPSS turbofan engines (FD001-FD004), the published {C.fact('published_model')} forecasts, their intervals,
   the alerts, the CP-SAT crew plans and the monitoring runs.
 - **Simulated:** the plant behind the OEE page (production, downtime and OEE are not measured data). Crew capacity and the
   calendar are guide assumptions.

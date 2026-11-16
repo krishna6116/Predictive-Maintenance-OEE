@@ -25,7 +25,7 @@
     {"id": "W4", "name": "Usable and robust", "checks": [
       {"id": "W4.1", "kind": "code", "check": "Both pages run with no exception in under 5 s under AppTest; the How page uses only Okabe-Ito colours; python -m dashboards.smoke_v11 covers the new page"},
       {"id": "W4.2", "kind": "code", "check": "At least 3 planted bugs are each caught: a wrong RMSE row, the '(simulated)' label dropped from the diagram, and an email address added to the author section"},
-      {"id": "W4.3", "kind": "live", "check": "At 375 px, How it works and About have no horizontal page scroll; on the awake app each page's title is visible within 5 s (median of three); no page of the app shows an exception; on the local server before the merge and on the real URL after it"},
+      {"id": "W4.3", "kind": "live", "check": "At 375 px, How it works and About have no horizontal page scroll; on the awake app each page's title is visible within 5 s (median of three); no page of the app shows an exception; on the local server before the merge and on the real URL after it", "extended": "2026-11-16, extension after a review of the live app (existing parts unchanged): the How page also shows one 'Open <page>' link per stage (7) in the running app"},
       {"id": "W4.4", "kind": "code", "check": "CI is green on the merge candidate, including the app-only clean install on Python 3.12, 3.13 and 3.14"}
     ]}
   ]

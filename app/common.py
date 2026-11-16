@@ -193,6 +193,16 @@ def explain_why(page: str) -> None:
         st.write(WHY[page])
 
 
+def page_link(view: str, label: str) -> None:
+    """A link to another page of this app. A page run on its own (the verifiers and tests run each page script without
+    the menu) has no other pages to link to, so the link is left out there; the text beside it still names the page."""
+    from streamlit.errors import StreamlitAPIException
+    try:
+        st.page_link(f"views/{view}.py", label=label, icon=":material/arrow_forward:")
+    except StreamlitAPIException:
+        pass
+
+
 def simulated_notice() -> None:
     # the notice text starts 'SIMULATED plant: ...'; shown once in bold, not after a second 'Simulated.' (review 2026-11-15)
     notice = fact("simulation_notice").replace("SIMULATED plant", "Simulated plant", 1)
