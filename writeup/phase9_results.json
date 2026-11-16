@@ -10,7 +10,7 @@
     },
     "W3": {
       "passed": true,
-      "detail": "every relative link and image in 24 Markdown files resolves; external: 15/15 ok"
+      "detail": "every relative link and image in 25 Markdown files resolves; external: 15/15 ok"
     },
     "W4": {
       "passed": true,
@@ -34,7 +34,7 @@
     },
     "W9": {
       "passed": true,
-      "detail": "all 37 docs and notebooks are listed with a description"
+      "detail": "all 38 docs and notebooks are listed with a description"
     },
     "W10": {
       "passed": true,

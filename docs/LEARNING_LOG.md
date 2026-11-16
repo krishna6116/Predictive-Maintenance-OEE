@@ -196,3 +196,10 @@
 - Every change is in the renderer (`writeup/report_phase9.py`), so the README is still generated and byte-identical to a fresh render. No email or phone number: the Phase 9 spec forbids them in the repository, so LinkedIn stays the contact link.
 - The new text uses no numbers except years, and every sentence that touches the plant layer says simulated, so the number rule (W1) and the simulated rule (W5) still pass, as do W2-W4, W6, W7 and W9.
 - Lesson: when a document is generated and checked, change the generator and re-run the checks; a hand edit to the README would have turned CI red.
+
+## 2026-11-15 (night): v1.2, How it works page and author section
+- Checked the proposed recruiter additions against the live app first: a schedule chart (Maintenance plan) and an honest monitoring page already existed, so v1.2 builds only the gaps: a How it works page (pipeline diagram plus seven stages: what happens, why it matters, result, the page that shows it) and an 'About the author' section first on About.
+- Pre-registered before any code (ae54980): `dashboards/v12_spec.json`, `v12_scorecard.json` (W1-W4), `docs/V12_CHECKLIST.md`. The page shows numbers in text, not tiles, and every one is recomputed from the results files by `dashboards/verify_v12.py` (3 planted bugs caught). No snapshot changed, so the data checksum is the same as the deployed one.
+- Phase 9 W5 caught 'an OEE result' without 'simulated' in Home's reading list; fixed post hoc ('a simulated OEE result'). Adding the page to the Phase 8 spec changed a source hash in the snapshot manifest, so the snapshots were re-exported (files byte-identical) and the Phase 8 local evidence re-recorded.
+- Live check on a local server of branch v1.2: no page shows an exception, titles in under 0.5 s, no horizontal scroll at 375 px on How or About.
+- Lesson: before building what a list proposes, check what already exists; three of the five ideas were already in the app.

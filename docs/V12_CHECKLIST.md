@@ -5,7 +5,7 @@ before the merge and on the real URL after it; evidence goes in `dashboards/v12_
 
 ## Before the merge
 
-- [ ] **Live checks on a local server**: `streamlit run app/streamlit_app.py`, then `python -m dashboards.verify_v12 --live http://localhost:8501`.
+- [x] **Live checks on a local server**: `streamlit run app/streamlit_app.py`, then `python -m dashboards.verify_v12 --live http://localhost:8501`. Done 2026-11-15: pass (no exceptions on 9 pages; titles under 0.5 s; 375 px, no horizontal scroll on How and About).
 - [ ] **Author review** of How it works and About on a laptop and a phone.
 
 ## After the merge

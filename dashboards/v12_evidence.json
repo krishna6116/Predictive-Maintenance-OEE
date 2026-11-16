@@ -1,0 +1,47 @@
+{
+  "note": "v1.2 evidence; written by python -m dashboards.verify_v12 --live URL and --record-ci",
+  "runs": {
+    "http://localhost:8501": {
+      "url": "http://localhost:8501",
+      "captured_utc": "2026-11-16T02:50:42Z",
+      "ok": true,
+      "exceptions": {
+        "home": [],
+        "how": [],
+        "fleet": [],
+        "engine": [],
+        "plan": [],
+        "oee": [],
+        "cost": [],
+        "monitoring": [],
+        "about": []
+      },
+      "title_seconds": {
+        "how": [
+          0.44,
+          0.33,
+          0.31
+        ],
+        "about": [
+          0.47,
+          0.4,
+          0.42
+        ]
+      },
+      "median": {
+        "how": 0.33,
+        "about": 0.42
+      },
+      "phone_375": {
+        "how": {
+          "viewport_width": 375,
+          "scroll_width": 375
+        },
+        "about": {
+          "viewport_width": 375,
+          "scroll_width": 375
+        }
+      }
+    }
+  }
+}
