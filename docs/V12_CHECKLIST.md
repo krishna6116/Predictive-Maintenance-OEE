@@ -16,4 +16,4 @@ before the merge and on the real URL after it; evidence goes in `dashboards/v12_
 ## Review fixes (2026-11-16)
 
 - [x] **Local live check with the page links**: `python -m dashboards.verify_v12 --live http://localhost:8501` on branch `v1.2-review-fixes`: pass (7 page links, no exceptions, 375 px with no horizontal scroll).
-- [ ] **Live check on the real app after the merge** (same command on the real URL; evidence committed).
+- [x] **Live check on the real app after the merge** (same command on the real URL; evidence committed). Done 2026-11-16: pass (7 page links, no exceptions on 9 pages, titles about 1.1 s, 375 px with no horizontal scroll); smoke check passes; CI success on merge commit 9d0134f.
