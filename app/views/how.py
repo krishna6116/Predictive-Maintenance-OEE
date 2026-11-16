@@ -43,7 +43,7 @@ for i, s in enumerate(STAGES):
     style, colour = ("rounded,dashed", verm) if "simulated" in s else ("rounded", blue)
     nodes.append(f'  n{i} [label="{s}\\n{SUB[s]}", style="{style}", color="{colour}", penwidth=2];')
 edges = [f"  n{i} -> n{i + 1};" for i in range(len(STAGES) - 1)]
-edges.append(f'  n{len(STAGES) - 1} -> n2 [style=dashed, label=" retrain flag", constraint=false];')
+edges.append(f'  n{len(STAGES) - 1} -> n2 [style=dashed, label=" retrain flag", fontsize=11, constraint=false];')
 DOT = "\n".join([
     "digraph pipeline {",
     "  rankdir=TB; nodesep=0.25; ranksep=0.25; bgcolor=transparent;",
@@ -51,7 +51,8 @@ DOT = "\n".join([
     f'  edge [color="{black}", fontname="Helvetica", fontsize=9, fontcolor="{black}"];',
     *nodes, *edges, "}"])
 
-left, right = st.columns([2, 3])
+# equal columns: with 2:3 the diagram shrank to about 218 px at a 1,024 px window (review 2026-11-15)
+left, right = st.columns(2)
 with left:
     st.graphviz_chart(DOT, alt="Pipeline diagram: " + " -> ".join(STAGES) + "; Monitoring feeds a retrain flag back to "
                       "Forecast. The OEE stage is simulated.")
