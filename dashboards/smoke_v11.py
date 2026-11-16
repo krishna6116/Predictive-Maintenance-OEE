@@ -22,7 +22,7 @@ import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-PAGES = ["home", "fleet", "engine", "plan", "oee", "cost", "monitoring", "about"]
+PAGES = ["home", "how", "fleet", "engine", "plan", "oee", "cost", "monitoring", "about"]  # "how" added after v1.1 (How it works page)
 SLUGS = {"home": ""}  # st.navigation serves Home at the root; the others at their file name
 
 # Runs inside the exported tree, in a fresh interpreter: no module from the working copy is importable there.
