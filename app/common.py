@@ -29,6 +29,7 @@ TITLES = {
     "engine": "What happened to one engine, cycle by cycle?",
     "monitoring": "Can we trust the model's forecasts this shift?",
     "about": "How were these numbers made, and can I check them?",
+    "how": "How does the system turn sensor readings into a maintenance plan?",
 }
 
 # Okabe-Ito colour-blind-safe palette; colour is always paired with a second channel (shape, dash, label or axis)
@@ -117,6 +118,7 @@ BUSINESS = {
     "engine": "For one machine: when did the warning start, and what did the plan do about it?",
     "monitoring": "When should we stop trusting the forecasts and retrain the model?",
     "about": "Why should anyone believe these numbers?",
+    "how": "What does each step of the system do, and where can I see its result?",
 }
 WHY = {
     "home": "The app predicts when jet engines will need maintenance from their sensor data, plans crew work under crew "
@@ -138,6 +140,9 @@ WHY = {
     "monitoring": "How the shift-by-shift flow judges its own forecasts, including where its rules failed their targets. "
                   "A model in production needs an honest alarm for when it stops working.",
     "about": "Where every number comes from, how it is checked, and the checksum that ties this app to the repository.",
+    "how": "The whole system on one page: the eight steps from NASA sensor data to a crew plan and a monitoring loop, "
+           "what each step does, why it matters in operations, which page shows its result and where its code is. "
+           "It adds no new results; it is a map of the rest of the app.",
 }
 
 
