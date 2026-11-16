@@ -116,12 +116,18 @@ SECTIONS = [
      "A Prefect flow runs once per shift: it scores new readings, checks the sensors for drift and, once true failures "
      "are known, checks the forecast error, and raises a retrain flag when the rules say so.",
      "A model in production slowly goes stale; the plant needs an honest alarm for when to stop trusting it.",
-     "The rules were written down before the test runs. On FD004 the drift rule raised too many false alarms and failed its "
-     "pre-registered criterion, and the first version's false-alarm target was not met either. Both are reported, not re-tuned."),
+     # what it catches first, then the misses in full (review 2026-11-16); criteria in pipeline/phase7b_criteria.json
+     "The rules were written down before the test runs. On two fleets the model had never seen (FD002, FD004), monitoring "
+     "caught every planted sensor fault: a sudden shift, a lasting step and a slow ramp. The misses: on FD004 the drift rule "
+     "raised too many false alarms on clean data and failed its pre-registered criterion, and the first version's "
+     "false-alarm target was not met either. Both are reported, not re-tuned."),
 ]
+VIEW = {"Engine drill-down": "engine", "Fleet health": "fleet", "Maintenance plan": "plan",
+        "OEE policies (simulated)": "oee", "Monitoring": "monitoring"}
 st.subheader("The seven stages")
 for i, (stage, page_name, what, why, result) in enumerate(SECTIONS, 1):
     with st.container(border=True):
         st.markdown(f"**{i}. {stage}**")
         st.markdown(f"- **What happens:** {what}\n- **Why it matters:** {why}\n- **Result:** {result}\n"
                     f"- **See it:** the *{page_name}* page in the menu")
+        C.page_link(VIEW[page_name], f"Open {page_name}")
