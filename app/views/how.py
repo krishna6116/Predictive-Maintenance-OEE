@@ -118,9 +118,9 @@ SECTIONS = [
      "A model in production slowly goes stale; the plant needs an honest alarm for when to stop trusting it.",
      # what it catches first, then the misses in full (review 2026-11-16); criteria in pipeline/phase7b_criteria.json
      "On two engine fleets the model had never seen (FD002, FD004), monitoring caught every sensor fault planted on "
-     "purpose: a sudden shift, a lasting step and a slow ramp. Two misses: on FD004 the drift check raised too many false "
-     "alarms on clean data, failing a pass mark set before testing, and the first version of monitoring also missed its "
-     "false-alarm target (not met). Both are reported as they are, not re-tuned."),
+     "purpose: a sudden shift, a lasting step and a slow ramp. Two targets were not met, both about false alarms on healthy "
+     "data: on FD004 the drift check raised more of them than the limit set before testing, and so did the first version "
+     "of monitoring. Both are reported as they are, not re-tuned; the Monitoring page gives the rates."),
 ]
 VIEW = {"Engine drill-down": "engine", "Fleet health": "fleet", "Maintenance plan": "plan",
         "OEE policies (simulated)": "oee", "Monitoring": "monitoring"}

@@ -271,8 +271,8 @@ def expected_metrics(T, page: str, view: dict) -> dict:
         out["Phase 7 runs flagged for retraining"] = f"{T['p7_flags'][0]} of {T['p7_flags'][1]}"
     elif page == "about":
         out["Snapshot data checksum"] = None  # filled by the caller from the recomputed checksum
-        out["Largest change in MC mean between two draw sets (cycles)"] = f"{T['mc_noise'][0]:.2f}"
-        out["Engines whose flag differs between the two draw sets"] = str(T["mc_noise"][1])
+        out["Largest change in MC mean (cycles)"] = f"{T['mc_noise'][0]:.2f}"
+        out["Engines whose flag differs"] = str(T["mc_noise"][1])
     return out
 
 
