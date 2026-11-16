@@ -16,7 +16,7 @@
     "nav_title": "How it works",
     "nav_position": "second, directly after Home",
     "title": "How does a sensor reading become a maintenance decision?",
-    "business_question": "How does the pipeline turn raw engine sensor data into a crew schedule and an OEE result?",
+    "business_question": "How does the pipeline turn raw engine sensor data into a crew schedule and a simulated OEE result?",
     "diagram": {
       "kind": "st.graphviz_chart from a DOT string (rendered in the browser; no new dependency)",
       "layout": "top to bottom, so it stays readable at phone width",
