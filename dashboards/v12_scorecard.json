@@ -1,0 +1,32 @@
+{
+  "version": "1.2.0",
+  "committed_before_code": true,
+  "scoring": "Four dimensions, each pass/fail; a dimension passes only if every one of its checks passes. Live checks pass only with their evidence committed in dashboards/v12_evidence.json. Criteria are never loosened after results are seen; a wrong check is changed in a separate commit labelled 'post hoc' and reported. A miss is reported as a miss.",
+  "check_kinds": {
+    "code": "python -m dashboards.verify_v12 (CI)",
+    "live": "python -m dashboards.verify_v12 --live <url>: on a local server of branch v1.2 before the merge and on the real URL after it; evidence in dashboards/v12_evidence.json"
+  },
+  "dimensions": [
+    {"id": "W1", "name": "Correct", "checks": [
+      {"id": "W1.1", "kind": "code", "check": "Every number on the How it works page (dashboards/v12_spec.json how_page.numbers) appears in the rendered page and equals an independent recomputation from the results files"},
+      {"id": "W1.2", "kind": "code", "check": "The About page's author section shows the name, program and expected graduation, background, the four links and the internship roles exactly as in v12_spec.json author_section, and these agree with the README Author section written by writeup/report_phase9.py"},
+      {"id": "W1.3", "kind": "code", "check": "Phase 8 still 5/5 (code checks), v1.1 code checks still pass and Phase 9 code checks still 10 of 10; the snapshot data checksum is unchanged"}
+    ]},
+    {"id": "W2", "name": "Clear", "checks": [
+      {"id": "W2.1", "kind": "code", "check": "How it works is the second menu entry; its title is the pre-registered question; Home's reading list names it first"},
+      {"id": "W2.2", "kind": "code", "check": "The diagram has exactly the 7 stages in the pre-registered order, the dashed retrain-flag edge, and each stage has a section with What happens, Why it matters, Result and See it, naming the pre-registered page, which exists in the menu"},
+      {"id": "W2.3", "kind": "code", "check": "The plain-English lines for CP-SAT, OEE, MC dropout and drift (app/common.py PLAIN) appear on the page"}
+    ]},
+    {"id": "W3", "name": "Honest", "checks": [
+      {"id": "W3.1", "kind": "code", "check": "The OEE stage is marked simulated in the diagram by a dashed border and '(simulated)' in its label, and its section says Simulated"},
+      {"id": "W3.2", "kind": "code", "check": "The Monitoring stage states the FD004 failure and the Phase 7 'not met' target"},
+      {"id": "W3.3", "kind": "code", "check": "No email address or phone number in any file under app/ or in the rendered About and How it works pages"}
+    ]},
+    {"id": "W4", "name": "Usable and robust", "checks": [
+      {"id": "W4.1", "kind": "code", "check": "Both pages run with no exception in under 5 s under AppTest; the How page uses only Okabe-Ito colours; python -m dashboards.smoke_v11 covers the new page"},
+      {"id": "W4.2", "kind": "code", "check": "At least 3 planted bugs are each caught: a wrong RMSE row, the '(simulated)' label dropped from the diagram, and an email address added to the author section"},
+      {"id": "W4.3", "kind": "live", "check": "At 375 px, How it works and About have no horizontal page scroll; on the awake app each page's title is visible within 5 s (median of three); no page of the app shows an exception; on the local server before the merge and on the real URL after it"},
+      {"id": "W4.4", "kind": "code", "check": "CI is green on the merge candidate, including the app-only clean install on Python 3.12, 3.13 and 3.14"}
+    ]}
+  ]
+}

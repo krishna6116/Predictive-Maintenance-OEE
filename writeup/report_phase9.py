@@ -728,6 +728,7 @@ DOC_DESCRIPTIONS = {
     "docs/PHASE8_CHECKLIST.md": "Phase 8 manual evidence checklist (deployed checksum, phone screenshots, Power BI report).",
     "docs/PHASE9_CHECKLIST.md": "Phase 9 manual release checklist (redeploy, tag, repository settings, social preview).",
     "docs/V11_CHECKLIST.md": "v1.1 manual checklist (preview-app live checks, author review, release v1.1.0).",
+    "docs/V12_CHECKLIST.md": "v1.2 checklist (live checks on a local server and on the real app, author review).",
     "docs/PIPELINE.md":"Phase 2: ingest, validation, quarantine and idempotent loads into PostgreSQL.",
     "docs/RELEASE_NOTES.md": "Release notes for v1.0.0, generated from the results files.",
     "docs/RELEASE_NOTES_v1.1.0.md": "Release notes for v1.1.0: Home at a glance, engine drill-down, cost what-if, plain-English help.",

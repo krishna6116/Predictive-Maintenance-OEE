@@ -54,6 +54,7 @@ The v1.1.0 release notes are listed under Documents below.
 - [RELEASE_NOTES_v1.1.0.md](RELEASE_NOTES_v1.1.0.md): Release notes for v1.1.0: Home at a glance, engine drill-down, cost what-if, plain-English help.
 - [RESULTS.md](RESULTS.md): Every headline result with its interval, comparison, source file and explaining doc.
 - [V11_CHECKLIST.md](V11_CHECKLIST.md): v1.1 manual checklist (preview-app live checks, author review, release v1.1.0).
+- [V12_CHECKLIST.md](V12_CHECKLIST.md): v1.2 checklist (live checks on a local server and on the real app, author review).
 
 ## Notebooks
 
