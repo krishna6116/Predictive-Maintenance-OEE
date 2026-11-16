@@ -42,6 +42,54 @@
           "scroll_width": 375
         }
       }
+    },
+    "https://predictive-maintenance-oee.streamlit.app": {
+      "url": "https://predictive-maintenance-oee.streamlit.app",
+      "captured_utc": "2026-11-16T03:45:15Z",
+      "ok": true,
+      "exceptions": {
+        "home": [],
+        "how": [],
+        "fleet": [],
+        "engine": [],
+        "plan": [],
+        "oee": [],
+        "cost": [],
+        "monitoring": [],
+        "about": []
+      },
+      "title_seconds": {
+        "how": [
+          1.03,
+          1.61,
+          2.26
+        ],
+        "about": [
+          1.57,
+          1.24,
+          1.02
+        ]
+      },
+      "median": {
+        "how": 1.61,
+        "about": 1.24
+      },
+      "phone_375": {
+        "how": {
+          "viewport_width": 375,
+          "scroll_width": 375
+        },
+        "about": {
+          "viewport_width": 375,
+          "scroll_width": 375
+        }
+      }
     }
+  },
+  "ci": {
+    "commit": "63067133a1ff06ba04faa52d8c03d91fd730daa3",
+    "conclusion": "success",
+    "url": "https://github.com/krishna6116/Predictive-Maintenance-OEE/actions/runs/43799969159",
+    "recorded_utc": "2026-11-16T03:53:26Z"
   }
 }
