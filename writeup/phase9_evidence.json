@@ -36,7 +36,51 @@
       "ok": true,
       "how": "HTTP 200"
     },
+    "https://img.shields.io/badge/GitHub%20Actions-CI-2088FF?logo=githubactions&logoColor=white": {
+      "ok": true,
+      "how": "HTTP 200"
+    },
+    "https://img.shields.io/badge/Jupyter-notebooks-F37626?logo=jupyter&logoColor=white": {
+      "ok": true,
+      "how": "HTTP 200"
+    },
+    "https://img.shields.io/badge/OR--Tools-CP--SAT%20optimization-4285F4?logo=google&logoColor=white": {
+      "ok": true,
+      "how": "HTTP 200"
+    },
+    "https://img.shields.io/badge/PostgreSQL-star%20schema-4169E1?logo=postgresql&logoColor=white": {
+      "ok": true,
+      "how": "HTTP 200"
+    },
+    "https://img.shields.io/badge/Power%20BI-report-F2C811": {
+      "ok": true,
+      "how": "HTTP 200"
+    },
+    "https://img.shields.io/badge/Prefect-orchestration-024DFD?logo=prefect&logoColor=white": {
+      "ok": true,
+      "how": "HTTP 200"
+    },
+    "https://img.shields.io/badge/PyTorch-LSTM%20%7C%20CNN-EE4C2C?logo=pytorch&logoColor=white": {
+      "ok": true,
+      "how": "HTTP 200"
+    },
+    "https://img.shields.io/badge/Streamlit-live%20dashboard-FF4B4B?logo=streamlit&logoColor=white": {
+      "ok": true,
+      "how": "HTTP 200"
+    },
+    "https://img.shields.io/badge/XGBoost-gradient%20boosting-189FDD": {
+      "ok": true,
+      "how": "HTTP 200"
+    },
     "https://img.shields.io/badge/license-MIT-green": {
+      "ok": true,
+      "how": "HTTP 200"
+    },
+    "https://img.shields.io/badge/pandas-data%20wrangling-150458?logo=pandas&logoColor=white": {
+      "ok": true,
+      "how": "HTTP 200"
+    },
+    "https://img.shields.io/badge/pytest-tested-0A9EDC?logo=pytest&logoColor=white": {
       "ok": true,
       "how": "HTTP 200"
     },
@@ -44,7 +88,7 @@
       "ok": true,
       "how": "HTTP 200"
     },
-    "https://pm-oee-v11-preview.streamlit.app": {
+    "https://img.shields.io/badge/scikit--learn-machine%20learning-F7931E?logo=scikitlearn&logoColor=white": {
       "ok": true,
       "how": "HTTP 200"
     },
@@ -69,7 +113,7 @@
     "ok": true
   },
   "ci_repro": {
-    "commit": "3281f4885e08306ccced50ad8b0651c031f7afda",
+    "commit": "63067133a1ff06ba04faa52d8c03d91fd730daa3",
     "ok": true
   },
   "release": {

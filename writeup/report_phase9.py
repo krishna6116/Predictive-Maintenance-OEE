@@ -17,6 +17,22 @@ LINKEDIN = "https://www.linkedin.com/in/krishnakumar-balasundaram-3a92b6422"
 GITHUB = "https://github.com/Krishna6116"
 TAG = "v1.0.0"  # docs/RELEASE_NOTES.md stays the v1.0.0 body (Phase 9 W10)
 TAG_V11 = "v1.1.0"
+# README technology badges: (alt text, shields.io label, colour, simple-icons logo or None when simple-icons has
+# none); spaces as %20, '-' as '--', '|' as %7C
+TECH_BADGES = [
+    ("PyTorch", "PyTorch-LSTM%20%7C%20CNN", "EE4C2C", "pytorch"),
+    ("XGBoost", "XGBoost-gradient%20boosting", "189FDD", None),
+    ("scikit-learn", "scikit--learn-machine%20learning", "F7931E", "scikitlearn"),
+    ("pandas", "pandas-data%20wrangling", "150458", "pandas"),
+    ("PostgreSQL", "PostgreSQL-star%20schema", "4169E1", "postgresql"),
+    ("OR-Tools", "OR--Tools-CP--SAT%20optimization", "4285F4", "google"),
+    ("Prefect", "Prefect-orchestration", "024DFD", "prefect"),
+    ("Streamlit", "Streamlit-live%20dashboard", "FF4B4B", "streamlit"),
+    ("Power BI", "Power%20BI-report", "F2C811", None),
+    ("Jupyter", "Jupyter-notebooks", "F37626", "jupyter"),
+    ("pytest", "pytest-tested", "0A9EDC", "pytest"),
+    ("GitHub Actions", "GitHub%20Actions-CI", "2088FF", "githubactions"),
+]
 
 
 # ---- formatting: every number in the write-up goes through one of these
@@ -147,6 +163,10 @@ def readme(F) -> str:
         "[![Python](https://img.shields.io/badge/python-3.14-blue)](https://www.python.org/) "
         f"[![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE) "
         f"[![Live app](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)]({APP})", "",
+        # technology badges (2026-11-16, author request): the GitHub language bar only counts code file types, so the
+        # stack is shown here; no digits in the labels (Phase 9 W1 reads every number in the README)
+        " ".join(f"![{name}](https://img.shields.io/badge/{label}-{colour}" + (f"?logo={logo}&logoColor=white)" if logo else ")")
+                 for name, label, colour, logo in TECH_BADGES), "",
         f"**[▶ Live app]({APP}) · [Results](#results-at-a-glance) · [Business impact](#business-impact-simulated) · "
         "[The problem](#the-problem) · [How it works](#how-it-works) · [Skills](#skills-demonstrated) · "
         "[Run locally](#run-locally) · [Limitations](#limitations-and-what-i-would-do-next) · [Author](#author)**", "",
