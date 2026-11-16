@@ -377,6 +377,10 @@ def live(url: str) -> dict:
             exc = pg.locator("[data-testid='stException']")
             smoke[page] = [exc.nth(i).inner_text()[:300] for i in range(exc.count())]
         times = {page: [load(pg, page) for _ in range(3)] for page in ("how", "about")}
+        # extension 2026-11-16: the 'Open <page>' links under the stages exist only in the running app (a page run on
+        # its own has no menu to link into), so they are counted here: one per stage
+        load(pg, "how")
+        page_links = pg.locator("[data-testid='stPageLink']").count()
         desk.close()
         phone = {}
         for page in ("how", "about"):
@@ -395,9 +399,10 @@ def live(url: str) -> dict:
             ctx.close()
         b.close()
     med = {k: statistics.median(v) for k, v in times.items()}
-    ok = (all(not v for v in smoke.values()) and all(m < MAX_SECONDS for m in med.values())
+    stages = len(HOW["diagram"]["stages_in_order"])
+    ok = (all(not v for v in smoke.values()) and all(m < MAX_SECONDS for m in med.values()) and page_links == stages
           and all(v["viewport_width"] == 375 and v["scroll_width"] <= 375 for v in phone.values()))
-    rec.update(ok=ok, exceptions=smoke, title_seconds=times, median=med, phone_375=phone)
+    rec.update(ok=ok, exceptions=smoke, title_seconds=times, median=med, phone_375=phone, how_page_links=page_links)
     return rec
 
 
