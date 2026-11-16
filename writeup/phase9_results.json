@@ -10,7 +10,7 @@
     },
     "W3": {
       "passed": true,
-      "detail": "every relative link and image in 25 Markdown files resolves; external: 15/15 ok"
+      "detail": "every relative link and image in 25 Markdown files resolves; external: 26/26 ok"
     },
     "W4": {
       "passed": true,

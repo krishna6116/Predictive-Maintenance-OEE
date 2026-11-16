@@ -10,5 +10,5 @@ before the merge and on the real URL after it; evidence goes in `dashboards/v12_
 
 ## After the merge
 
-- [ ] **Smoke check on the real app**: `python -m dashboards.smoke_v11 --live https://predictive-maintenance-oee.streamlit.app`.
-- [ ] **Live checks on the real app**: `python -m dashboards.verify_v12 --live https://predictive-maintenance-oee.streamlit.app`; evidence committed.
+- [x] **Smoke check on the real app**: `python -m dashboards.smoke_v11 --live https://predictive-maintenance-oee.streamlit.app`. Done 2026-11-16: all 9 pages load with no exception.
+- [x] **Live checks on the real app**: `python -m dashboards.verify_v12 --live https://predictive-maintenance-oee.streamlit.app`; evidence committed. Done 2026-11-16: pass (titles 1.6 s How, 1.2 s About; 375 px, no horizontal scroll). CI success on merge commit 6306713 recorded (W4.4).
