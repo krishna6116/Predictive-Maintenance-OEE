@@ -3,7 +3,7 @@
   "runs": {
     "http://localhost:8501": {
       "url": "http://localhost:8501",
-      "captured_utc": "2026-11-16T13:49:25Z",
+      "captured_utc": "2026-11-16T14:41:41Z",
       "ok": true,
       "exceptions": {
         "home": [],
@@ -18,19 +18,19 @@
       },
       "title_seconds": {
         "how": [
-          0.45,
-          0.43,
-          0.43
+          0.36,
+          0.39,
+          0.46
         ],
         "about": [
-          0.7,
-          0.73,
-          0.72
+          0.56,
+          0.56,
+          0.56
         ]
       },
       "median": {
-        "how": 0.43,
-        "about": 0.72
+        "how": 0.39,
+        "about": 0.56
       },
       "phone_375": {
         "how": {

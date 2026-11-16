@@ -57,11 +57,11 @@ st.markdown(f"""
 st.subheader("Monte Carlo noise in the intervals")
 diff = (fleet.rul_mc_mean - fleet.rolling_mc_mean).abs()
 flips = int(((fleet.rul_low <= C.fact("alert_threshold")) != (fleet.rolling_rul_low <= C.fact("alert_threshold"))).sum())
-c1, c2 = st.columns(2)
-c1.metric("Largest change in MC mean between two draw sets (cycles)", C.num(diff.max()),
+# one tile per row with short labels: side by side they were cut off below about 1,100 px (review 2026-11-16)
+st.metric("Largest change in MC mean (cycles)", C.num(diff.max()),
           help="Same model, same engine, same cycle: the published forecast and the Phase 6 rolling forecast each average "
                f"{C.fact('interval_passes')} dropout passes, with different random draws.")
-c2.metric("Engines whose flag differs between the two draw sets", str(flips),
+st.metric("Engines whose flag differs", str(flips),
           help="Engines whose lower bound is on different sides of the alert threshold under the two draw sets.")
 st.caption(f"Monte Carlo dropout is random: with {C.fact('interval_passes')} passes the interval itself moves a little between runs. Decisions here "
            "use the published draw set, the one the plan acted on.")
