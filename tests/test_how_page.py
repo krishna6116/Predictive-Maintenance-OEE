@@ -36,8 +36,12 @@ def test_eight_steps_and_simulated_label():
 def test_every_number_comes_from_the_snapshot_facts():
     """The page is a map, not a results page: apart from step numbers, years and names (C-MAPSS, 1D-CNN, CP-SAT), the
     only numbers it may show are the facts it reads, so a changed fact can never leave a stale number here."""
-    page = texts(run_page("how"))
-    allowed = {str(i) for i in range(1, 9)} | {"2027", "2028"}
+    at = run_page("how")
+    page = texts(at)
+    # the page's one table has Part as its index, so it shows no row numbers; app_checks.frames() turns that index back
+    # into a column, which puts pandas' own row numbers (0-5) into the text scanned here (CI, PR #15)
+    assert [t.value.index.name for t in at.table] == ["Part"]
+    allowed = {str(i) for i in range(0, 9)} | {"2027", "2028"}
     allowed |= {str(fact(k)) for k in ("rul_cap", "alert_threshold", "crews_per_day", "horizon_days", "interval_passes")}
     allowed.add(str(round(100 * fact("interval_nominal"))))
     shown = set(re.findall(r"(?<![\w.#-])\d+(?![\w.])", re.sub(r"1D-CNN", "", page)))
