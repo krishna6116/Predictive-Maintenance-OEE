@@ -19,7 +19,7 @@ from streamlit.testing.v1 import AppTest
 
 ROOT = Path(__file__).resolve().parents[1]
 SPEC = json.loads((ROOT / "dashboards" / "phase8_spec.json").read_text(encoding="utf-8"))
-PAGES = ["home", "fleet", "engine", "plan", "oee", "cost", "monitoring", "about"]
+PAGES = ["home", "how", "fleet", "engine", "plan", "oee", "cost", "monitoring", "about"]
 OKABE_ITO = {"#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7", "#000000"}
 SIMULATED_PAGES = {"home", "oee", "cost"}     # pages that show OEE or simulated plant values
 TIMEOUT = 60
