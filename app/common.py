@@ -18,10 +18,26 @@ REPO = "https://github.com/krishna6116/Predictive-Maintenance-OEE"
 DOCS = f"{REPO}/blob/main/docs"
 LINKEDIN = "https://www.linkedin.com/in/krishnakumar-balasundaram-3a92b6422"
 AUTHOR = "Krishnakumar Balasundaram"
+GITHUB = "https://github.com/Krishna6116"
+
+# v1.2 author section (dashboards/v12_spec.json author_section). The README's Author section (writeup/report_phase9.py)
+# is the source of truth; the app keeps its own copy because it installs only app/requirements.txt, and
+# dashboards/verify_v12.py checks the two agree. Never an email address or a phone number here.
+AUTHOR_PROFILE = {
+    "program": "MS Business Analytics candidate at the Isenberg School of Management, UMass Amherst (expected May 2028)",
+    "background": "B.E. Mechanical Engineering, with industry experience in production, quality control and operations "
+                  "analytics in manufacturing",
+    "roles": "Open to Summer 2027 internships in data analytics, operations and supply chain analytics, quality analytics, "
+             "healthcare analytics and AI product roles",
+    "how_built": "I chose the project, the phase plan and the success criteria, and approved every publication decision; "
+                 "Claude wrote most of the code under my direction. Every published claim is re-checked by verifier code "
+                 "in CI, so it does not depend on trusting either of us.",
+}
 
 # Page titles are the questions in dashboards/phase8_spec.json (checked by the tests)
 TITLES = {
     "home": "What did this project build, and what did it find?",
+    "how": "How does a sensor reading become a maintenance decision?",
     "fleet": "Which engines are closest to failure, and how sure is the model?",
     "plan": "Which engines should the crews service in the next 7 days?",
     "oee": "Which maintenance policy gives the highest OEE? (Simulated plant)",
@@ -110,6 +126,7 @@ def define(term: str) -> str:
 # One-sentence business question per page (operations language), and what the page shows and why it matters
 BUSINESS = {
     "home": "Can forecasting each machine's remaining life cut unplanned downtime (here, on a simulated plant) without wasting parts?",
+    "how": "How does the pipeline turn raw engine sensor data into a crew schedule and a simulated OEE result?",
     "fleet": "Which assets need attention first, and how much can we trust the warning?",
     "plan": "With limited crews, which jobs go on which day so nothing fails while waiting?",
     "oee": "Does predictive maintenance pay off against a fixed calendar or running to failure?",
@@ -123,6 +140,9 @@ WHY = {
             "limits, and shows the effect on a simulated plant's OEE. This page gives the headline results of that "
             "predictive-maintenance pipeline, built on NASA engine data, and where to find each "
             "part. It matters because every figure here is re-computed by independent code, and the misses are shown too.",
+    "how": "The seven stages of the pipeline, from NASA sensor readings to a crew schedule, a simulated OEE result and the "
+           "monitoring that says when to retrain. Each stage names the page of this app that shows it. It matters because "
+           "a forecast is only useful once it turns into a decision a maintenance planner can act on.",
     "fleet": "Each test engine's forecast remaining life with its uncertainty interval, and which engines are flagged. A planner acts "
              "on the pessimistic edge of the interval, so a confident wrong forecast does not cause a failure.",
     "plan": "The crew schedule the optimizer chose for flagged engines under the crew limit. It shows the trade-off a "

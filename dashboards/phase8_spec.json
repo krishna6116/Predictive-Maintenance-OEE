@@ -96,6 +96,13 @@
       "required_text": ["Simulated", "How to read this app", "What this shows"]
     },
     {
+      "id": "how",
+      "title": "How does a sensor reading become a maintenance decision?",
+      "added": "v1.2 amendment (extension only): defined in dashboards/v12_spec.json how_page; must stay identical to v12_spec.json phase8_spec_pages.how",
+      "numbers": [],
+      "required_text": ["What this shows", "Simulated", "CP-SAT:", "FD004", "not met"]
+    },
+    {
       "id": "engine",
       "title": "What happened to one engine, cycle by cycle?",
       "added": "v1.1 amendment (extension only): defined in dashboards/v11_spec.json engine_page, copied here with the page; must stay identical to v11_spec.json phase8_spec_pages.engine",

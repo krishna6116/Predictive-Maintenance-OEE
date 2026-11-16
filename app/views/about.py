@@ -13,6 +13,15 @@ import common as C
 C.header("about", "Every number in this app is read from frozen snapshot files and re-computed independently from the raw "
                   "results by a verifier that runs in CI.")
 
+# v1.2 author section (dashboards/v12_spec.json author_section): first on the page; no email address or phone number
+st.subheader("About the author")
+A = C.AUTHOR_PROFILE
+st.markdown(f"**{C.AUTHOR}**, {A['program']}. {A['background']}.\n\n"
+            f"[LinkedIn]({C.LINKEDIN}) · [GitHub]({C.GITHUB}) · [Case study]({C.DOCS}/CASE_STUDY.md) · [Source code]({C.REPO})\n\n"
+            f"{A['roles']}.")
+st.caption(f"How it was built: {A['how_built']}")
+st.divider()
+
 man = C.manifest()
 fleet = C.load("fleet.csv")
 data = "".join(f"{n}:{f['sha256']}\n" for n, f in sorted(man["files"].items()))

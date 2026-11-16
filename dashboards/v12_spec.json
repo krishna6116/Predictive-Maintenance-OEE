@@ -1,0 +1,89 @@
+{
+  "version": "1.2.0",
+  "title": "v1.2 recruiter additions: a 'How it works' page and an author section on About",
+  "committed_before_code": true,
+  "audience": "recruiters and hiring managers who want, in about a minute, the path from a sensor reading to a maintenance decision, and who built it",
+  "rules": [
+    "The app reads only dashboards/snapshots/; v1.2 adds no snapshot file and changes none, so the snapshot data checksum stays the same.",
+    "Every number on the new page comes from a snapshot (facts.json, models.csv, plan.csv, oee_policies.csv) and is recomputed independently from the results files by dashboards/verify_v12.py (CI).",
+    "The new page shows its numbers in text, not as metric tiles, so Phase 8's metric comparison (D1.1) needs no new expectations; verify_v12 checks them instead.",
+    "Phase 8 stays 5/5, v1.1 stays 5/5 and Phase 9 stays 10/10; their criteria are only extended (the new page joins their page lists), never loosened.",
+    "No hand-typed published number on the new page: counts such as sensors kept or features built are not in the snapshots, so the page describes them in words and links the docs.",
+    "The author section carries the same facts as the README's Author section (writeup/report_phase9.py) and never an email address or phone number."
+  ],
+  "how_page": {
+    "id": "how",
+    "nav_title": "How it works",
+    "nav_position": "second, directly after Home",
+    "title": "How does a sensor reading become a maintenance decision?",
+    "business_question": "How does the pipeline turn raw engine sensor data into a crew schedule and a simulated OEE result?",
+    "diagram": {
+      "kind": "st.graphviz_chart from a DOT string (rendered in the browser; no new dependency)",
+      "layout": "top to bottom, so it stays readable at phone width",
+      "stages_in_order": ["Data", "Features", "Forecast", "Alert", "Schedule", "OEE (simulated)", "Monitoring"],
+      "edges": "each stage to the next; plus a dashed edge Monitoring -> Forecast labelled 'retrain flag'",
+      "simulated_stage": "the OEE stage has a dashed border and '(simulated)' in its label: line style plus text, not colour alone",
+      "colours": "Okabe-Ito only (or none)",
+      "text_alternative": "the stage sections below the diagram repeat every stage in words"
+    },
+    "stage_sections": {
+      "form": "one block per stage, in diagram order, each with: What happens, Why it matters, Result, See it (the app page that shows it, by its menu name)",
+      "see_it": {
+        "Data": "Engine drill-down",
+        "Features": "Engine drill-down",
+        "Forecast": "Fleet health",
+        "Alert": "Fleet health",
+        "Schedule": "Maintenance plan",
+        "OEE (simulated)": "OEE policies (simulated)",
+        "Monitoring": "Monitoring"
+      }
+    },
+    "numbers": [
+      {"id": "how.rul_cap", "stage": "Features", "label": "remaining-life cap (cycles)", "source": "facts.json rul_cap", "independent": "clip value in models/predictions_phase5b.csv (as Phase 8 D1.3)", "tolerance": "exact"},
+      {"id": "how.forecast_rmse", "stage": "Forecast", "label": "RMSE of the published model and of XGBoost on the FD003 test engines (cycles)", "source": "models.csv", "independent": "recomputed from models/predictions_phase5b.csv (verify_phase8.truth)", "tolerance": "shown to 2 decimals"},
+      {"id": "how.interval", "stage": "Forecast", "label": "interval level (percent) and number of MC dropout passes", "source": "facts.json interval_nominal, interval_passes", "independent": "models/results_phase5.json mc_dropout.nominal; models/results_phase5b.json mc_dropout.passes", "tolerance": "exact"},
+      {"id": "how.flagged", "stage": "Alert", "label": "alert threshold (cycles) and engines flagged in FD001 and FD003", "source": "facts.json alert_threshold; plan.csv rows per dataset", "independent": "maintenance/config.py ALERT_THRESHOLD; maintenance/snapshot_decisions_phase6.csv flagged", "tolerance": "exact"},
+      {"id": "how.schedule", "stage": "Schedule", "label": "crews per day, horizon days, engines booked and engines left without a crew, per dataset; solver status", "source": "facts.json crews_per_day, horizon_days, solver_status_FD00x; plan.csv scheduled_day, status", "independent": "maintenance/config.py; maintenance/snapshot_decisions_phase6.csv; maintenance/results_phase6.json", "tolerance": "exact"},
+      {"id": "how.oee", "stage": "OEE (simulated)", "label": "pooled simulated OEE (percent, 1 decimal) and unplanned failures for predictive, fixed interval and run to failure", "source": "oee_policies.csv scope=Pooled", "independent": "maintenance/machines_phase6.csv re-aggregated (verify_phase8.truth)", "tolerance": "as displayed"}
+    ],
+    "required_text": [
+      "What this shows",
+      "Simulated",
+      "CP-SAT:",
+      "OEE:",
+      "MC dropout:",
+      "drift:",
+      "FD004",
+      "not met"
+    ],
+    "honesty": "the Monitoring stage says plainly that the drift rule failed its false-alarm target on FD004 and that the Phase 7 target was not met; the OEE stage and the diagram say 'simulated'"
+  },
+  "author_section": {
+    "where": "About and method page, a section headed 'About the author', placed first on the page, above the data checksum",
+    "content": {
+      "name": "Krishnakumar Balasundaram",
+      "program": "MS Business Analytics candidate at the Isenberg School of Management, UMass Amherst (expected May 2028)",
+      "background": "B.E. Mechanical Engineering, with industry experience in production, quality control and operations analytics in manufacturing",
+      "links": ["LinkedIn", "GitHub", "Case study", "Source code"],
+      "roles": "Open to Summer 2027 internships in data analytics, operations and supply chain analytics, quality analytics, healthcare analytics and AI product roles",
+      "how_built": "one sentence: the author directed the project and its decisions; Claude wrote most of the code under that direction; every published claim is re-checked by verifier code in CI"
+    },
+    "source_of_truth": "writeup/report_phase9.py (README Author section); the app keeps its own copy in app/common.py because the app installs only app/requirements.txt, and verify_v12 checks the two agree",
+    "never": "an email address or a phone number (checked in the rendered page and in app/ source)"
+  },
+  "home_change": "Home's 'How to read this app' list gains a 'How it works' line first; nothing above the fold changes (v1.1 V2.1 still applies)",
+  "live_checks": {
+    "before_merge": "python -m dashboards.verify_v12 --live http://localhost:8501 against `streamlit run app/streamlit_app.py` on branch v1.2 (no preview app needed)",
+    "after_merge": "the same command on https://predictive-maintenance-oee.streamlit.app; both results are recorded in dashboards/v12_evidence.json and reported",
+    "phone": "375 px wide, as in v1.1 V4.1"
+  },
+  "phase8_spec_pages": {
+    "how": {
+      "id": "how",
+      "title": "How does a sensor reading become a maintenance decision?",
+      "added": "v1.2 amendment (extension only): defined in dashboards/v12_spec.json how_page; must stay identical to v12_spec.json phase8_spec_pages.how",
+      "numbers": [],
+      "required_text": ["What this shows", "Simulated", "CP-SAT:", "FD004", "not met"]
+    }
+  }
+}

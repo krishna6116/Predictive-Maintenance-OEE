@@ -85,7 +85,7 @@ C.explain_why("home")
 
 st.subheader("How to read this app (one minute)")
 st.markdown("\n".join(f"- **{name}:** {C.BUSINESS[page]}" for page, name in (
-    ("fleet", "Fleet health"), ("engine", "Engine drill-down"), ("plan", "Maintenance plan"), ("oee", "OEE policies (simulated)"),
+    ("how", "How it works"), ("fleet", "Fleet health"), ("engine", "Engine drill-down"), ("plan", "Maintenance plan"), ("oee", "OEE policies (simulated)"),
     ("cost", "Cost what-if (illustrative)"), ("monitoring", "Monitoring"), ("about", "About and method"))))
 st.caption("Open a page from the menu on the left (on a phone, the arrow at the top left).")
 

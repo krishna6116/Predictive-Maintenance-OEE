@@ -91,7 +91,7 @@
           "id": "D3.1",
           "kind": "code",
           "passed": true,
-          "detail": "47 page renders, 0 with exceptions"
+          "detail": "48 page renders, 0 with exceptions"
         },
         {
           "id": "D3.2",
@@ -171,7 +171,7 @@
           "id": "D5.4",
           "kind": "code",
           "passed": true,
-          "detail": "cold-cache script time: home 0.30s, fleet 0.27s, engine 0.34s, plan 0.27s, oee 0.27s, cost 0.25s, monitoring 0.26s, about 0.23s"
+          "detail": "cold-cache script time: home 0.93s, how 0.74s, fleet 0.85s, engine 1.07s, plan 0.90s, oee 0.96s, cost 0.85s, monitoring 0.98s, about 0.90s"
         },
         {
           "id": "D5.5",
