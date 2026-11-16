@@ -8,6 +8,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
+import pandas as pd
 import streamlit as st
 
 import common as C
@@ -109,13 +110,14 @@ for title, skill, what, why, page, code in STEPS:
         st.markdown(f"{see}Code: [{code}]({C.REPO}/tree/main/{code})")
 
 st.subheader("What is real and what is simulated")
-st.table({
+# Part as the index: a plain dict would add a 0-5 row-number column (CI, PR #15)
+st.table(pd.DataFrame({
     "Part": ["Engine sensor data and remaining-life labels", f"{pub} forecasts, intervals, alerts and crew plans",
              "Monitoring runs (drift, error, retraining flag)", "Plant, OEE, downtime and failure counts",
              "Crew capacity and the planning calendar", "Costs on the cost page"],
     "Status": ["Real (NASA C-MAPSS)", "Real model outputs", "Real runs on the NASA test engines", "Simulated",
                "Planning assumptions", "Illustrative (your own figures)"],
-})
+}).set_index("Part"))
 C.simulated_notice()
 
 st.subheader("How the numbers are kept honest")
