@@ -2,7 +2,7 @@
 
 Predicts when jet engines will need maintenance from their sensor data, then plans crew work so engines are serviced before they fail.
 
-**[Try the live app](https://predictive-maintenance-oee.streamlit.app)**: the headline results on one screen, any test engine's story cycle by cycle, and a cost what-if with your own figures. No install needed.
+**[Try the live app](https://predictive-maintenance-oee.streamlit.app)**: the headline results on one screen, how a sensor reading becomes a crew schedule, any test engine's story cycle by cycle, and a cost what-if with your own figures. No install needed.
 
 [![CI](https://github.com/krishna6116/Predictive-Maintenance-OEE/actions/workflows/ci.yml/badge.svg)](https://github.com/krishna6116/Predictive-Maintenance-OEE/actions/workflows/ci.yml) [![Python](https://img.shields.io/badge/python-3.14-blue)](https://www.python.org/) [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE) [![Live app](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://predictive-maintenance-oee.streamlit.app)
 

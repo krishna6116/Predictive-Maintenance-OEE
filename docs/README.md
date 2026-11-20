@@ -31,6 +31,16 @@ Start with the [case study](CASE_STUDY.md) (5 minutes, non-technical) or the [re
 
 The v1.1.0 release notes are listed under Documents below.
 
+## v1.2 changes
+
+- **How it works:** a new page, second in the menu, with a pipeline diagram and seven short stages (data, features, forecast, alert, schedule, simulated OEE, monitoring). Each stage says what happens, why it matters and what it found, and links to the page that shows it.
+- **About the author:** first on the About page, with the same facts as the README's Author section and no email address or phone number.
+- **README:** a row of technology badges for the whole stack, and the live-app line now mentions How it works.
+- **Narrow screens:** tile labels wrap instead of being cut off, tile values in a row stay on one line, and the simulated OEE tables fit a phone screen.
+- **Checked like every phase:** a specification and scorecard committed before any v1.2 code, and an independent verifier (`python -m dashboards.verify_v12`) that recomputes every number on the new page from the results files, checks the author facts against the README, catches planted bugs, and measures the deployed app at laptop and phone width.
+
+The v1.2.0 release notes are listed under Documents below.
+
 ## Documents
 
 - [ARCHITECTURE.md](ARCHITECTURE.md): System diagram, star schema, data flow per shift and why each technology was chosen.
@@ -52,6 +62,7 @@ The v1.1.0 release notes are listed under Documents below.
 - [PIPELINE.md](PIPELINE.md): Phase 2: ingest, validation, quarantine and idempotent loads into PostgreSQL.
 - [RELEASE_NOTES.md](RELEASE_NOTES.md): Release notes for v1.0.0, generated from the results files.
 - [RELEASE_NOTES_v1.1.0.md](RELEASE_NOTES_v1.1.0.md): Release notes for v1.1.0: Home at a glance, engine drill-down, cost what-if, plain-English help.
+- [RELEASE_NOTES_v1.2.0.md](RELEASE_NOTES_v1.2.0.md): Release notes for v1.2.0: How it works page, author section, technology badges, narrow-screen layout.
 - [RESULTS.md](RESULTS.md): Every headline result with its interval, comparison, source file and explaining doc.
 - [V11_CHECKLIST.md](V11_CHECKLIST.md): v1.1 manual checklist (preview-app live checks, author review, release v1.1.0).
 - [V12_CHECKLIST.md](V12_CHECKLIST.md): v1.2 checklist (live checks on a local server and on the real app, author review).

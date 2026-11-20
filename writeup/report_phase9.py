@@ -17,6 +17,7 @@ LINKEDIN = "https://www.linkedin.com/in/krishnakumar-balasundaram-3a92b6422"
 GITHUB = "https://github.com/Krishna6116"
 TAG = "v1.0.0"  # docs/RELEASE_NOTES.md stays the v1.0.0 body (Phase 9 W10)
 TAG_V11 = "v1.1.0"
+TAG_V12 = "v1.2.0"
 # README technology badges: (alt text, shields.io label, colour, simple-icons logo or None when simple-icons has
 # none); spaces as %20, '-' as '--', '|' as %7C
 TECH_BADGES = [
@@ -58,6 +59,7 @@ def render_all() -> dict[str, str]:
     return {"README.md": readme(F), "docs/RESULTS.md": results(F), "docs/CASE_STUDY.md": case_study(F),
             "docs/ARCHITECTURE.md": architecture(F), "docs/DECISIONS.md": decisions(F), "docs/GLOSSARY.md": glossary(),
             "docs/RELEASE_NOTES.md": release_notes(F), f"docs/RELEASE_NOTES_{TAG_V11}.md": release_notes_v11(),
+            f"docs/RELEASE_NOTES_{TAG_V12}.md": release_notes_v12(),
             "docs/README.md": docs_index(), **notebooks(F)}
 
 
@@ -157,7 +159,8 @@ def readme(F) -> str:
         "Predicts when jet engines will need maintenance from their sensor data, then plans crew work so engines are "
         "serviced before they fail.", "",
         # v1.1 (dashboards/v11_spec.json readme.try_link): directly after the problem line, which Phase 9 W4 keeps first
-        f"**[Try the live app]({APP})**: the headline results on one screen, any test engine's story cycle by cycle, "
+        f"**[Try the live app]({APP})**: the headline results on one screen, how a sensor reading becomes a crew "
+        "schedule, any test engine's story cycle by cycle, "
         "and a cost what-if with your own figures. No install needed.", "",
         f"[![CI]({REPO}/actions/workflows/ci.yml/badge.svg)]({REPO}/actions/workflows/ci.yml) "
         "[![Python](https://img.shields.io/badge/python-3.14-blue)](https://www.python.org/) "
@@ -711,6 +714,40 @@ def release_notes_v11() -> str:
     return "\n".join(L)
 
 
+V12_CHANGES = [
+    "**How it works:** a new page, second in the menu, with a pipeline diagram and seven short stages (data, features, "
+    "forecast, alert, schedule, simulated OEE, monitoring). Each stage says what happens, why it matters and what it "
+    "found, and links to the page that shows it.",
+    "**About the author:** first on the About page, with the same facts as the README's Author section and no email "
+    "address or phone number.",
+    "**README:** a row of technology badges for the whole stack, and the live-app line now mentions How it works.",
+    "**Narrow screens:** tile labels wrap instead of being cut off, tile values in a row stay on one line, and the "
+    "simulated OEE tables fit a phone screen.",
+    "**Checked like every phase:** a specification and scorecard committed before any v1.2 code, and an independent "
+    "verifier (`python -m dashboards.verify_v12`) that recomputes every number on the new page from the results files, "
+    "checks the author facts against the README, catches planted bugs, and measures the deployed app at laptop and "
+    "phone width.",
+]
+
+
+def release_notes_v12() -> str:
+    L = [f"# Predictive Maintenance & OEE {TAG_V12}", "", GENERATED, "",
+         "A release for a reader who wants the whole pipeline in a minute, and who built it. The models, the results "
+         f"and the simulated plant are unchanged from {TAG_V11}.", "",
+         "## What is new", "", *[f"- {c}" for c in V12_CHANGES], "",
+         "## What did not change", "",
+         "- The published model, every number in the results, the snapshot files and their checksum, the Phase 8 "
+         "dashboard scorecard and the Phase 9 write-up checks.",
+         "- Every plant value is still labelled simulated, and every cost is labelled illustrative.", "",
+         "## Links", "",
+         f"- Live app: {APP}",
+         f"- Specification and scorecard: {REPO}/blob/main/dashboards/v12_spec.json and "
+         f"{REPO}/blob/main/dashboards/v12_scorecard.json",
+         f"- Checklist with the live-check evidence: {REPO}/blob/main/docs/V12_CHECKLIST.md",
+         f"- Case study: {REPO}/blob/main/docs/CASE_STUDY.md", ""]
+    return "\n".join(L)
+
+
 def release_notes(F) -> str:
     L = [f"# Predictive Maintenance & OEE {TAG}", "", GENERATED, "",
          "First complete release: data pipeline, remaining-life forecasts with uncertainty, crew scheduling, a simulated "
@@ -752,6 +789,7 @@ DOC_DESCRIPTIONS = {
     "docs/PIPELINE.md":"Phase 2: ingest, validation, quarantine and idempotent loads into PostgreSQL.",
     "docs/RELEASE_NOTES.md": "Release notes for v1.0.0, generated from the results files.",
     "docs/RELEASE_NOTES_v1.1.0.md": "Release notes for v1.1.0: Home at a glance, engine drill-down, cost what-if, plain-English help.",
+    "docs/RELEASE_NOTES_v1.2.0.md": "Release notes for v1.2.0: How it works page, author section, technology badges, narrow-screen layout.",
     "docs/RESULTS.md": "Every headline result with its interval, comparison, source file and explaining doc.",
 }
 NOTEBOOK_DESCRIPTIONS = {
@@ -782,7 +820,9 @@ def docs_index() -> str:
          "docs go deeper.", "", "## Phases", "", "| Phase | Status |", "| --- | --- |",
          *[f"| {name.split(':')[0]} | Done |" for name, _ in PHASES], "",
          "## v1.1 changes", "", *[f"- {c}" for c in V11_CHANGES], "",
-         f"The {TAG_V11} release notes are listed under Documents below.", "", "## Documents", ""]
+         f"The {TAG_V11} release notes are listed under Documents below.", "",
+         "## v1.2 changes", "", *[f"- {c}" for c in V12_CHANGES], "",
+         f"The {TAG_V12} release notes are listed under Documents below.", "", "## Documents", ""]
     L += [f"- [{Path(p).name}]({Path(p).name}): {DOC_DESCRIPTIONS[p]}" for p in docs]
     L += ["", "## Notebooks", "",
           "Each notebook is built by the `build_*.py` script beside it, so its findings come from the results files.", ""]
