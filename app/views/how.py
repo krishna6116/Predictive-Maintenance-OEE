@@ -119,9 +119,9 @@ SECTIONS = [
      # what it catches first, then the misses in full (review 2026-11-16); criteria in pipeline/phase7b_criteria.json
      "On two engine fleets the model had never seen (FD002, FD004), monitoring caught every sensor fault planted on "
      "purpose: a sudden shift, a lasting step and a slow ramp. Two targets were not met, both about false alarms on healthy "
-     "data: on FD004 the drift check raised more of them than the limit set before testing, and so did the first version "
-     "of monitoring, tested earlier on FD001 and FD003. Both are reported as they are, not re-tuned; the Monitoring page "
-     "gives the rates."),
+     "data. On FD004 the drift check raised more of them than the limit set before testing. The first version of "
+     "monitoring, tested earlier on FD001 and FD003, also raised too many. Both are reported as they are, not re-tuned; "
+     "the Monitoring page gives the rates."),
 ]
 VIEW = {"Engine drill-down": "engine", "Fleet health": "fleet", "Maintenance plan": "plan",
         "OEE policies (simulated)": "oee", "Monitoring": "monitoring"}
