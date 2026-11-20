@@ -20,6 +20,14 @@
       "ok": true,
       "how": "HTTP 200"
     },
+    "https://github.com/krishna6116/Predictive-Maintenance-OEE/blob/main/dashboards/v12_scorecard.json": {
+      "ok": true,
+      "how": "HTTP 200"
+    },
+    "https://github.com/krishna6116/Predictive-Maintenance-OEE/blob/main/dashboards/v12_spec.json": {
+      "ok": true,
+      "how": "HTTP 200"
+    },
     "https://github.com/krishna6116/Predictive-Maintenance-OEE/blob/main/docs/CASE_STUDY.md": {
       "ok": true,
       "how": "HTTP 200"
@@ -33,6 +41,10 @@
       "how": "HTTP 200"
     },
     "https://github.com/krishna6116/Predictive-Maintenance-OEE/blob/main/docs/V11_CHECKLIST.md": {
+      "ok": true,
+      "how": "HTTP 200"
+    },
+    "https://github.com/krishna6116/Predictive-Maintenance-OEE/blob/main/docs/V12_CHECKLIST.md": {
       "ok": true,
       "how": "HTTP 200"
     },
@@ -113,7 +125,7 @@
     "ok": true
   },
   "ci_repro": {
-    "commit": "63067133a1ff06ba04faa52d8c03d91fd730daa3",
+    "commit": "a2c95cbdcf3feb60dcfccd75a76083cc1865bed9",
     "ok": true
   },
   "release": {
