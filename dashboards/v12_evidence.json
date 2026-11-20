@@ -46,7 +46,7 @@
     },
     "https://predictive-maintenance-oee.streamlit.app": {
       "url": "https://predictive-maintenance-oee.streamlit.app",
-      "captured_utc": "2026-11-20T15:00:09Z",
+      "captured_utc": "2026-11-20T18:11:15Z",
       "ok": true,
       "exceptions": {
         "home": [],
@@ -61,19 +61,19 @@
       },
       "title_seconds": {
         "how": [
-          1.0,
-          1.12,
-          1.02
+          1.02,
+          1.03,
+          1.04
         ],
         "about": [
-          1.55,
-          1.61,
-          1.52
+          1.01,
+          1.03,
+          1.03
         ]
       },
       "median": {
-        "how": 1.02,
-        "about": 1.55
+        "how": 1.03,
+        "about": 1.03
       },
       "phone_375": {
         "how": {
@@ -89,9 +89,9 @@
     }
   },
   "ci": {
-    "commit": "2ffd37eca5939883743e39b146a55ad098012f75",
+    "commit": "0e2624c8a26f5ab066eca1c7b38f7167ef419031",
     "conclusion": "success",
-    "url": "https://github.com/krishna6116/Predictive-Maintenance-OEE/actions/runs/44757695581",
-    "recorded_utc": "2026-11-20T15:02:14Z"
+    "url": "https://github.com/krishna6116/Predictive-Maintenance-OEE/actions/runs/44789962657",
+    "recorded_utc": "2026-11-20T18:16:10Z"
   }
 }
