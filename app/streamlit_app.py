@@ -24,6 +24,18 @@ import common as C  # noqa: E402
 
 st.set_page_config(page_title="Predictive Maintenance & OEE", layout="wide")
 
+# Narrow screens (Chrome review 2026-11-20): a metric label wraps onto a second line instead of ending in "...", and on a
+# phone the static tables use tighter text so their last column is not cut off. Style only: no label, number or table
+# changes, so the verifiers' word-for-word checks are unaffected. st.html with only a <style> block takes no space.
+st.html("""<style>
+[data-testid="stMetricLabel"], [data-testid="stMetricLabel"] * {
+  white-space: normal !important; overflow: visible !important; text-overflow: clip !important; }
+@media (max-width: 640px) {
+  [data-testid="stTable"] table { font-size: 0.78rem; }
+  [data-testid="stTable"] th, [data-testid="stTable"] td { padding: 0.3rem 0.35rem !important; }
+}
+</style>""")
+
 pages = [st.Page("views/home.py", title="Home", default=True),
          st.Page("views/how.py", title="How it works"),
          st.Page("views/fleet.py", title="Fleet health"),
