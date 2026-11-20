@@ -30,6 +30,8 @@ st.set_page_config(page_title="Predictive Maintenance & OEE", layout="wide")
 st.html("""<style>
 [data-testid="stMetricLabel"], [data-testid="stMetricLabel"] * {
   white-space: normal !important; overflow: visible !important; text-overflow: clip !important; }
+/* a row of tiles lines up at the bottom, so a tile whose label wraps keeps its value level with its neighbours' */
+[data-testid="stHorizontalBlock"]:has(> [data-testid="stColumn"] [data-testid="stMetric"]) { align-items: flex-end; }
 @media (max-width: 640px) {
   [data-testid="stTable"] table { font-size: 0.78rem; }
   [data-testid="stTable"] th, [data-testid="stTable"] td { padding: 0.3rem 0.35rem !important; }
