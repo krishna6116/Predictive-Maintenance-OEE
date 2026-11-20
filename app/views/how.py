@@ -120,7 +120,8 @@ SECTIONS = [
      "On two engine fleets the model had never seen (FD002, FD004), monitoring caught every sensor fault planted on "
      "purpose: a sudden shift, a lasting step and a slow ramp. Two targets were not met, both about false alarms on healthy "
      "data: on FD004 the drift check raised more of them than the limit set before testing, and so did the first version "
-     "of monitoring. Both are reported as they are, not re-tuned; the Monitoring page gives the rates."),
+     "of monitoring, tested earlier on FD001 and FD003. Both are reported as they are, not re-tuned; the Monitoring page "
+     "gives the rates."),
 ]
 VIEW = {"Engine drill-down": "engine", "Fleet health": "fleet", "Maintenance plan": "plan",
         "OEE policies (simulated)": "oee", "Monitoring": "monitoring"}
